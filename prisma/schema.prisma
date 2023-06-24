@@ -1,0 +1,318 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Animal {
+  id                      String   @id @unique @default(uuid()) @db.Uuid
+  criadorAnimal           String   @unique @map("criador_animal")
+  fazenda                 String   @unique
+  mae                     String   @unique
+  pai                     String   @unique
+  rebanho                 String   @unique
+  anoAvalicacao           DateTime @map("ano_avalicacao")
+  composicaoGenetica      String   @map("composicao_genetica")
+  dataRGDAnimalSuper      DateTime @map("data_RGD_animal_Super")
+  dataRGDAnimalTecnico    DateTime @map("data_RGD_animal_Tecnico")
+  dataRGNAnimalSuper      DateTime @map("data_RGN_animal_Super")
+  dataRGNAnimalTecnico    DateTime @map("data_RGN_animal_Tecnico")
+  dataNascimentoAnimal    DateTime @map("data_nascimento_animal")
+  decisaoAnimalSuperRGD   String   @map("decisao_animal_Super_RGD")
+  decisaoAnimalSuperRGN   String   @map("decisao_animal_Super_RGN")
+  decisaoAnimalTecnicoRGD String   @map("decisao_animal_Tecnico_RGD")
+  decisaoAnimalTecnicoRGN String   @map("decisao_animal_Tecnico_RGN")
+  image01                 String   @map("image_01")
+  image02                 String   @map("image_02")
+  image03                 String   @map("image_03")
+  image04                 String   @map("image_04")
+  mesAvaliacao            String   @map("mes_avaliacao")
+  nomeAnimal              String   @map("nome_animal")
+  observacaoSuper         String   @map("observacao_Super")
+  observacaoTecnico       String   @map("observacao_Tecnico")
+  pelagemAnimal           String   @map("pelagem_animal")
+  racaAnimalMatriz        String   @map("raca_animal_matriz")
+  registradoRGDSuper      Boolean  @map("registrado_RGD_Super")
+  registradoRGDTecnico    Boolean  @map("registrado_RGD_Tecnico")
+  registradoRGNSuper      Boolean  @map("registrado_RGN_Super")
+  registradoRGNTecnico    Boolean  @map("registrado_RGN_Tecnico")
+  registro                String
+  registroGeral           String   @map("registro_geral")
+  sexoAnimal              String   @map("sexo_animal")
+
+  rebanhoAnimal           Rebanho  @relation(fields: [rebanho], references: [id])
+  paiAnimal               Animal   @relation("RelacaoPaiAnimal", fields: [pai], references: [id])
+  maeAnimal               Animal   @relation("RelacaoMaeAnimal",fields: [mae], references: [id])
+  fazendaAnimal           Fazenda  @relation(fields: [fazenda], references: [id])
+  criador                 Criador  @relation(fields: [criadorAnimal], references: [id])
+  
+  filhosMatriz            Animal[] @relation("RelacaoMaeAnimal")
+  filhosGerador           Animal[] @relation("RelacaoPaiAnimal")
+  matrizAnimal            ComunicacaoNascimento[] @relation("MatrizAnimal")
+  reprodutorAnimal        ComunicacaoNascimento[] @relation("ReprodutorAnimal")
+  obito                   ComunicacaoObito[]
+  @@map("animais")
+}
+
+model Fazenda {
+  id                String   @id @unique @default(uuid()) @db.Uuid
+  criadorFazenda    String   @unique @map("criador_cobertura") @db.Uuid
+  areaFazenda       String   @map("area_fazenda")
+  atualizacoes      String
+  comoChegar        String   @map("como_chegar")
+  dataDocumentacao  DateTime @map("data_documentacao")
+  fazendaCadastrada Boolean  @map("fazenda_Cadastrada")
+  femeas04Fazenda   Int      @map("femeas_0_4_fazenda")
+  femeas1224Fazenda Int      @map("femeas_12_24_fazenda")
+  femeas2436Fazenda Int      @map("femeas_24_36_fazenda")
+  femeas36Fazenda   Int      @map("femeas_36_fazenda")
+  femeas412Fazenda  Int      @map("femeas_4_12_fazenda")
+  macho04Fazenda    Int      @map("macho_0_4_fazenda")
+  macho1224Fazenda  Int      @map("macho_12_24_fazenda")
+  macho2436Fazenda  Int      @map("macho_24_36_fazenda")
+  macho36Fazenda    Int      @map("macho_36_fazenda")
+  macho412Fazenda   Int      @map("macho_4_12_fazenda")
+  municipioFazenda  Int      @map("municipio_fazenda")
+  nomeFazenda       String   @map("nome_fazenda")
+  observacoes       String
+  outrasEspecies    String
+  proponente1       String   @map("proponente_1")
+  proponente2       String   @map("proponente_2")
+  proponente3       String   @map("proponente_3")
+  telefoneFazenda   String   @map("telefone_fazenda")
+
+  criador           Criador  @relation(fields: [criadorFazenda], references: [id])
+  animais               Animal[]
+  rebanhos              Rebanho[]
+  comunicacoesCobertura ComunicacaoCobertura[]
+  fazendaAdquirenteId   TransferirAnimal[]   @relation("fazendaAdquirenteId")
+  fazendaTransmitenteId TransferirAnimal[]   @relation("fazendaTransmitenteId")
+  solicitacaoCadastroFazenda SolicitacaoCadastroFazenda[]
+  @@map("fazendas")
+}
+
+model User {
+  id            String   @id @default(uuid()) @db.Uuid
+  cadastro      Boolean
+  dateJoined    DateTime
+  nomePrimeiro  String   @map("nome_primeiro")
+  nomeUltimo    String   @map("nome_ultimo")
+  email         String   @unique
+  cpf           String   @unique
+  username      String
+  senha         String
+  telefone      String
+  ativo         Boolean
+  pessoa        Boolean
+  superusuario  Boolean
+  ultimaConexao DateTime @map("ultima_conexao")
+
+  tecnico                   Tecnico[]
+  criador                   Criador[]
+  superintendete            Superintendete[]
+  
+  @@map("users")
+}
+
+model Superintendete {
+  id     String @id @default(uuid()) @db.Uuid
+  userId String @map("usuario_id") @db.Uuid
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@map("superintendetes")
+}
+
+model Tecnico {
+  id           String  @id @default(uuid()) @db.Uuid
+  userId       String  @map("usuario_id") @db.Uuid
+  nomeBairro   String  @map("nome_bairro")
+  nomeCidade   String  @map("nome_cidade")
+  nomeEstado   String  @map("nome_estado")
+  nomeRua      String  @map("nome_rua")
+  nomeCompleto String  @map("nome_completo")
+  rg           String
+
+  comunicacaoNascimento     ComunicacaoNascimento[]
+  solicitacaoRegistroAnimalBase SolicitacaoRegistroAnimalBase[]
+
+  user         User    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@map("tecnicos")
+}
+
+model Criador {
+  id           String  @id @default(uuid()) @db.Uuid
+  userId       String  @map("user_id") @db.Uuid
+  cep          String
+  ativo        Boolean
+  nomeBairro   String  @map("nome_bairro")
+  nomeCidade   String  @map("nome_cidade")
+  nomeCompleto String  @map("nome_completo")
+  nomeEstado   String  @map("nome_estado")
+  nomeRua      String  @map("nome_rua")
+  rg           String
+
+  user         User    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  animal                   Animal[]
+  fazenda                  Fazenda[]
+  comunicacaoNascimento    ComunicacaoNascimento[]
+  comunicacoesCobertura    ComunicacaoCobertura[]
+  criadorAdquirente        TransferirAnimal[]  @relation("criadorAdquirente")
+  criadorTransmitente      TransferirAnimal[]  @relation("criadorTransmitente")
+  solicitacaoCadastro      SolicitacaoCadastroCriador[]
+  solicitacaoRegistroAnimalBase SolicitacaoRegistroAnimalBase[]
+  @@map("criadores")
+}
+
+model ComunicacaoNascimento {
+  id                     String   @id @default(uuid()) @db.Uuid
+  coberturaRegistradaId  String   @map("cobertura_registrada_id") @db.Uuid
+  criadorNascimentoId    String   @map("criador_nascimento_id") @db.Uuid
+  fazendaNascimentoId    String   @map("fazenda_nascimento_id") @db.Uuid
+  matrizAnimalId         String   @map("matriz_animal_id") @db.Uuid
+  reprodutorAnimalId     String   @map("reprodutor_animal_id") @db.Uuid
+  tecnicoNascimentoId    String   @map("tecnico_nascimento_id") @db.Uuid
+  animalBezerro          String   @map("animal_bezerro")
+  dataComunicacao        DateTime @map("data_comunicacao")
+  dataNascimento         DateTime @map("data_nascimento")
+  finalizadoNascimento   Boolean  @map("finalizado_nascimento")
+  observacoes            String
+  statusNascimento       String   @map("status_nascimento")
+
+  comunicacaoCobertura  ComunicacaoCobertura   @relation(fields: [coberturaRegistradaId], references: [id], onDelete: SetNull)
+  criador               Criador                @relation(fields: [criadorNascimentoId], references: [id], onDelete: SetNull)
+  fazenda               Fazenda                @relation(fields: [fazendaNascimentoId], references: [id], onDelete: SetNull)
+  matrizAnimal          Animal                 @relation("MatrizAnimal",fields: [matrizAnimalId], references: [id], onDelete: SetNull)
+  reprodutorAnimal      Animal                 @relation("ReprodutorAnimal",fields: [reprodutorAnimalId], references: [id], onDelete: SetNull)             
+  tecnico               Tecnico                @relation(fields: [tecnicoNascimentoId], references: [id], onDelete: SetNull)
+  
+  @@map("comunicaoes_nascimentos")
+}
+
+model ComunicacaoCobertura {
+  id                   String   @id @default(uuid()) @db.Uuid
+  criadorCobertura     String   @map("criador_cobertura") @db.Uuid
+  fazendaCobertura     String   @map("fazenda_cobertura") @db.Uuid
+  comprovantePagamento String   @map("comprovante_pagamento")
+  dataCobertura        DateTime @default(now()) @map("data_cobertura")
+  finalizadoCobertura  Boolean  @map("finalizado_cobertura")
+  nomeCobertura        String   @map("nome_cobertura")
+  observacoes          String
+  statusCobertura      String   @map("status_cobertura")
+  tipoCobertura        String   @map("tipo_cobertura")
+
+  criador              Criador  @relation(fields: [criadorCobertura], references: [id], onDelete: SetNull)
+  fazenda              Fazenda  @relation(fields: [fazendaCobertura], references: [id], onDelete: SetNull )
+  @@map("comunicacoes_coberturas")
+}
+
+model ComunicacaoObito {
+  id         String   @id @default(uuid()) @db.Uuid
+  animalId   String   @unique @map("animal_id") @db.Uuid
+  causa      String
+  dataObito  DateTime @default(now()) @map("data_obito")
+  nomeAnimal String
+
+  animal     Animal   @relation(fields: [animalId], references: [id], onDelete: NoAction)
+
+  @@map("nome_animal")
+}
+
+model TransferirAnimal {
+  id                  String   @id @default(uuid()) @db.Uuid
+  adquirente          String   @db.Uuid
+  animal              String   @db.Uuid
+  fazendaAdquirente   String   @map("fazenda_adquirente") @db.Uuid
+  fazendaTransmitente String   @map("fazenda_transmitente") @db.Uuid
+  transmitente        String   @db.Uuid
+  dataTransferencia   DateTime @default(now()) @map("data_transferencia")
+  nomeAnimal          String   @map("nome_animal")
+
+
+  criadorAdquirente     Criador @relation("criadorAdquirente", fields: [adquirente], references: [id])
+  criadorTransmitente   Criador @relation("criadorTransmitente", fields: [transmitente], references: [id])
+  fazendaAdquirenteId   Fazenda @relation("fazendaAdquirenteId", fields: [fazendaAdquirente], references: [id])
+  fazendaTransmitenteId Fazenda @relation("fazendaTransmitenteId",fields: [fazendaTransmitente], references: [id])
+  @@map("tranferir_animais")
+}
+
+model SolicitacaoRegistroAnimalBase {
+  id                String @id @default(uuid()) @db.Uuid
+  criadorId         String @db.Uuid @map("criador_id")
+  tecnicoId         String @db.Uuid @map("tecnico_id")
+  estadoSolicitacao String @map("estado_solicitacao")
+
+  criador           Criador  @relation(fields: [criadorId], references: [id], onDelete: SetNull)
+  tecnico           Tecnico  @relation(fields: [tecnicoId], references: [id], onDelete: SetNull)
+
+  registroAnimalBase RegistroAnimalBase[]
+  
+  @@map("solicitacoes_registros_animais_base")
+}
+
+model RegistroAnimalBase {
+  id                String @id @default(uuid()) @db.Uuid
+  solicitacao       String @db.Uuid
+  quantidadeAnimais Int    @map("quantidade_animais")
+
+  solicitacaoRegistroAnimalBase   SolicitacaoRegistroAnimalBase  @relation(fields: [solicitacao], references: [id], onDelete: SetNull)
+
+  @@map("registros_animais_base")
+}
+
+model Rebanho {
+  id      String @id @default(uuid()) @db.Uuid
+  fazenda String @db.Uuid
+  serie   String
+
+
+  fazendaRebanho Fazenda @relation(fields: [fazenda], references: [id])
+  animais   Animal[]  
+  @@map("rebanhos")
+}
+
+model SolicitacaoCadastroCriador {
+  id                   String @id @default(uuid()) @db.Uuid
+  criadoId             String @map("criado_id") @db.Uuid
+  comprovantePagamento String @map("comprovante_pagamento")
+
+  criador              Criador @relation(fields: [criadoId], references: [id])
+  @@map("solicitacao_cadastro_criado")
+}
+
+
+model SolicitacaoCadastroFazenda {
+  id                           String @id @default(uuid()) @db.Uuid
+  fazendaId                    String @map("fazenda_id") @db.Uuid
+  solicitacaoCadastroCriadorId String @map("solicitacao_cadastro_criador_id") @db.Uuid
+
+
+  fazenda Fazenda  @relation(fields: [fazendaId], references: [id], onDelete: SetNull)
+  solicitacao SolicitacaoCadastroCriador  @relation(fields: [solicitacaoCadastroCriadorId], references: [id], onDelete: SetNull)
+
+
+  @@map("solicitacao_cadastro_fazenda")
+}
+
+
+model Certificado {
+  id     String @id @default(uuid()) @db.Uuid
+  codigo String
+
+  @@map("certificados")
+}
+
+model Matrix {
+  id   String   @id @default(uuid()) @db.Uuid
+  data DateTime
+
+  @@map("matrix")
+}
