@@ -12,11 +12,11 @@ datasource db {
 
 model Animal {
   id                      String   @id @unique @default(uuid()) @db.Uuid
-  criadorAnimal           String   @unique @map("criador_animal")
-  fazenda                 String   @unique
-  mae                     String   @unique
-  pai                     String   @unique
-  rebanho                 String   @unique
+  criadorAnimal           String   @unique @map("criador_animal") @db.Uuid
+  fazenda                 String   @unique @db.Uuid
+  mae                     String   @unique @db.Uuid
+  pai                     String   @unique @db.Uuid
+  rebanho                 String   @unique @db.Uuid
   anoAvalicacao           DateTime @map("ano_avalicacao")
   composicaoGenetica      String   @map("composicao_genetica")
   dataRGDAnimalSuper      DateTime @map("data_RGD_animal_Super")
@@ -229,7 +229,7 @@ model ComunicacaoObito {
 
   animal Animal @relation(fields: [animalId], references: [id], onDelete: NoAction)
 
-  @@map("nome_animal")
+  @@map("comunicacao_Obitos")
 }
 
 model TransferirAnimal {
@@ -275,11 +275,11 @@ model RegistroAnimalBase {
 }
 
 model Rebanho {
-  id      String @id @default(uuid()) @db.Uuid
-  fazenda String @db.Uuid
-  serie   String
+  id        String @id @default(uuid()) @db.Uuid
+  fazendaId String @map("fazenda_id") @db.Uuid
+  serie     String
 
-  fazendaRebanho Fazenda  @relation(fields: [fazenda], references: [id])
+  fazendaRebanho Fazenda  @relation(fields: [fazendaId], references: [id])
   animais        Animal[]
 
   @@map("rebanhos")
