@@ -46,17 +46,18 @@ model Animal {
   registroGeral           String   @map("registro_geral")
   sexoAnimal              String   @map("sexo_animal")
 
-  rebanhoAnimal           Rebanho  @relation(fields: [rebanho], references: [id])
-  paiAnimal               Animal   @relation("RelacaoPaiAnimal", fields: [pai], references: [id])
-  maeAnimal               Animal   @relation("RelacaoMaeAnimal",fields: [mae], references: [id])
-  fazendaAnimal           Fazenda  @relation(fields: [fazenda], references: [id])
-  criador                 Criador  @relation(fields: [criadorAnimal], references: [id])
-  
-  filhosMatriz            Animal[] @relation("RelacaoMaeAnimal")
-  filhosGerador           Animal[] @relation("RelacaoPaiAnimal")
-  matrizAnimal            ComunicacaoNascimento[] @relation("MatrizAnimal")
-  reprodutorAnimal        ComunicacaoNascimento[] @relation("ReprodutorAnimal")
-  obito                   ComunicacaoObito[]
+  rebanhoAnimal Rebanho @relation(fields: [rebanho], references: [id])
+  paiAnimal     Animal  @relation("RelacaoPaiAnimal", fields: [pai], references: [id])
+  maeAnimal     Animal  @relation("RelacaoMaeAnimal", fields: [mae], references: [id])
+  fazendaAnimal Fazenda @relation(fields: [fazenda], references: [id])
+  criador       Criador @relation(fields: [criadorAnimal], references: [id])
+
+  filhosMatriz     Animal[]                @relation("RelacaoMaeAnimal")
+  filhosGerador    Animal[]                @relation("RelacaoPaiAnimal")
+  matrizAnimal     ComunicacaoNascimento[] @relation("MatrizAnimal")
+  reprodutorAnimal ComunicacaoNascimento[] @relation("ReprodutorAnimal")
+  obito            ComunicacaoObito[]
+
   @@map("animais")
 }
 
@@ -87,13 +88,15 @@ model Fazenda {
   proponente3       String   @map("proponente_3")
   telefoneFazenda   String   @map("telefone_fazenda")
 
-  criador           Criador  @relation(fields: [criadorFazenda], references: [id])
-  animais               Animal[]
-  rebanhos              Rebanho[]
-  comunicacoesCobertura ComunicacaoCobertura[]
-  fazendaAdquirenteId   TransferirAnimal[]   @relation("fazendaAdquirenteId")
-  fazendaTransmitenteId TransferirAnimal[]   @relation("fazendaTransmitenteId")
+  criador                    Criador                      @relation(fields: [criadorFazenda], references: [id])
+  animais                    Animal[]
+  rebanhos                   Rebanho[]
+  comunicacoesCobertura      ComunicacaoCobertura[]
+  fazendaAdquirenteId        TransferirAnimal[]           @relation("fazendaAdquirenteId")
+  fazendaTransmitenteId      TransferirAnimal[]           @relation("fazendaTransmitenteId")
   solicitacaoCadastroFazenda SolicitacaoCadastroFazenda[]
+  ComunicacaoNascimento      ComunicacaoNascimento[]
+
   @@map("fazendas")
 }
 
@@ -113,10 +116,10 @@ model User {
   superusuario  Boolean
   ultimaConexao DateTime @map("ultima_conexao")
 
-  tecnico                   Tecnico[]
-  criador                   Criador[]
-  superintendete            Superintendete[]
-  
+  tecnico        Tecnico[]
+  criador        Criador[]
+  superintendete Superintendete[]
+
   @@map("users")
 }
 
@@ -124,25 +127,25 @@ model Superintendete {
   id     String @id @default(uuid()) @db.Uuid
   userId String @map("usuario_id") @db.Uuid
 
-  user   User   @relation(fields: [userId], references: [id], onDelete: SetNull)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("superintendetes")
 }
 
 model Tecnico {
-  id           String  @id @default(uuid()) @db.Uuid
-  userId       String  @map("usuario_id") @db.Uuid
-  nomeBairro   String  @map("nome_bairro")
-  nomeCidade   String  @map("nome_cidade")
-  nomeEstado   String  @map("nome_estado")
-  nomeRua      String  @map("nome_rua")
-  nomeCompleto String  @map("nome_completo")
+  id           String @id @default(uuid()) @db.Uuid
+  userId       String @map("usuario_id") @db.Uuid
+  nomeBairro   String @map("nome_bairro")
+  nomeCidade   String @map("nome_cidade")
+  nomeEstado   String @map("nome_estado")
+  nomeRua      String @map("nome_rua")
+  nomeCompleto String @map("nome_completo")
   rg           String
 
-  comunicacaoNascimento     ComunicacaoNascimento[]
+  comunicacaoNascimento         ComunicacaoNascimento[]
   solicitacaoRegistroAnimalBase SolicitacaoRegistroAnimalBase[]
 
-  user         User    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("tecnicos")
 }
@@ -159,41 +162,42 @@ model Criador {
   nomeRua      String  @map("nome_rua")
   rg           String
 
-  user         User    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  animal                   Animal[]
-  fazenda                  Fazenda[]
-  comunicacaoNascimento    ComunicacaoNascimento[]
-  comunicacoesCobertura    ComunicacaoCobertura[]
-  criadorAdquirente        TransferirAnimal[]  @relation("criadorAdquirente")
-  criadorTransmitente      TransferirAnimal[]  @relation("criadorTransmitente")
-  solicitacaoCadastro      SolicitacaoCadastroCriador[]
+  animal                        Animal[]
+  fazenda                       Fazenda[]
+  comunicacaoNascimento         ComunicacaoNascimento[]
+  comunicacoesCobertura         ComunicacaoCobertura[]
+  criadorAdquirente             TransferirAnimal[]              @relation("criadorAdquirente")
+  criadorTransmitente           TransferirAnimal[]              @relation("criadorTransmitente")
+  solicitacaoCadastro           SolicitacaoCadastroCriador[]
   solicitacaoRegistroAnimalBase SolicitacaoRegistroAnimalBase[]
+
   @@map("criadores")
 }
 
 model ComunicacaoNascimento {
-  id                     String   @id @default(uuid()) @db.Uuid
-  coberturaRegistradaId  String   @map("cobertura_registrada_id") @db.Uuid
-  criadorNascimentoId    String   @map("criador_nascimento_id") @db.Uuid
-  fazendaNascimentoId    String   @map("fazenda_nascimento_id") @db.Uuid
-  matrizAnimalId         String   @map("matriz_animal_id") @db.Uuid
-  reprodutorAnimalId     String   @map("reprodutor_animal_id") @db.Uuid
-  tecnicoNascimentoId    String   @map("tecnico_nascimento_id") @db.Uuid
-  animalBezerro          String   @map("animal_bezerro")
-  dataComunicacao        DateTime @map("data_comunicacao")
-  dataNascimento         DateTime @map("data_nascimento")
-  finalizadoNascimento   Boolean  @map("finalizado_nascimento")
-  observacoes            String
-  statusNascimento       String   @map("status_nascimento")
+  id                    String   @id @default(uuid()) @db.Uuid
+  coberturaRegistradaId String   @map("cobertura_registrada_id") @db.Uuid
+  criadorNascimentoId   String   @map("criador_nascimento_id") @db.Uuid
+  fazendaNascimentoId   String   @map("fazenda_nascimento_id") @db.Uuid
+  matrizAnimalId        String   @map("matriz_animal_id") @db.Uuid
+  reprodutorAnimalId    String   @map("reprodutor_animal_id") @db.Uuid
+  tecnicoNascimentoId   String   @map("tecnico_nascimento_id") @db.Uuid
+  animalBezerro         String   @map("animal_bezerro")
+  dataComunicacao       DateTime @map("data_comunicacao")
+  dataNascimento        DateTime @map("data_nascimento")
+  finalizadoNascimento  Boolean  @map("finalizado_nascimento")
+  observacoes           String
+  statusNascimento      String   @map("status_nascimento")
 
-  comunicacaoCobertura  ComunicacaoCobertura   @relation(fields: [coberturaRegistradaId], references: [id], onDelete: SetNull)
-  criador               Criador                @relation(fields: [criadorNascimentoId], references: [id], onDelete: SetNull)
-  fazenda               Fazenda                @relation(fields: [fazendaNascimentoId], references: [id], onDelete: SetNull)
-  matrizAnimal          Animal                 @relation("MatrizAnimal",fields: [matrizAnimalId], references: [id], onDelete: SetNull)
-  reprodutorAnimal      Animal                 @relation("ReprodutorAnimal",fields: [reprodutorAnimalId], references: [id], onDelete: SetNull)             
-  tecnico               Tecnico                @relation(fields: [tecnicoNascimentoId], references: [id], onDelete: SetNull)
-  
+  comunicacaoCobertura ComunicacaoCobertura @relation(fields: [coberturaRegistradaId], references: [id], onDelete: Cascade)
+  criador              Criador              @relation(fields: [criadorNascimentoId], references: [id], onDelete: Cascade)
+  fazenda              Fazenda              @relation(fields: [fazendaNascimentoId], references: [id], onDelete: Cascade)
+  matrizAnimal         Animal               @relation("MatrizAnimal", fields: [matrizAnimalId], references: [id], onDelete: Cascade)
+  reprodutorAnimal     Animal               @relation("ReprodutorAnimal", fields: [reprodutorAnimalId], references: [id], onDelete: Cascade)
+  tecnico              Tecnico              @relation(fields: [tecnicoNascimentoId], references: [id], onDelete: Cascade)
+
   @@map("comunicaoes_nascimentos")
 }
 
@@ -209,8 +213,10 @@ model ComunicacaoCobertura {
   statusCobertura      String   @map("status_cobertura")
   tipoCobertura        String   @map("tipo_cobertura")
 
-  criador              Criador  @relation(fields: [criadorCobertura], references: [id], onDelete: SetNull)
-  fazenda              Fazenda  @relation(fields: [fazendaCobertura], references: [id], onDelete: SetNull )
+  criador               Criador                 @relation(fields: [criadorCobertura], references: [id], onDelete: Cascade)
+  fazenda               Fazenda                 @relation(fields: [fazendaCobertura], references: [id], onDelete: Cascade)
+  ComunicacaoNascimento ComunicacaoNascimento[]
+
   @@map("comunicacoes_coberturas")
 }
 
@@ -221,7 +227,7 @@ model ComunicacaoObito {
   dataObito  DateTime @default(now()) @map("data_obito")
   nomeAnimal String
 
-  animal     Animal   @relation(fields: [animalId], references: [id], onDelete: NoAction)
+  animal Animal @relation(fields: [animalId], references: [id], onDelete: NoAction)
 
   @@map("nome_animal")
 }
@@ -236,25 +242,25 @@ model TransferirAnimal {
   dataTransferencia   DateTime @default(now()) @map("data_transferencia")
   nomeAnimal          String   @map("nome_animal")
 
-
   criadorAdquirente     Criador @relation("criadorAdquirente", fields: [adquirente], references: [id])
   criadorTransmitente   Criador @relation("criadorTransmitente", fields: [transmitente], references: [id])
   fazendaAdquirenteId   Fazenda @relation("fazendaAdquirenteId", fields: [fazendaAdquirente], references: [id])
-  fazendaTransmitenteId Fazenda @relation("fazendaTransmitenteId",fields: [fazendaTransmitente], references: [id])
+  fazendaTransmitenteId Fazenda @relation("fazendaTransmitenteId", fields: [fazendaTransmitente], references: [id])
+
   @@map("tranferir_animais")
 }
 
 model SolicitacaoRegistroAnimalBase {
   id                String @id @default(uuid()) @db.Uuid
-  criadorId         String @db.Uuid @map("criador_id")
-  tecnicoId         String @db.Uuid @map("tecnico_id")
+  criadorId         String @map("criador_id") @db.Uuid
+  tecnicoId         String @map("tecnico_id") @db.Uuid
   estadoSolicitacao String @map("estado_solicitacao")
 
-  criador           Criador  @relation(fields: [criadorId], references: [id], onDelete: SetNull)
-  tecnico           Tecnico  @relation(fields: [tecnicoId], references: [id], onDelete: SetNull)
+  criador Criador @relation(fields: [criadorId], references: [id], onDelete: Cascade)
+  tecnico Tecnico @relation(fields: [tecnicoId], references: [id], onDelete: Cascade)
 
   registroAnimalBase RegistroAnimalBase[]
-  
+
   @@map("solicitacoes_registros_animais_base")
 }
 
@@ -263,7 +269,7 @@ model RegistroAnimalBase {
   solicitacao       String @db.Uuid
   quantidadeAnimais Int    @map("quantidade_animais")
 
-  solicitacaoRegistroAnimalBase   SolicitacaoRegistroAnimalBase  @relation(fields: [solicitacao], references: [id], onDelete: SetNull)
+  solicitacaoRegistroAnimalBase SolicitacaoRegistroAnimalBase @relation(fields: [solicitacao], references: [id], onDelete: Cascade)
 
   @@map("registros_animais_base")
 }
@@ -273,9 +279,9 @@ model Rebanho {
   fazenda String @db.Uuid
   serie   String
 
+  fazendaRebanho Fazenda  @relation(fields: [fazenda], references: [id])
+  animais        Animal[]
 
-  fazendaRebanho Fazenda @relation(fields: [fazenda], references: [id])
-  animais   Animal[]  
   @@map("rebanhos")
 }
 
@@ -284,24 +290,22 @@ model SolicitacaoCadastroCriador {
   criadoId             String @map("criado_id") @db.Uuid
   comprovantePagamento String @map("comprovante_pagamento")
 
-  criador              Criador @relation(fields: [criadoId], references: [id])
+  criador                    Criador                      @relation(fields: [criadoId], references: [id])
+  SolicitacaoCadastroFazenda SolicitacaoCadastroFazenda[]
+
   @@map("solicitacao_cadastro_criado")
 }
-
 
 model SolicitacaoCadastroFazenda {
   id                           String @id @default(uuid()) @db.Uuid
   fazendaId                    String @map("fazenda_id") @db.Uuid
   solicitacaoCadastroCriadorId String @map("solicitacao_cadastro_criador_id") @db.Uuid
 
-
-  fazenda Fazenda  @relation(fields: [fazendaId], references: [id], onDelete: SetNull)
-  solicitacao SolicitacaoCadastroCriador  @relation(fields: [solicitacaoCadastroCriadorId], references: [id], onDelete: SetNull)
-
+  fazenda     Fazenda                    @relation(fields: [fazendaId], references: [id], onDelete: Cascade)
+  solicitacao SolicitacaoCadastroCriador @relation(fields: [solicitacaoCadastroCriadorId], references: [id], onDelete: Cascade)
 
   @@map("solicitacao_cadastro_fazenda")
 }
-
 
 model Certificado {
   id     String @id @default(uuid()) @db.Uuid
