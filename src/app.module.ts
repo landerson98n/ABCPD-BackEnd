@@ -1,16 +1,10 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { AnimalService } from './animal/animal.service';
-import { PrismaModule } from './prisma/prisma.module';
-import { AnimalModule } from './animal/animal.module';
-import { PrismaService } from './prisma/prisma.service';
-import { AnimalController } from './animal/animal.controller';
-
+import { AnimalModule } from './modules/animal/animal.module';
+import { DatabaseModule } from './shared/database/database.module';
 
 @Module({
-  imports: [PrismaModule, AnimalModule, AnimalModule],
-  controllers: [AppController, AnimalController],
-  providers: [AppService, AnimalService, PrismaService],
+  imports: [AnimalModule, DatabaseModule],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
