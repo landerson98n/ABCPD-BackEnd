@@ -3,8 +3,8 @@ CREATE TABLE "animais" (
     "id" UUID NOT NULL,
     "criador_animal" UUID NOT NULL,
     "fazenda" UUID NOT NULL,
-    "mae" UUID NOT NULL,
-    "pai" UUID NOT NULL,
+    "mae" UUID,
+    "pai" UUID,
     "rebanho" UUID NOT NULL,
     "data_avalicacao" TIMESTAMP(3) NOT NULL,
     "composicao_genetica" TEXT NOT NULL,
@@ -162,14 +162,14 @@ CREATE TABLE "comunicacoes_coberturas" (
 );
 
 -- CreateTable
-CREATE TABLE "nome_animal" (
+CREATE TABLE "comunicacao_Obitos" (
     "id" UUID NOT NULL,
     "animal_id" UUID NOT NULL,
     "causa" TEXT NOT NULL,
     "data_obito" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "nomeAnimal" TEXT NOT NULL,
 
-    CONSTRAINT "nome_animal_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "comunicacao_Obitos_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -208,7 +208,7 @@ CREATE TABLE "registros_animais_base" (
 -- CreateTable
 CREATE TABLE "rebanhos" (
     "id" UUID NOT NULL,
-    "fazenda" UUID NOT NULL,
+    "fazenda_id" UUID NOT NULL,
     "serie" TEXT NOT NULL,
 
     CONSTRAINT "rebanhos_pkey" PRIMARY KEY ("id")
@@ -279,16 +279,16 @@ CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 CREATE UNIQUE INDEX "users_cpf_key" ON "users"("cpf");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "nome_animal_animal_id_key" ON "nome_animal"("animal_id");
+CREATE UNIQUE INDEX "comunicacao_Obitos_animal_id_key" ON "comunicacao_Obitos"("animal_id");
 
 -- AddForeignKey
 ALTER TABLE "animais" ADD CONSTRAINT "animais_rebanho_fkey" FOREIGN KEY ("rebanho") REFERENCES "rebanhos"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "animais" ADD CONSTRAINT "animais_pai_fkey" FOREIGN KEY ("pai") REFERENCES "animais"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "animais" ADD CONSTRAINT "animais_pai_fkey" FOREIGN KEY ("pai") REFERENCES "animais"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "animais" ADD CONSTRAINT "animais_mae_fkey" FOREIGN KEY ("mae") REFERENCES "animais"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "animais" ADD CONSTRAINT "animais_mae_fkey" FOREIGN KEY ("mae") REFERENCES "animais"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "animais" ADD CONSTRAINT "animais_fazenda_fkey" FOREIGN KEY ("fazenda") REFERENCES "fazendas"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -333,7 +333,7 @@ ALTER TABLE "comunicacoes_coberturas" ADD CONSTRAINT "comunicacoes_coberturas_cr
 ALTER TABLE "comunicacoes_coberturas" ADD CONSTRAINT "comunicacoes_coberturas_fazenda_cobertura_fkey" FOREIGN KEY ("fazenda_cobertura") REFERENCES "fazendas"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "nome_animal" ADD CONSTRAINT "nome_animal_animal_id_fkey" FOREIGN KEY ("animal_id") REFERENCES "animais"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
+ALTER TABLE "comunicacao_Obitos" ADD CONSTRAINT "comunicacao_Obitos_animal_id_fkey" FOREIGN KEY ("animal_id") REFERENCES "animais"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "tranferir_animais" ADD CONSTRAINT "tranferir_animais_adquirente_fkey" FOREIGN KEY ("adquirente") REFERENCES "criadores"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -357,7 +357,7 @@ ALTER TABLE "solicitacoes_registros_animais_base" ADD CONSTRAINT "solicitacoes_r
 ALTER TABLE "registros_animais_base" ADD CONSTRAINT "registros_animais_base_solicitacao_fkey" FOREIGN KEY ("solicitacao") REFERENCES "solicitacoes_registros_animais_base"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "rebanhos" ADD CONSTRAINT "rebanhos_fazenda_fkey" FOREIGN KEY ("fazenda") REFERENCES "fazendas"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "rebanhos" ADD CONSTRAINT "rebanhos_fazenda_id_fkey" FOREIGN KEY ("fazenda_id") REFERENCES "fazendas"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "solicitacao_cadastro_criado" ADD CONSTRAINT "solicitacao_cadastro_criado_criado_id_fkey" FOREIGN KEY ("criado_id") REFERENCES "criadores"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
