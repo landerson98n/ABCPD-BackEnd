@@ -46,8 +46,10 @@ model Animal {
   sexoAnimal              String   @map("sexo_animal")
 
   rebanhoAnimal Rebanho @relation(fields: [rebanho], references: [id])
+
   paiAnimal     Animal?  @relation("RelacaoPaiAnimal", fields: [pai], references: [id])
   maeAnimal     Animal?  @relation("RelacaoMaeAnimal", fields: [mae], references: [id])
+
   fazendaAnimal Fazenda @relation(fields: [fazenda], references: [id])
   criador       Criador @relation(fields: [criadorAnimal], references: [id])
 
@@ -228,7 +230,7 @@ model ComunicacaoObito {
 
   animal Animal @relation(fields: [animalId], references: [id], onDelete: NoAction)
 
-  @@map("nome_animal")
+  @@map("comunicacao_Obitos")
 }
 
 model TransferirAnimal {
@@ -255,7 +257,9 @@ model SolicitacaoRegistroAnimalBase {
   tecnicoId         String @map("tecnico_id") @db.Uuid
   estadoSolicitacao String @map("estado_solicitacao")
 
+
   criador Criador @relation(fields: [criadorId], references: [id], onDelete: SetDefault)
+
   tecnico Tecnico @relation(fields: [tecnicoId], references: [id], onDelete: Cascade)
 
   registroAnimalBase RegistroAnimalBase[]
@@ -274,11 +278,11 @@ model RegistroAnimalBase {
 }
 
 model Rebanho {
-  id      String @id @default(uuid()) @db.Uuid
-  fazenda String @db.Uuid
-  serie   String
+  id        String @id @default(uuid()) @db.Uuid
+  fazendaId String @map("fazenda_id") @db.Uuid
+  serie     String
 
-  fazendaRebanho Fazenda  @relation(fields: [fazenda], references: [id])
+  fazendaRebanho Fazenda  @relation(fields: [fazendaId], references: [id])
   animais        Animal[]
 
   @@map("rebanhos")
@@ -289,8 +293,10 @@ model SolicitacaoCadastroCriador {
   criadoId             String @map("criado_id") @db.Uuid
   comprovantePagamento String @map("comprovante_pagamento")
 
+
   criador             Criador                      @relation(fields: [criadoId], references: [id])
   SolicitacaoCadastro SolicitacaoCadastroFazenda[]
+
 
   @@map("solicitacao_cadastro_criado")
 }
