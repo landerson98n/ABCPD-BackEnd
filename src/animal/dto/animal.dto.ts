@@ -1,4 +1,4 @@
-import { IsUUID, IsISO8601 , IsNotEmpty, IsString, IsBoolean } from "class-validator"
+import { IsUUID, IsISO8601 , IsNotEmpty, IsString, IsBoolean, IsOptional } from "class-validator"
 
 export class AnimalDTO{
   @IsUUID()
@@ -9,11 +9,13 @@ export class AnimalDTO{
   @IsNotEmpty()
   fazenda                 : string   
 
+  @IsOptional()
   @IsUUID()
-  mae                     : string   
+  mae?                     : string   
 
+  @IsOptional()
   @IsUUID()
-  pai                     : string   
+  pai?                     : string   
 
   @IsUUID()
   @IsNotEmpty()
