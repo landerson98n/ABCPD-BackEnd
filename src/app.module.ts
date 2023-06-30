@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+
+
 import { AnimalService } from './animal/animal.service';
 import { PrismaModule } from './prisma/prisma.module';
 import { AnimalModule } from './animal/animal.module';
@@ -23,9 +23,10 @@ import { SuperintendenteService } from './superintendente/superintendente.servic
 import { SuperintendenteModule } from './superintendente/superintendente.module';
 
 
+
 @Module({
   imports: [PrismaModule, AnimalModule, FazendaModule, CriadorModule, UserModule, RebanhoModule, TecnicoModule, SuperintendenteModule],
-  controllers: [AppController, AnimalController, FazendaController, UserController, RebanhoController, TecnicoController],
-  providers: [AppService, AnimalService, PrismaService, FazendaService, UserService, RebanhoService, TecnicoService, SuperintendenteService],
+  controllers: [ AnimalController, FazendaController, UserController, RebanhoController, TecnicoController],
+  providers: [ AnimalService, PrismaService, FazendaService, UserService, RebanhoService, TecnicoService, SuperintendenteService],
 })
 export class AppModule {}
