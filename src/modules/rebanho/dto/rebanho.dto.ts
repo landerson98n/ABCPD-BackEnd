@@ -1,4 +1,4 @@
-import { IsString, IsUUID, IsISO8601, IsBoolean, IsInt, IsNotEmpty } from "class-validator";
+import { IsString, IsUUID, IsISO8601, IsBoolean, IsInt, IsNotEmpty, IsOptional } from "class-validator";
 
 export class RebanhoDTO{
 
@@ -8,5 +8,13 @@ export class RebanhoDTO{
 
     @IsString()
     @IsNotEmpty()
+    serie     : string
+}
+
+export class UpdateRebanhoDTO{ 
+
+    @IsString()
+    @IsNotEmpty()
+    @IsOptional()
     serie     : string
 }

@@ -15,4 +15,30 @@ export class SuperintendenteService {
 
     return Superintendente;
   }
+
+  async getSuperintendentes(){
+    const Superintendentes = await this.superintendenteRepository.findMany()
+
+    return Superintendentes
+  }
+
+  async getSuperintendenteBydId(id: string){
+    const Superintendente = await this.superintendenteRepository.findUnique({
+      where:{
+         id
+      }
+    })
+
+    return Superintendente
+  }
+
+  async deleteSuperintendente(id: string){
+    const deleteSuperintendente = await this.superintendenteRepository.delete({
+      where:{
+        id
+      }
+    })
+
+    return deleteSuperintendente
+  }
 }

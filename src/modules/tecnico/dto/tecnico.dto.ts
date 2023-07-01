@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsUUID } from "class-validator"
+import { IsNotEmpty, IsOptional, IsString, IsUUID } from "class-validator"
 
 export class TecnicoDTO{
 
@@ -16,6 +16,21 @@ export class TecnicoDTO{
     @IsString()
     nomeCompleto : string 
     @IsString()
+    rg           : string
+}
+
+export class UpdateTecnicoDTO{
+    @IsOptional() @IsString()
+    nomeBairro   : string 
+    @IsOptional() @IsString()
+    nomeCidade   : string 
+    @IsOptional() @IsString()
+    nomeEstado   : string 
+    @IsOptional() @IsString()
+    nomeRua      : string 
+    @IsOptional() @IsString()
+    nomeCompleto : string 
+    @IsOptional() @IsString()
     rg           : string
 }
 

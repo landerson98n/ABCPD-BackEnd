@@ -9,4 +9,21 @@ export class RebanhoRepository {
   create(createDto: Prisma.RebanhoCreateArgs) {
     return this.prismaService.rebanho.create(createDto);
   }
+
+  
+  findMany(){
+    return this.prismaService.rebanho.findMany()
+  }
+
+  findUnique(findUniqueRebanho: Prisma.RebanhoFindUniqueArgs){
+      return this.prismaService.rebanho.findUnique({...findUniqueRebanho})
+  }
+
+  update(updateRebanho: Prisma.RebanhoUpdateArgs){
+    return this.prismaService.rebanho.update({...updateRebanho})
+  }
+
+  delete(deleteRebanho: Prisma.RebanhoDeleteArgs){
+    return this.prismaService.rebanho.delete({...deleteRebanho})
+  }
 }

@@ -1,4 +1,4 @@
-import { IsUUID, IsISO8601 , IsNotEmpty, IsString, IsBoolean } from "class-validator"
+import { IsUUID, IsISO8601 , IsNotEmpty, IsString, IsBoolean, IsOptional } from "class-validator"
 
 
 export class CriadorDTO{
@@ -6,21 +6,40 @@ export class CriadorDTO{
     @IsNotEmpty()
     @IsUUID()
     userId       : string  
-    @IsString()
+    @IsString() 
     cep          : string  
     @IsBoolean()
     ativo        : boolean
-    @IsString()
+    @IsString() 
     nomeBairro   : string  
-    @IsString()
+    @IsString() 
     nomeCidade   : string  
-    @IsString()
+    @IsString() 
     nomeCompleto : string  
-    @IsString()
+    @IsString() 
     nomeEstado   : string  
-    @IsString()
+    @IsString() 
     nomeRua      : string  
-    @IsString()
+    @IsString() 
+    rg           : string  
+}
+
+export class UpdateCriadorDTO{ 
+    @IsString() @IsOptional() 
+    cep          : string  
+    @IsBoolean() @IsOptional()
+    ativo        : boolean
+    @IsString() @IsOptional()
+    nomeBairro   : string  
+    @IsString() @IsOptional()
+    nomeCidade   : string  
+    @IsString() @IsOptional()
+    nomeCompleto : string  
+    @IsString() @IsOptional()
+    nomeEstado   : string  
+    @IsString() @IsOptional()
+    nomeRua      : string  
+    @IsString() @IsOptional()
     rg           : string  
 }
 
