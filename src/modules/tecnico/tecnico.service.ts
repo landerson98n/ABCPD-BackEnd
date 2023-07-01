@@ -1,18 +1,18 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
 import { TecnicoDTO } from './dto/tecnico.dto';
+import { TecnicoRepository } from 'src/shared/database/repositories/tecnico.repositories';
 
 @Injectable()
 export class TecnicoService {
-    constructor(private prisma: PrismaService){}
+  constructor(private tecnicoRepository: TecnicoRepository) {}
 
-    async cadastrarTecnico (dto: TecnicoDTO){
-        const tecnico = this.prisma.tecnico.create({
-            data:{
-                ...dto
-            }
-        })
+  async cadastrarTecnico(dto: TecnicoDTO) {
+    const tecnico = this.tecnicoRepository.create({
+      data: {
+        ...dto,
+      },
+    });
 
-        return tecnico
-    }
+    return tecnico;
+  }
 }

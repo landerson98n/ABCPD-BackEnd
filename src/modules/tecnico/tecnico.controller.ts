@@ -4,11 +4,10 @@ import { TecnicoDTO } from './dto/tecnico.dto';
 
 @Controller('tecnico')
 export class TecnicoController {
-    constructor(private tecnicoService: TecnicoService){}
+  constructor(private tecnicoService: TecnicoService) {}
 
-    @Post("cadastrarTecnico")
-    cadastrarTecnico(@Body() dto:TecnicoDTO){
-        return this.tecnicoService.cadastrarTecnico(dto)
-    }
-    
+  @Post('cadastrarTecnico')
+  cadastrarTecnico(@Body() dto: TecnicoDTO) {
+    return this.tecnicoService.cadastrarTecnico(dto);
+  }
 }

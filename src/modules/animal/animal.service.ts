@@ -2,12 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { AnimalDTO, UpdateAnimalDTO } from './dto/animal.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 
+
 @Injectable()
 export class AnimalService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private animalRepository: AnimalRepository) {}
 
   async cadastrarAnimal(dto: AnimalDTO) {
-    const animal = await this.prisma.animal.create({
+    const animal = await this.animalRepository.create({
       data: {
         ...dto,
       },
@@ -17,13 +18,13 @@ export class AnimalService {
   }
 
   async getAnimais(){
-    const animais = await this.prisma.animal.findMany()
+    const animais = await this.animalRepository.findMany()
 
     return animais
   }
 
   async getAnimalBydId(id: string){
-    const animal = await this.prisma.animal.findUnique({
+    const animal = await this.animalRepository.findUnique({
       where:{
          id
       }
@@ -33,7 +34,7 @@ export class AnimalService {
   }
 
   async updateAnimal(dto: UpdateAnimalDTO, id: string){
-    const updateAnimal = await this.prisma.animal.update({
+    const updateAnimal = await this.animalRepository.update({
       where:{
         id
       },
@@ -46,7 +47,7 @@ export class AnimalService {
   }
 
   async deleteAnimal(id: string){
-    const deleteAnimal = await this.prisma.animal.delete({
+    const deleteAnimal = await this.animalRepository.delete({
       where:{
         id
       }

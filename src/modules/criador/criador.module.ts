@@ -4,6 +4,6 @@ import { CriadorController } from './criador.controller';
 
 @Module({
   providers: [CriadorService],
-  controllers: [CriadorController]
+  controllers: [CriadorController],
 })
 export class CriadorModule {}
