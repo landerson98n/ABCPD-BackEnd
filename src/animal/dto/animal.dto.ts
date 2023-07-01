@@ -1,4 +1,4 @@
-import { IsUUID, IsISO8601 , IsNotEmpty, IsString, IsBoolean, IsOptional } from "class-validator"
+import { IsUUID, IsISO8601 , IsNotEmpty, IsString, IsBoolean, IsOptional, isUUID } from "class-validator"
 
 export class AnimalDTO{
   @IsUUID()
@@ -92,4 +92,114 @@ export class AnimalDTO{
   @IsString()  
   sexoAnimal              : string   
 
+}
+
+export class UpdateAnimalDTO{
+  @IsOptional()
+  @IsISO8601()
+  dataAvalicacao          : Date 
+  
+  @IsOptional()
+  @IsString()
+  composicaoGenetica      : string   
+
+  @IsOptional()
+  @IsISO8601()
+  dataRGDAnimalSuper      : Date 
+
+  @IsOptional()
+  @IsISO8601()
+  dataRGDAnimalTecnico    : Date 
+
+  @IsOptional()
+  @IsISO8601()
+  dataRGNAnimalSuper      : Date 
+
+  @IsOptional()
+  @IsISO8601()
+  dataRGNAnimalTecnico    : Date 
+
+  @IsOptional()
+  @IsISO8601()
+  dataNascimentoAnimal    : Date 
+
+  @IsOptional()
+  @IsString()
+  decisaoAnimalSuperRGD   : string 
+  
+  @IsOptional()
+  @IsString()
+  decisaoAnimalSuperRGN   : string 
+
+  @IsOptional()
+  @IsString()  
+  decisaoAnimalTecnicoRGD : string  
+  
+  @IsOptional()
+  @IsString()
+  decisaoAnimalTecnicoRGN : string  
+   
+  @IsOptional()
+  @IsNotEmpty()
+  image01                 : string  
+
+  @IsOptional()
+  @IsNotEmpty()
+  image02                 : string 
+  
+  @IsOptional()
+  @IsString()
+  image03                 : string   
+
+  @IsOptional()
+  @IsString()
+  image04                 : string  
+  
+  @IsOptional()
+  @IsString()
+  nomeAnimal              : string
+  
+  @IsOptional()
+  @IsString()
+  observacaoSuper         : string  
+
+  @IsOptional()
+  @IsString() 
+  observacaoTecnico       : string 
+
+  @IsOptional()
+  @IsString()  
+  pelagemAnimal           : string 
+
+  @IsOptional()
+  @IsString()  
+  racaAnimalMatriz        : string  
+
+  @IsOptional()
+  @IsBoolean() 
+  registradoRGDSuper      : boolean 
+
+  @IsOptional()
+  @IsBoolean()  
+  registradoRGDTecnico    : boolean  
+
+  @IsOptional()
+  @IsBoolean() 
+  registradoRGNSuper      : boolean  
+
+  @IsOptional()
+  @IsBoolean() 
+  registradoRGNTecnico    : boolean  
+
+  @IsOptional()
+  @IsString()
+  registro                : string
+
+  @IsOptional()
+  @IsString()
+  registroGeral           : string 
+
+  @IsOptional()
+  @IsString()  
+  sexoAnimal              : string   
 }
