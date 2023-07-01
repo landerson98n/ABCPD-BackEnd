@@ -1,108 +1,95 @@
-import {
-  IsUUID,
-  IsISO8601,
-  IsNotEmpty,
-  IsString,
-  IsBoolean,
-} from 'class-validator';
+import { IsUUID, IsISO8601 , IsNotEmpty, IsString, IsBoolean, IsOptional } from "class-validator"
 
-export class AnimalDTO {
+export class AnimalDTO{
   @IsUUID()
   @IsNotEmpty()
-  criadorAnimal: string;
+  criadorAnimal           : string   
 
   @IsUUID()
   @IsNotEmpty()
-  fazenda: string;
+  fazenda                 : string   
 
+  @IsOptional()
   @IsUUID()
-  mae?: string;
+  mae?                     : string   
 
+  @IsOptional()
   @IsUUID()
-  pai?: string;
+  pai?                     : string   
 
   @IsUUID()
   @IsNotEmpty()
-  rebanho: string;
+  rebanho                 : string 
+  
+  @IsISO8601()
+  dataAvalicacao          : Date 
+  
+  @IsString()
+  composicaoGenetica      : string   
 
   @IsISO8601()
-  dataAvalicacao: Date;
+  dataRGDAnimalSuper      : Date 
+
+  @IsISO8601()
+  dataRGDAnimalTecnico    : Date 
+
+  @IsISO8601()
+  dataRGNAnimalSuper      : Date 
+
+  @IsISO8601()
+  dataRGNAnimalTecnico    : Date 
+
+  @IsISO8601()
+  dataNascimentoAnimal    : Date 
 
   @IsString()
-  composicaoGenetica: string;
-
-  @IsISO8601()
-  dataRGDAnimalSuper: Date;
-
-  @IsISO8601()
-  dataRGDAnimalTecnico: Date;
-
-  @IsISO8601()
-  dataRGNAnimalSuper: Date;
-
-  @IsISO8601()
-  dataRGNAnimalTecnico: Date;
-
-  @IsISO8601()
-  dataNascimentoAnimal: Date;
-
+  decisaoAnimalSuperRGD   : string 
+  
   @IsString()
-  decisaoAnimalSuperRGD: string;
+  decisaoAnimalSuperRGN   : string 
 
+  @IsString()  
+  decisaoAnimalTecnicoRGD : string  
+  
   @IsString()
-  decisaoAnimalSuperRGN: string;
-
-  @IsString()
-  decisaoAnimalTecnicoRGD: string;
-
-  @IsString()
-  decisaoAnimalTecnicoRGN: string;
+  decisaoAnimalTecnicoRGN : string  
+   
+  @IsNotEmpty()
+  image01                 : string  
 
   @IsNotEmpty()
-  image01: string;
-
-  @IsNotEmpty()
-  image02: string;
+  image02                 : string 
+  
+  @IsString()
+  image03                 : string   
 
   @IsString()
-  image03: string;
-
+  image04                 : string  
+  
   @IsString()
-  image04: string;
-
+  nomeAnimal              : string
+  
   @IsString()
-  nomeAnimal: string;
-
+  observacaoSuper         : string  
+  @IsString() 
+  observacaoTecnico       : string 
+  @IsString()  
+  pelagemAnimal           : string 
+  @IsString()  
+  racaAnimalMatriz        : string  
+  @IsBoolean() 
+  registradoRGDSuper      : boolean 
+  @IsBoolean()  
+  registradoRGDTecnico    : boolean  
+  @IsBoolean() 
+  registradoRGNSuper      : boolean  
+  @IsBoolean() 
+  registradoRGNTecnico    : boolean  
   @IsString()
-  observacaoSuper: string;
-
+  registro                : string
   @IsString()
-  observacaoTecnico: string;
+  registroGeral           : string 
+  @IsString()  
+  sexoAnimal              : string   
 
-  @IsString()
-  pelagemAnimal: string;
-
-  @IsString()
-  racaAnimalMatriz: string;
-
-  @IsBoolean()
-  registradoRGDSuper: boolean;
-
-  @IsBoolean()
-  registradoRGDTecnico: boolean;
-
-  @IsBoolean()
-  registradoRGNSuper: boolean;
-
-  @IsBoolean()
-  registradoRGNTecnico: boolean;
-
-  @IsString()
-  registro: string;
-
-  @IsString()
-  registroGeral: string;
-
-  @IsString()
-  sexoAnimal: string;
 }

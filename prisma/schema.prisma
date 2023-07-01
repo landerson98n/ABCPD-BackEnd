@@ -16,7 +16,7 @@ model Animal {
   fazenda                 String   @unique @db.Uuid
   mae                     String?  @unique @db.Uuid
   pai                     String?  @unique @db.Uuid
-  rebanho                 String   @unique @db.Uuid 
+  rebanho                 String   @unique @db.Uuid
   dataAvalicacao          DateTime @map("data_avalicacao")
   composicaoGenetica      String   @map("composicao_genetica")
   dataRGDAnimalSuper      DateTime @map("data_RGD_animal_Super")
@@ -44,11 +44,12 @@ model Animal {
   registro                String
   registroGeral           String   @map("registro_geral")
   sexoAnimal              String   @map("sexo_animal")
+  flag                    Int
 
   rebanhoAnimal Rebanho @relation(fields: [rebanho], references: [id])
 
-  paiAnimal     Animal?  @relation("RelacaoPaiAnimal", fields: [pai], references: [id])
-  maeAnimal     Animal?  @relation("RelacaoMaeAnimal", fields: [mae], references: [id])
+  paiAnimal Animal? @relation("RelacaoPaiAnimal", fields: [pai], references: [id])
+  maeAnimal Animal? @relation("RelacaoMaeAnimal", fields: [mae], references: [id])
 
   fazendaAnimal Fazenda @relation(fields: [fazenda], references: [id])
   criador       Criador @relation(fields: [criadorAnimal], references: [id])
@@ -257,7 +258,6 @@ model SolicitacaoRegistroAnimalBase {
   tecnicoId         String @map("tecnico_id") @db.Uuid
   estadoSolicitacao String @map("estado_solicitacao")
 
-
   criador Criador @relation(fields: [criadorId], references: [id], onDelete: SetDefault)
 
   tecnico Tecnico @relation(fields: [tecnicoId], references: [id], onDelete: Cascade)
@@ -293,10 +293,8 @@ model SolicitacaoCadastroCriador {
   criadoId             String @map("criado_id") @db.Uuid
   comprovantePagamento String @map("comprovante_pagamento")
 
-
   criador             Criador                      @relation(fields: [criadoId], references: [id])
   SolicitacaoCadastro SolicitacaoCadastroFazenda[]
-
 
   @@map("solicitacao_cadastro_criado")
 }
