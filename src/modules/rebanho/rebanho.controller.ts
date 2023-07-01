@@ -4,10 +4,10 @@ import { RebanhoDTO } from './dto';
 
 @Controller('rebanho')
 export class RebanhoController {
-    constructor(private rebanhoService: RebanhoService){}
+  constructor(private rebanhoService: RebanhoService) {}
 
-    @Post('cadastrarRebanho')
-    cadastrarRebanho(@Body() dto: RebanhoDTO){
-        return this.rebanhoService.cadastrarRebanho(dto)
-    }
+  @Post('cadastrarRebanho')
+  cadastrarRebanho(@Body() dto: RebanhoDTO) {
+    return this.rebanhoService.cadastrarRebanho(dto);
+  }
 }

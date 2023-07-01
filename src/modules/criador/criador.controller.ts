@@ -4,10 +4,10 @@ import { CriadorDTO } from './dto/criador.dto';
 
 @Controller('criador')
 export class CriadorController {
-    constructor(private criadorService: CriadorService){}
+  constructor(private criadorService: CriadorService) {}
 
-    @Post('cadastrarCriador')
-    cadastrarCriador(@Body() dto: CriadorDTO){
-        return this.criadorService.cadastrarCriador(dto)
-    }
+  @Post('cadastrarCriador')
+  cadastrarCriador(@Body() dto: CriadorDTO) {
+    return this.criadorService.cadastrarCriador(dto);
+  }
 }

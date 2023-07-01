@@ -1,18 +1,18 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
 import { FazendaDTO } from './dto/fazenda.dto';
+import { FazendaRepository } from 'src/shared/database/repositories/fazenda.repositories';
 
 @Injectable()
 export class FazendaService {
-    constructor(private prisma: PrismaService){}
+  constructor(private fazendaRepository: FazendaRepository) {}
 
-    async cadastrarFazenda(dto: FazendaDTO){
-        const fazenda = await  this.prisma.fazenda.create({
-            data:{
-                ...dto
-            }
-        })
+  async cadastrarFazenda(dto: FazendaDTO) {
+    const fazenda = await this.fazendaRepository.create({
+      data: {
+        ...dto,
+      },
+    });
 
-        return fazenda
-    }
+    return fazenda;
+  }
 }

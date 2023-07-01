@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { AnimalDTO } from './dto/animal.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { AnimalRepository } from 'src/shared/database/repositories/animal.repositories';
 
 @Injectable()
 export class AnimalService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private animalRepository: AnimalRepository) {}
 
   async cadastrarAnimal(dto: AnimalDTO) {
-    const animal = await this.prisma.animal.create({
+    const animal = await this.animalRepository.create({
       data: {
         ...dto,
       },

@@ -1,18 +1,18 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
 import { RebanhoDTO } from './dto';
+import { RebanhoRepository } from 'src/shared/database/repositories/rebanho.repositories';
 
 @Injectable()
 export class RebanhoService {
-    constructor(private prisma: PrismaService){}
+  constructor(private rebanhoRepository: RebanhoRepository) {}
 
-    async cadastrarRebanho(dto: RebanhoDTO){
-        const rebanho = await this.prisma.rebanho.create({
-            data:{
-                ...dto
-            }
-        })
+  async cadastrarRebanho(dto: RebanhoDTO) {
+    const rebanho = await this.rebanhoRepository.create({
+      data: {
+        ...dto,
+      },
+    });
 
-        return rebanho
-    }
+    return rebanho;
+  }
 }
