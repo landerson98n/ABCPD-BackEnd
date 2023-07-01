@@ -1,4 +1,4 @@
-import { IsUUID, IsISO8601 , IsNotEmpty, IsString, IsBoolean, IsOptional, isUUID } from "class-validator"
+import { IsUUID, IsISO8601 , IsNotEmpty, IsString, IsBoolean, IsOptional } from "class-validator"
 
 export class AnimalDTO{
   @IsUUID()
