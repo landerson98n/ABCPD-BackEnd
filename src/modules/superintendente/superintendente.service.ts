@@ -4,41 +4,59 @@ import { SuperintendenteRepository } from 'src/shared/database/repositories/supe
 
 @Injectable()
 export class SuperintendenteService {
-  constructor(private superintendenteRepository: SuperintendenteRepository) {}
+  constructor(
+    private superintendenteRepository: SuperintendenteRepository,
+  ) {}
 
-  cadastrarSuperintendente(dto: SuperintendenteDTO) {
-    const Superintendente = this.superintendenteRepository.create({
-      data: {
-        ...dto,
-      },
-    });
+  cadastrarSuperintendente(
+    dto: SuperintendenteDTO,
+  ) {
+    const Superintendente =
+      this.superintendenteRepository.create(
+        {
+          data: {
+            ...dto,
+          },
+        },
+      );
 
     return Superintendente;
   }
 
-  async getSuperintendentes(){
-    const Superintendentes = await this.superintendenteRepository.findMany()
+  async getSuperintendentes() {
+    const Superintendentes =
+      await this.superintendenteRepository.findMany();
 
-    return Superintendentes
+    return Superintendentes;
   }
 
-  async getSuperintendenteBydId(id: string){
-    const Superintendente = await this.superintendenteRepository.findUnique({
-      where:{
-         id
-      }
-    })
+  async getSuperintendenteBydId(
+    id: string,
+  ) {
+    const Superintendente =
+      await this.superintendenteRepository.findUnique(
+        {
+          where: {
+            id,
+          },
+        },
+      );
 
-    return Superintendente
+    return Superintendente;
   }
 
-  async deleteSuperintendente(id: string){
-    const deleteSuperintendente = await this.superintendenteRepository.delete({
-      where:{
-        id
-      }
-    })
+  async deleteSuperintendente(
+    id: string,
+  ) {
+    const deleteSuperintendente =
+      await this.superintendenteRepository.delete(
+        {
+          where: {
+            id,
+          },
+        },
+      );
 
-    return deleteSuperintendente
+    return deleteSuperintendente;
   }
 }

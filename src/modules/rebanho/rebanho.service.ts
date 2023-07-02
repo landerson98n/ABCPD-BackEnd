@@ -16,42 +16,42 @@ export class RebanhoService {
     return rebanho;
   }
 
-  async getRebanhos(){
-    const Rebanhos = await this.rebanhoRepository.findMany()
+  async getRebanhos() {
+    const Rebanhos = await this.rebanhoRepository.findMany();
 
-    return Rebanhos
+    return Rebanhos;
   }
 
-  async getRebanhoBydId(id: string){
+  async getRebanhoBydId(id: string) {
     const Rebanho = await this.rebanhoRepository.findUnique({
-      where:{
-         id
-      }
-    })
-
-    return Rebanho
-  }
-
-  async updateRebanho(dto: UpdateRebanhoDTO, id: string){
-    const updateRebanho = await this.rebanhoRepository.update({
-      where:{
-        id
+      where: {
+        id,
       },
-      data:{
-        ...dto
-      }
-    })
+    });
 
-    return updateRebanho
+    return Rebanho;
   }
 
-  async deleteRebanho(id: string){
-    const deleteRebanho = await this.rebanhoRepository.delete({
-      where:{
-        id
-      }
-    })
+  async updateRebanho(dto: UpdateRebanhoDTO, id: string) {
+    const updateRebanho = await this.rebanhoRepository.update({
+      where: {
+        id,
+      },
+      data: {
+        ...dto,
+      },
+    });
 
-    return deleteRebanho
+    return updateRebanho;
+  }
+
+  async deleteRebanho(id: string) {
+    const deleteRebanho = await this.rebanhoRepository.delete({
+      where: {
+        id,
+      },
+    });
+
+    return deleteRebanho;
   }
 }
