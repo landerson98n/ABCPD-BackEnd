@@ -9,4 +9,20 @@ export class TecnicoRepository {
   create(createDto: Prisma.TecnicoCreateArgs) {
     return this.prismaService.tecnico.create(createDto);
   }
+
+  findMany() {
+    return this.prismaService.tecnico.findMany();
+  }
+
+  findUnique(findUniqueTecnico: Prisma.TecnicoFindUniqueArgs) {
+    return this.prismaService.tecnico.findUnique({ ...findUniqueTecnico });
+  }
+
+  update(updateTecnico: Prisma.TecnicoUpdateArgs) {
+    return this.prismaService.tecnico.update({ ...updateTecnico });
+  }
+
+  delete(deleteTecnico: Prisma.TecnicoDeleteArgs) {
+    return this.prismaService.tecnico.delete({ ...deleteTecnico });
+  }
 }
