@@ -1,7 +1,7 @@
-import { IsNotEmpty, IsString, IsUUID } from "class-validator";
+import { IsNotEmpty, IsUUID } from 'class-validator';
 
-export class SuperintendenteDTO{
-    @IsUUID()
-    @IsNotEmpty()
-    userId : string 
+export class SuperintendenteDTO {
+  @IsUUID()
+  @IsNotEmpty()
+  userId: string;
 }

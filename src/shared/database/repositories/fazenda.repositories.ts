@@ -10,19 +10,19 @@ export class FazendaRepository {
     return this.prismaService.fazenda.create(createDto);
   }
 
-  findMany(){
-    return this.prismaService.fazenda.findMany()
+  findMany() {
+    return this.prismaService.fazenda.findMany();
   }
 
-  findUnique(findUniqueFazenda: Prisma.FazendaFindUniqueArgs){
-      return this.prismaService.fazenda.findUnique({...findUniqueFazenda})
+  findUnique(findUniqueFazenda: Prisma.FazendaFindUniqueArgs) {
+    return this.prismaService.fazenda.findUnique({ ...findUniqueFazenda });
   }
 
-  update(updateFazenda: Prisma.FazendaUpdateArgs){
-    return this.prismaService.fazenda.update({...updateFazenda})
+  update(updateFazenda: Prisma.FazendaUpdateArgs) {
+    return this.prismaService.fazenda.update({ ...updateFazenda });
   }
 
-  delete(deleteFazenda: Prisma.FazendaDeleteArgs){
-    return this.prismaService.fazenda.delete({...deleteFazenda})
+  delete(deleteFazenda: Prisma.FazendaDeleteArgs) {
+    return this.prismaService.fazenda.delete({ ...deleteFazenda });
   }
 }

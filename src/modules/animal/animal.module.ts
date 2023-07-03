@@ -6,6 +6,6 @@ import { DatabaseModule } from 'src/shared/database/database.module';
 @Module({
   providers: [AnimalService],
   controllers: [AnimalController],
-  imports:[DatabaseModule]
+  imports: [DatabaseModule],
 })
 export class AnimalModule {}

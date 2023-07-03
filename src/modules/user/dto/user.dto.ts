@@ -1,83 +1,96 @@
-import { IsNotEmpty, IsString, IsUUID, IsISO8601, IsBoolean, IsInt, IsOptional } from "class-validator";
+import { IsString, IsISO8601, IsBoolean, IsOptional } from 'class-validator';
 
-export class UserDTO{
-    @IsBoolean()
-    cadastro      : boolean
+export class UserDTO {
+  @IsBoolean()
+  cadastro: boolean;
 
-    @IsISO8601()
-    dateJoined    : Date
+  @IsISO8601()
+  dateJoined: Date;
 
-    @IsString()
-    nomePrimeiro  : string     
+  @IsString()
+  nomePrimeiro: string;
 
-    @IsString()
-    nomeUltimo    : string    
+  @IsString()
+  nomeUltimo: string;
 
-    @IsString()
-    email         : string    
-    
-    @IsString()
-    cpf           : string    
+  @IsString()
+  email: string;
 
-    @IsString()
-    username      : string  
+  @IsString()
+  cpf: string;
 
-    @IsString()
-    senha         : string  
+  @IsString()
+  username: string;
 
-    @IsString()
-    telefone      : string  
+  @IsString()
+  senha: string;
 
-    @IsBoolean()
-    ativo         : boolean
+  @IsString()
+  telefone: string;
 
-    @IsBoolean()
-    pessoa        : boolean
+  @IsBoolean()
+  ativo: boolean;
 
-    @IsBoolean()
-    superusuario  : boolean
+  @IsBoolean()
+  pessoa: boolean;
 
-    @IsISO8601()
-    ultimaConexao : Date
+  @IsBoolean()
+  superusuario: boolean;
+
+  @IsISO8601()
+  ultimaConexao: Date;
 }
 
-export class UpdateUserDTO{
-    @IsOptional() @IsBoolean()
-    cadastro      : boolean
+export class UpdateUserDTO {
+  @IsOptional()
+  @IsBoolean()
+  cadastro: boolean;
 
-    @IsOptional() @IsISO8601()
-    dateJoined    : Date
+  @IsOptional()
+  @IsISO8601()
+  dateJoined: Date;
 
-    @IsOptional() @IsString()
-    nomePrimeiro  : string     
+  @IsOptional()
+  @IsString()
+  nomePrimeiro: string;
 
-    @IsOptional() @IsString()
-    nomeUltimo    : string    
+  @IsOptional()
+  @IsString()
+  nomeUltimo: string;
 
-    @IsOptional() @IsString()
-    email         : string    
-    
-    @IsOptional() @IsString()
-    cpf           : string    
+  @IsOptional()
+  @IsString()
+  email: string;
 
-    @IsOptional() @IsString()
-    username      : string  
+  @IsOptional()
+  @IsString()
+  cpf: string;
 
-    @IsOptional() @IsString()
-    senha         : string  
+  @IsOptional()
+  @IsString()
+  username: string;
 
-    @IsOptional() @IsString()
-    telefone      : string  
+  @IsOptional()
+  @IsString()
+  senha: string;
 
-    @IsOptional() @IsBoolean()
-    ativo         : boolean
+  @IsOptional()
+  @IsString()
+  telefone: string;
 
-    @IsOptional() @IsBoolean()
-    pessoa        : boolean
+  @IsOptional()
+  @IsBoolean()
+  ativo: boolean;
 
-    @IsOptional() @IsBoolean()
-    superusuario  : boolean
+  @IsOptional()
+  @IsBoolean()
+  pessoa: boolean;
 
-    @IsOptional() @IsISO8601()
-    ultimaConexao : Date
+  @IsOptional()
+  @IsBoolean()
+  superusuario: boolean;
+
+  @IsOptional()
+  @IsISO8601()
+  ultimaConexao: Date;
 }

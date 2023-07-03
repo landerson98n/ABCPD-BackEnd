@@ -10,20 +10,19 @@ export class RebanhoRepository {
     return this.prismaService.rebanho.create(createDto);
   }
 
-  
-  findMany(){
-    return this.prismaService.rebanho.findMany()
+  findMany() {
+    return this.prismaService.rebanho.findMany();
   }
 
-  findUnique(findUniqueRebanho: Prisma.RebanhoFindUniqueArgs){
-      return this.prismaService.rebanho.findUnique({...findUniqueRebanho})
+  findUnique(findUniqueRebanho: Prisma.RebanhoFindUniqueArgs) {
+    return this.prismaService.rebanho.findUnique({ ...findUniqueRebanho });
   }
 
-  update(updateRebanho: Prisma.RebanhoUpdateArgs){
-    return this.prismaService.rebanho.update({...updateRebanho})
+  update(updateRebanho: Prisma.RebanhoUpdateArgs) {
+    return this.prismaService.rebanho.update({ ...updateRebanho });
   }
 
-  delete(deleteRebanho: Prisma.RebanhoDeleteArgs){
-    return this.prismaService.rebanho.delete({...deleteRebanho})
+  delete(deleteRebanho: Prisma.RebanhoDeleteArgs) {
+    return this.prismaService.rebanho.delete({ ...deleteRebanho });
   }
 }
