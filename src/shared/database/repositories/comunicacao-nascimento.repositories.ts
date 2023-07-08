@@ -9,4 +9,20 @@ export class ComunicacaoNascimentoRepository {
   create(createDto: Prisma.ComunicacaoNascimentoCreateArgs) {
     return this.prismaService.comunicacaoNascimento.create(createDto);
   }
+
+  findMany() {
+    return this.prismaService.comunicacaoNascimento.findMany();
+  }
+
+  findUnique(findUniqueComunicacaoNascimento: Prisma.ComunicacaoNascimentoFindUniqueArgs) {
+    return this.prismaService.comunicacaoNascimento.findUnique({ ...findUniqueComunicacaoNascimento });
+  }
+
+  update(UpdateNascimento: Prisma.ComunicacaoNascimentoUpdateArgs) {
+    return this.prismaService.comunicacaoNascimento.update({ ...UpdateNascimento });
+  }
+
+  delete(deleteNascimentoId: Prisma.ComunicacaoNascimentoDeleteArgs) {
+    return this.prismaService.comunicacaoNascimento.delete({ ...deleteNascimentoId });
+  }
 }

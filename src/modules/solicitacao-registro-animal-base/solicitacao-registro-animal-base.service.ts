@@ -4,17 +4,54 @@ import { SolicitacaoRegistroAnimalBaseRepository } from 'src/shared/database/rep
 
 @Injectable()
 export class SolicitacaoRegistroAnimalBaseService {
-  constructor(
-    private solicitacaoRegistroAnimalBaseRepository: SolicitacaoRegistroAnimalBaseRepository,
-  ) {}
+  constructor(private solicitacaoRegistroAnimalBaseRepository: SolicitacaoRegistroAnimalBaseRepository) {}
 
-  async transferirAnimal(dto: SolicitacaoRegistroAnimalBaseDTO) {
-    const animal = await this.solicitacaoRegistroAnimalBaseRepository.create({
+  async cadastrarSolicitacaoRegistroAnimalBase(dto: SolicitacaoRegistroAnimalBaseDTO) {
+    const solicitacaoRegistroAnimalBase = await this.solicitacaoRegistroAnimalBaseRepository.create({
       data: {
         ...dto,
       },
     });
 
+    return solicitacaoRegistroAnimalBase;
+  }
+
+  async getSolicitacaoRegistroAnimalBase() {
+    const solicitacaoRegistroAnimalBase = await this.solicitacaoRegistroAnimalBaseRepository.findMany();
+
+    return solicitacaoRegistroAnimalBase;
+  }
+
+  async getSolicitacaoRegistroAnimalBaseById(id: string) {
+    const animal = await this.solicitacaoRegistroAnimalBaseRepository.findUnique({
+      where: {
+        id,
+      },
+    });
+
     return animal;
+  }
+
+  async updateSolicitacaoRegistroAnimalBase(dto: SolicitacaoRegistroAnimalBaseDTO, id: string) {
+    const updateAnimal = await this.solicitacaoRegistroAnimalBaseRepository.update({
+      where: {
+        id,
+      },
+      data: {
+        ...dto,
+      },
+    });
+
+    return updateAnimal;
+  }
+
+  async deleteSolicitacaoRegistroAnimalBase(id: string) {
+    const deleteAnimal = await this.solicitacaoRegistroAnimalBaseRepository.delete({
+      where: {
+        id,
+      },
+    });
+
+    return deleteAnimal;
   }
 }

@@ -9,4 +9,20 @@ export class SolicitacaoCadatroCriadorRepository {
   create(createDto: Prisma.SolicitacaoCadastroCriadorCreateArgs) {
     return this.prismaService.solicitacaoCadastroCriador.create(createDto);
   }
+
+  findMany() {
+    return this.prismaService.solicitacaoCadastroCriador.findMany();
+  }
+
+  findUnique(findUniquesolicitacaoCadastroCriador: Prisma.SolicitacaoCadastroCriadorFindUniqueArgs) {
+    return this.prismaService.solicitacaoCadastroCriador.findUnique({ ...findUniquesolicitacaoCadastroCriador });
+  }
+
+  update(updatesolicitacaoCadastroCriador: Prisma.SolicitacaoCadastroCriadorUpdateArgs) {
+    return this.prismaService.solicitacaoCadastroCriador.update({ ...updatesolicitacaoCadastroCriador });
+  }
+
+  delete(deletesolicitacaoCadastroCriador: Prisma.SolicitacaoCadastroCriadorDeleteArgs) {
+    return this.prismaService.solicitacaoCadastroCriador.delete({ ...deletesolicitacaoCadastroCriador });
+  }
 }

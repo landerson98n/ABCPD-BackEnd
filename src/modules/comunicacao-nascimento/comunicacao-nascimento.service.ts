@@ -4,9 +4,7 @@ import { ComunicacaoNascimentoRepository } from 'src/shared/database/repositorie
 
 @Injectable()
 export class ComunicacaoNascimentoService {
-  constructor(
-    private comunicacaoNascimentoRepository: ComunicacaoNascimentoRepository,
-  ) {}
+  constructor(private comunicacaoNascimentoRepository: ComunicacaoNascimentoRepository) {}
 
   async comunicacaoNascimento(dto: ComunicacaoNascimentoDto) {
     const animal = await this.comunicacaoNascimentoRepository.create({
@@ -16,5 +14,44 @@ export class ComunicacaoNascimentoService {
     });
 
     return animal;
+  }
+
+  async getComunicacaoNascimento() {
+    const ComunicacaoNascimento = await this.comunicacaoNascimentoRepository.findMany();
+
+    return ComunicacaoNascimento;
+  }
+
+  async getComunicacaoNascimentoById(id: string) {
+    const ComunicacaoNascimentoById = await this.comunicacaoNascimentoRepository.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    return ComunicacaoNascimentoById;
+  }
+
+  async updateComunicacaoNascimentoId(dto: ComunicacaoNascimentoDto, id: string) {
+    const updateComunicacaoNascimento = await this.comunicacaoNascimentoRepository.update({
+      where: {
+        id,
+      },
+      data: {
+        ...dto,
+      },
+    });
+
+    return updateComunicacaoNascimento;
+  }
+
+  async deleteComunicacaoNascimentoId(id: string) {
+    const deleteComunicacaoNascimento = await this.comunicacaoNascimentoRepository.delete({
+      where: {
+        id,
+      },
+    });
+
+    return deleteComunicacaoNascimento;
   }
 }

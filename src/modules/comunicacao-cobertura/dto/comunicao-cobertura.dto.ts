@@ -1,10 +1,4 @@
-import {
-  IsUUID,
-  IsISO8601,
-  IsNotEmpty,
-  IsString,
-  IsBoolean,
-} from 'class-validator';
+import { IsUUID, IsISO8601, IsNotEmpty, IsString, IsBoolean } from 'class-validator';
 
 export class ComunicacaoCoberturaDto {
   @IsUUID()

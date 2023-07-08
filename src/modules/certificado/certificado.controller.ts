@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Delete } from '@nestjs/common';
 import { CertificadoService } from './certificado.service';
 import { CertificadoDTO } from './dto/certificado.dto';
 
@@ -7,7 +7,38 @@ export class CertificadoController {
   constructor(private readonly certificadoService: CertificadoService) {}
 
   @Post()
-  cadastrarAnimal(@Body() dto: CertificadoDTO) {
-    return this.certificadoService.cadastrarAnimal(dto);
+  cadastrarCertificado(@Body() dto: CertificadoDTO) {
+    return this.certificadoService.cadastrarCertificado(dto);
+  }
+
+  @Get('get-certificado')
+  getAnimais() {
+    return this.certificadoService.getCertificado();
+  }
+
+  @Get('get-certificado-byid/:id')
+  getAnimalById(
+    @Param('id')
+    id: string,
+  ) {
+    return this.certificadoService.getCertificadoBydId(id);
+  }
+
+  @Post('update-certificado/:id')
+  updateAnimal(
+    @Body()
+    dto: CertificadoDTO,
+    @Param('id')
+    id: string,
+  ) {
+    return this.certificadoService.updateCertificado(dto, id);
+  }
+
+  @Delete('delete-certificado/:id')
+  deleteAnimal(
+    @Param('id')
+    id: string,
+  ) {
+    return this.certificadoService.deleteCertificado(id);
   }
 }

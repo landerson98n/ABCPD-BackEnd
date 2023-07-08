@@ -44,7 +44,7 @@ model Animal {
   registro                String
   registroGeral           String   @map("registro_geral")
   sexoAnimal              String   @map("sexo_animal")
-  flag                    Int
+  flag                    Int      @default(0)
 
   rebanhoAnimal Rebanho @relation(fields: [rebanho], references: [id])
 
