@@ -104,20 +104,18 @@ model Fazenda {
 }
 
 model User {
-  id            String   @id @default(uuid()) @db.Uuid
-  cadastro      Boolean
-  dateJoined    DateTime
-  nomePrimeiro  String   @map("nome_primeiro")
-  nomeUltimo    String   @map("nome_ultimo")
-  email         String   @unique
-  cpf           String   @unique
+  id            String  @id @default(uuid()) @db.Uuid
+  dateJoined    String
+  nomePrimeiro  String  @map("nome_primeiro")
+  nomeUltimo    String  @map("nome_ultimo")
+  email         String  @unique
+  cpf           String  @unique
   username      String
   senha         String
   telefone      String
   ativo         Boolean
-  pessoa        Boolean
-  superusuario  Boolean
-  ultimaConexao DateTime @map("ultima_conexao")
+  pessoa        String
+  ultimaConexao String  @map("ultima_conexao")
 
   tecnico        Tecnico[]
   criador        Criador[]
@@ -154,15 +152,14 @@ model Tecnico {
 }
 
 model Criador {
-  id           String  @id @default(uuid()) @db.Uuid
-  userId       String  @map("user_id") @db.Uuid
+  id           String @id @default(uuid()) @db.Uuid
+  userId       String @map("user_id") @db.Uuid
   cep          String
-  ativo        Boolean
-  nomeBairro   String  @map("nome_bairro")
-  nomeCidade   String  @map("nome_cidade")
-  nomeCompleto String  @map("nome_completo")
-  nomeEstado   String  @map("nome_estado")
-  nomeRua      String  @map("nome_rua")
+  nomeBairro   String @map("nome_bairro")
+  nomeCidade   String @map("nome_cidade")
+  nomeCompleto String @map("nome_completo")
+  nomeEstado   String @map("nome_estado")
+  nomeRua      String @map("nome_rua")
   rg           String
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)

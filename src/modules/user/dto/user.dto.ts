@@ -1,11 +1,8 @@
-import { IsString, IsISO8601, IsBoolean, IsOptional } from 'class-validator';
+import { IsString, IsBoolean, IsOptional, IsDateString } from 'class-validator';
 
 export class UserDTO {
-  @IsBoolean()
-  cadastro: boolean;
-
-  @IsISO8601()
-  dateJoined: Date;
+  @IsDateString()
+  dateJoined: string;
 
   @IsString()
   nomePrimeiro: string;
@@ -28,27 +25,23 @@ export class UserDTO {
   @IsString()
   telefone: string;
 
+  @IsOptional()
   @IsBoolean()
   ativo: boolean;
 
-  @IsBoolean()
-  pessoa: boolean;
+  // Opcional ou apagar
+  @IsOptional()
+  @IsString()
+  pessoa: string;
 
-  @IsBoolean()
-  superusuario: boolean;
-
-  @IsISO8601()
-  ultimaConexao: Date;
+  @IsDateString()
+  ultimaConexao: string;
 }
 
 export class UpdateUserDTO {
   @IsOptional()
-  @IsBoolean()
-  cadastro: boolean;
-
-  @IsOptional()
-  @IsISO8601()
-  dateJoined: Date;
+  @IsDateString()
+  dateJoined: string;
 
   @IsOptional()
   @IsString()
@@ -57,14 +50,6 @@ export class UpdateUserDTO {
   @IsOptional()
   @IsString()
   nomeUltimo: string;
-
-  @IsOptional()
-  @IsString()
-  email: string;
-
-  @IsOptional()
-  @IsString()
-  cpf: string;
 
   @IsOptional()
   @IsString()
@@ -83,14 +68,10 @@ export class UpdateUserDTO {
   ativo: boolean;
 
   @IsOptional()
-  @IsBoolean()
-  pessoa: boolean;
+  @IsString()
+  pessoa: string;
 
   @IsOptional()
-  @IsBoolean()
-  superusuario: boolean;
-
-  @IsOptional()
-  @IsISO8601()
-  ultimaConexao: Date;
+  @IsDateString()
+  ultimaConexao: string;
 }

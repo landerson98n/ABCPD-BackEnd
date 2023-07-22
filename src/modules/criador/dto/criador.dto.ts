@@ -1,10 +1,4 @@
-import {
-  IsUUID,
-  IsNotEmpty,
-  IsString,
-  IsBoolean,
-  IsOptional,
-} from 'class-validator';
+import { IsUUID, IsNotEmpty, IsString, IsOptional } from 'class-validator';
 
 export class CriadorDTO {
   @IsNotEmpty()
@@ -12,8 +6,6 @@ export class CriadorDTO {
   userId: string;
   @IsString()
   cep: string;
-  @IsBoolean()
-  ativo: boolean;
   @IsString()
   nomeBairro: string;
   @IsString()
@@ -32,9 +24,6 @@ export class UpdateCriadorDTO {
   @IsString()
   @IsOptional()
   cep: string;
-  @IsBoolean()
-  @IsOptional()
-  ativo: boolean;
   @IsString()
   @IsOptional()
   nomeBairro: string;

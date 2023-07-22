@@ -16,19 +16,52 @@ export class CriadorService {
   }
 
   async getCriadores() {
-    const criadores = await this.criadorRepository.findMany();
+    const criadores = await this.criadorRepository.findMany({
+      include: {
+        user: {
+          select: {
+            dateJoined: true,
+            nomePrimeiro: true,
+            nomeUltimo: true,
+            email: true,
+            cpf: true,
+            username: true,
+            telefone: true,
+            ativo: true,
+            pessoa: true,
+            ultimaConexao: true,
+          },
+        },
+      },
+    });
 
     return criadores;
   }
 
   async getCriadorBydId(id: string) {
-    const Criador = await this.criadorRepository.findUnique({
+    const criador = await this.criadorRepository.findUnique({
       where: {
         id,
       },
+      include: {
+        user: {
+          select: {
+            dateJoined: true,
+            nomePrimeiro: true,
+            nomeUltimo: true,
+            email: true,
+            cpf: true,
+            username: true,
+            telefone: true,
+            ativo: true,
+            pessoa: true,
+            ultimaConexao: true,
+          },
+        },
+      },
     });
 
-    return Criador;
+    return criador;
   }
 
   async updateCriador(dto: UpdateCriadorDTO, id: string) {

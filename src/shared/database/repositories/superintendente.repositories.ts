@@ -10,25 +10,19 @@ export class SuperintendenteRepository {
     return this.prismaService.superintendete.create(createDto);
   }
 
-  findMany() {
-    return this.prismaService.superintendete.findMany();
+  findMany(findManySuperintendete: Prisma.SuperintendeteFindManyArgs) {
+    return this.prismaService.superintendete.findMany(findManySuperintendete);
   }
 
   findUnique(findUniqueSuperintendete: Prisma.SuperintendeteFindUniqueArgs) {
-    return this.prismaService.superintendete.findUnique({
-      ...findUniqueSuperintendete,
-    });
+    return this.prismaService.superintendete.findUnique(findUniqueSuperintendete);
   }
 
   update(updateSuperintendete: Prisma.SuperintendeteUpdateArgs) {
-    return this.prismaService.superintendete.update({
-      ...updateSuperintendete,
-    });
+    return this.prismaService.superintendete.update(updateSuperintendete);
   }
 
   delete(deleteSuperintendete: Prisma.SuperintendeteDeleteArgs) {
-    return this.prismaService.superintendete.delete({
-      ...deleteSuperintendete,
-    });
+    return this.prismaService.superintendete.delete(deleteSuperintendete);
   }
 }

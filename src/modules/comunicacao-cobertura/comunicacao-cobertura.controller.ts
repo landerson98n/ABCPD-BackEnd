@@ -31,7 +31,7 @@ export class ComunicacaoCoberturaController {
     @Param('id')
     id: string,
   ) {
-    return this.comunicacaoCoberturaService.updateCoberturas(dto, id);
+    return this.comunicacaoCoberturaService.updateCobertura(dto, id);
   }
 
   @Delete('deleteCobertura/:id')
