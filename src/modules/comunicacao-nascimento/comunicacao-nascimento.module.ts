@@ -7,10 +7,21 @@ import { CriadorModule } from '../criador/criador.module';
 import { FazendaModule } from '../fazenda/fazenda.module';
 import { TecnicoModule } from '../tecnico/tecnico.module';
 import { AnimalModule } from '../animal/animal.module';
+import { ComunicacaoCoberturaModule } from '../comunicacao-cobertura/comunicacao-cobertura.module';
+import { MatrixModule } from '../matrix/matrix.module';
 
 @Module({
   controllers: [ComunicacaoNascimentoController],
   providers: [ComunicacaoNascimentoService],
-  imports: [DatabaseModule, UserModule, CriadorModule, FazendaModule, AnimalModule, TecnicoModule],
+  imports: [
+    DatabaseModule,
+    UserModule,
+    CriadorModule,
+    FazendaModule,
+    AnimalModule,
+    TecnicoModule,
+    ComunicacaoCoberturaModule,
+    MatrixModule,
+  ],
 })
 export class ComunicacaoNascimentoModule {}

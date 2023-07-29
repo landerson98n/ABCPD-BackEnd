@@ -177,19 +177,19 @@ model Criador {
 }
 
 model ComunicacaoNascimento {
-  id                    String   @id @default(uuid()) @db.Uuid
-  coberturaRegistradaId String   @map("cobertura_registrada_id") @db.Uuid
-  criadorNascimentoId   String   @map("criador_nascimento_id") @db.Uuid
-  fazendaNascimentoId   String   @map("fazenda_nascimento_id") @db.Uuid
-  matrizAnimalId        String   @map("matriz_animal_id") @db.Uuid
-  reprodutorAnimalId    String   @map("reprodutor_animal_id") @db.Uuid
-  tecnicoNascimentoId   String   @map("tecnico_nascimento_id") @db.Uuid
-  animalBezerro         String   @map("animal_bezerro")
-  dataComunicacao       DateTime @map("data_comunicacao")
-  dataNascimento        DateTime @map("data_nascimento")
-  finalizadoNascimento  Boolean  @map("finalizado_nascimento")
+  id                    String  @id @default(uuid()) @db.Uuid
+  coberturaRegistradaId String  @map("cobertura_registrada_id") @db.Uuid
+  criadorNascimentoId   String  @map("criador_nascimento_id") @db.Uuid
+  fazendaNascimentoId   String  @map("fazenda_nascimento_id") @db.Uuid
+  matrizAnimalId        String  @map("matriz_animal_id") @db.Uuid
+  reprodutorAnimalId    String  @map("reprodutor_animal_id") @db.Uuid
+  tecnicoNascimentoId   String  @map("tecnico_nascimento_id") @db.Uuid
+  animalBezerro         String  @map("animal_bezerro")
+  dataComunicacao       String  @map("data_comunicacao")
+  dataNascimento        String  @map("data_nascimento")
+  finalizadoNascimento  Boolean @map("finalizado_nascimento")
   observacoes           String
-  statusNascimento      String   @map("status_nascimento")
+  statusNascimento      String  @map("status_nascimento")
 
   comunicacaoCobertura ComunicacaoCobertura @relation(fields: [coberturaRegistradaId], references: [id], onDelete: Cascade)
   criador              Criador              @relation(fields: [criadorNascimentoId], references: [id], onDelete: Cascade)

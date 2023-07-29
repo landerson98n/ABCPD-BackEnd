@@ -1,44 +1,115 @@
-import { Controller, Post, Body, Get, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Param,
+  Delete,
+  UnauthorizedException,
+  ParseUUIDPipe,
+  Put,
+  NotFoundException,
+} from '@nestjs/common';
 import { MatrixService } from './matrix.service';
 import { MatrixDTO } from './dto/matrix.dto';
+import { ActiveUserId } from 'src/shared/decorators/ActiverUserId';
+import { UserService } from '../user/user.service';
 
 @Controller('matrix')
 export class MatrixController {
-  constructor(private readonly matrixService: MatrixService) {}
+  constructor(private readonly matrixService: MatrixService, private readonly userService: UserService) {}
 
-  @Post()
-  cadastrarAnimal(@Body() dto: MatrixDTO) {
-    return this.matrixService.cadastrarMatrix(dto);
+  @Post('cadastrar-matrix')
+  async cadastrarAnimal(@Body() matrixDTO: MatrixDTO, @ActiveUserId() userId: string) {
+    const { data } = matrixDTO;
+
+    const user = await this.userService.getUserBydId(userId);
+
+    if (!(user.pessoa === 'Superintendente')) {
+      throw new UnauthorizedException();
+    }
+
+    return this.matrixService.cadastrarMatrix({
+      data,
+    });
   }
 
   @Get('get-matrix')
-  getAnimais() {
+  async getAnimais(@ActiveUserId() userId: string) {
+    const user = await this.userService.getUserBydId(userId);
+
+    if (!(user.pessoa === 'Superintendente')) {
+      throw new UnauthorizedException();
+    }
+
     return this.matrixService.getMatrix();
   }
 
-  @Get('get-matrix-byid/:id')
-  getAnimalById(
-    @Param('id')
+  @Get('get-matrix/:id')
+  async getAnimalById(
+    @Param('id', ParseUUIDPipe)
     id: string,
+    @ActiveUserId() userId: string,
   ) {
+    const user = await this.userService.getUserBydId(userId);
+
+    if (!(user.pessoa === 'Superintendente')) {
+      throw new UnauthorizedException();
+    }
+
     return this.matrixService.getMatrixBydId(id);
   }
 
-  @Post('update-matrix/:id')
-  updateAnimal(
+  @Put('update-matrix/:id')
+  async updateAnimal(
     @Body()
-    dto: MatrixDTO,
-    @Param('id')
+    matrixDTO: MatrixDTO,
+    @Param('id', ParseUUIDPipe)
     id: string,
+    @ActiveUserId() userId: string,
   ) {
-    return this.matrixService.updateMatrix(dto, id);
+    const { data } = matrixDTO;
+
+    const user = await this.userService.getUserBydId(userId);
+
+    if (!(user.pessoa === 'Superintendente')) {
+      throw new UnauthorizedException();
+    }
+
+    const exisMatriz = await this.matrixService.getMatrixBydId(id);
+
+    if (!exisMatriz) {
+      throw new NotFoundException('Matriz não encontrada na base de dados!');
+    }
+
+    return this.matrixService.updateMatrix(
+      {
+        data,
+      },
+      id,
+    );
   }
 
-  @Delete('deleteAnimal/:id')
-  deleteAnimal(
-    @Param('id')
+  @Delete('delete-matrix/:id')
+  async deleteAnimal(
+    @Param('id', ParseUUIDPipe)
     id: string,
+    @ActiveUserId() userId: string,
   ) {
-    return this.matrixService.deleteMatrix(id);
+    const user = await this.userService.getUserBydId(userId);
+
+    if (!(user.pessoa === 'Superintendente')) {
+      throw new UnauthorizedException();
+    }
+
+    const exisMatriz = await this.matrixService.getMatrixBydId(id);
+
+    if (!exisMatriz) {
+      throw new NotFoundException('Matriz não encontrada na base de dados!');
+    }
+
+    await this.matrixService.deleteMatrix(id);
+
+    return null;
   }
 }

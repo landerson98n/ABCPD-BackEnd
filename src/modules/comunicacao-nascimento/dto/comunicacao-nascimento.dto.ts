@@ -1,10 +1,4 @@
-import {
-  IsUUID,
-  IsISO8601,
-  IsNotEmpty,
-  IsString,
-  IsBoolean,
-} from 'class-validator';
+import { IsUUID, IsNotEmpty, IsString, IsBoolean, IsDateString } from 'class-validator';
 
 export class ComunicacaoNascimentoDto {
   @IsUUID()
@@ -34,11 +28,11 @@ export class ComunicacaoNascimentoDto {
   @IsNotEmpty()
   animalBezerro: string;
 
-  @IsISO8601()
-  dataComunicacao: Date;
+  @IsDateString()
+  dataComunicacao: string;
 
-  @IsISO8601()
-  dataNascimento: Date;
+  @IsDateString()
+  dataNascimento: string;
 
   @IsBoolean()
   finalizadoNascimento: boolean;

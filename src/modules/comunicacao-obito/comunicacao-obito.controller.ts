@@ -1,44 +1,134 @@
-import { Controller, Post, Body, Delete, Param, Get } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Delete,
+  Param,
+  Get,
+  ParseUUIDPipe,
+  UnauthorizedException,
+  Put,
+  NotFoundException,
+} from '@nestjs/common';
 import { ComunicacaoObitoService } from './comunicacao-obito.service';
 import { ComunicacaoObitoDto } from './dto/comunicacaoObito.dto';
+import { AnimalService } from '../animal/animal.service';
+import { ActiveUserId } from 'src/shared/decorators/ActiverUserId';
+import { UserService } from '../user/user.service';
 
 @Controller('comunicacao-obito')
 export class ComunicacaoObitoController {
-  constructor(private readonly comunicacaoObitoService: ComunicacaoObitoService) {}
+  constructor(
+    private readonly comunicacaoObitoService: ComunicacaoObitoService,
+    private readonly animalService: AnimalService,
+    private readonly userService: UserService,
+  ) {}
 
-  @Post('cadastrarObito')
-  cadastrarObito(@Body() dto: ComunicacaoObitoDto) {
-    return this.comunicacaoObitoService.cadastrarObito(dto);
+  @Post('cadastrar-obito')
+  async cadastrarObito(@Body() comunicacaoObitoDto: ComunicacaoObitoDto, @ActiveUserId() userId: string) {
+    const { animalId, causa, dataObito, nomeAnimal } = comunicacaoObitoDto;
+
+    const user = await this.userService.getUserBydId(userId);
+
+    if (!(user.pessoa === 'Superintendente')) {
+      throw new UnauthorizedException();
+    }
+
+    return this.comunicacaoObitoService.cadastrarObito({
+      animalId,
+      causa,
+      dataObito,
+      nomeAnimal,
+    });
   }
 
   @Get('get-obitos')
-  getAnimais() {
+  async getAnimais(@ActiveUserId() userId: string) {
+    const user = await this.userService.getUserBydId(userId);
+
+    if (!(user.pessoa === 'Superintendente')) {
+      throw new UnauthorizedException();
+    }
+
     return this.comunicacaoObitoService.getObitos();
   }
 
-  @Get('get-obito-byid/:id')
-  getAnimalById(
-    @Param('id')
+  @Get('get-obito/:id')
+  async getAnimalById(
+    @Param('id', ParseUUIDPipe)
     id: string,
+    @ActiveUserId() userId: string,
   ) {
-    return this.comunicacaoObitoService.getObitoBydId(id);
+    const user = await this.userService.getUserBydId(userId);
+
+    if (!(user.pessoa === 'Superintendente')) {
+      throw new UnauthorizedException();
+    }
+
+    const exisObito = this.comunicacaoObitoService.getObitoBydId(id);
+
+    if (!exisObito) {
+      throw new NotFoundException('Obito não encontrada na base de dados!');
+    }
+
+    return exisObito;
   }
 
-  @Post('update-obito/:id')
-  updateAnimal(
+  @Put('update-obito/:id')
+  async updateAnimal(
     @Body()
-    dto: ComunicacaoObitoDto,
-    @Param('id')
+    comunicacaoObitoDto: ComunicacaoObitoDto,
+    @Param('id', ParseUUIDPipe)
     id: string,
+    @ActiveUserId() userId: string,
   ) {
-    return this.comunicacaoObitoService.updateObito(dto, id);
+    const { animalId, causa, dataObito, nomeAnimal } = comunicacaoObitoDto;
+
+    const user = await this.userService.getUserBydId(userId);
+
+    if (!(user.pessoa === 'Superintendente')) {
+      throw new UnauthorizedException();
+    }
+
+    const exisObito = this.comunicacaoObitoService.getObitoBydId(id);
+
+    if (!exisObito) {
+      throw new NotFoundException('Obito não encontrada na base de dados!');
+    }
+
+    await this.comunicacaoObitoService.updateObito(
+      {
+        animalId,
+        causa,
+        dataObito,
+        nomeAnimal,
+      },
+      id,
+    );
+
+    return null;
   }
 
   @Delete('delete-obito/:id')
-  deleteAnimal(
-    @Param('id')
+  async deleteAnimal(
+    @Param('id', ParseUUIDPipe)
     id: string,
+    @ActiveUserId() userId: string,
   ) {
-    return this.comunicacaoObitoService.deleteObito(id);
+    const user = await this.userService.getUserBydId(userId);
+
+    if (!(user.pessoa === 'Superintendente')) {
+      throw new UnauthorizedException();
+    }
+
+    const exisObito = this.comunicacaoObitoService.getObitoBydId(id);
+
+    if (!exisObito) {
+      throw new NotFoundException('Obito não encontrada na base de dados!');
+    }
+
+    await this.comunicacaoObitoService.deleteObito(id);
+
+    return null;
   }
 }

@@ -9,5 +9,6 @@ import { FazendaModule } from '../fazenda/fazenda.module';
   imports: [UserModule, CriadorModule, FazendaModule],
   controllers: [ComunicacaoCoberturaController],
   providers: [ComunicacaoCoberturaService],
+  exports: [ComunicacaoCoberturaService],
 })
 export class ComunicacaoCoberturaModule {}
