@@ -11,3 +11,4 @@ export class MatrixController {
     return this.matrixService.cadastrarMatrix(dto);
   }
 }
+
