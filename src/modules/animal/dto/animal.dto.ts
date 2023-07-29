@@ -1,4 +1,4 @@
-import { IsUUID, IsISO8601, IsNotEmpty, IsString, IsBoolean, IsOptional, IsInt } from 'class-validator';
+import { IsUUID, IsNotEmpty, IsString, IsBoolean, IsOptional, IsInt, IsDateString } from 'class-validator';
 
 export class AnimalDTO {
   @IsUUID()
@@ -21,26 +21,26 @@ export class AnimalDTO {
   @IsNotEmpty()
   rebanho: string;
 
-  @IsISO8601()
-  dataAvalicacao: Date;
+  @IsDateString()
+  dataAvalicacao: string;
 
   @IsString()
   composicaoGenetica: string;
 
-  @IsISO8601()
-  dataRGDAnimalSuper: Date;
+  @IsDateString()
+  dataRGDAnimalSuper: string;
 
-  @IsISO8601()
-  dataRGDAnimalTecnico: Date;
+  @IsDateString()
+  dataRGDAnimalTecnico: string;
 
-  @IsISO8601()
-  dataRGNAnimalSuper: Date;
+  @IsDateString()
+  dataRGNAnimalSuper: string;
 
-  @IsISO8601()
-  dataRGNAnimalTecnico: Date;
+  @IsDateString()
+  dataRGNAnimalTecnico: string;
 
-  @IsISO8601()
-  dataNascimentoAnimal: Date;
+  @IsDateString()
+  dataNascimentoAnimal: string;
 
   @IsString()
   decisaoAnimalSuperRGD: string;
@@ -108,32 +108,32 @@ export class AnimalDTO {
 
 export class UpdateAnimalDTO {
   @IsOptional()
-  @IsISO8601()
-  dataAvalicacao: Date;
+  @IsDateString()
+  dataAvalicacao: string;
 
   @IsOptional()
   @IsString()
   composicaoGenetica: string;
 
   @IsOptional()
-  @IsISO8601()
-  dataRGDAnimalSuper: Date;
+  @IsDateString()
+  dataRGDAnimalSuper: string;
 
   @IsOptional()
-  @IsISO8601()
-  dataRGDAnimalTecnico: Date;
+  @IsDateString()
+  dataRGDAnimalTecnico: string;
 
   @IsOptional()
-  @IsISO8601()
-  dataRGNAnimalSuper: Date;
+  @IsDateString()
+  dataRGNAnimalSuper: string;
 
   @IsOptional()
-  @IsISO8601()
-  dataRGNAnimalTecnico: Date;
+  @IsDateString()
+  dataRGNAnimalTecnico: string;
 
   @IsOptional()
-  @IsISO8601()
-  dataNascimentoAnimal: Date;
+  @IsDateString()
+  dataNascimentoAnimal: string;
 
   @IsOptional()
   @IsString()

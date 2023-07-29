@@ -8,6 +8,7 @@ import {
   ConflictException,
   ParseUUIDPipe,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { SuperintendenteService } from './superintendente.service';
 import { UserService } from '../user/user.service';
@@ -27,6 +28,20 @@ export class SuperintendenteController {
     userDTO: UserDTO,
   ) {
     const { nomePrimeiro, nomeUltimo, email, cpf, username, senha, telefone, dateJoined, ultimaConexao } = userDTO;
+
+    if (
+      nomePrimeiro === '' ||
+      nomeUltimo === '' ||
+      email === '' ||
+      cpf === '' ||
+      username === '' ||
+      senha === '' ||
+      telefone === '' ||
+      dateJoined === '' ||
+      ultimaConexao === ''
+    ) {
+      throw new UnauthorizedException('Existe um campo vazio.');
+    }
 
     const emailTaken = await this.userService.getUserEmail(email);
 

@@ -7,5 +7,6 @@ import { UserModule } from '../user/user.module';
   imports: [UserModule],
   controllers: [TecnicoController],
   providers: [TecnicoService],
+  exports: [TecnicoService],
 })
 export class TecnicoModule {}

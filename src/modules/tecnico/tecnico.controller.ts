@@ -33,6 +33,26 @@ export class TecnicoController {
     const { nomePrimeiro, nomeUltimo, email, cpf, username, senha, telefone, dateJoined, ultimaConexao } = userDTO;
     const { nomeBairro, nomeCidade, nomeEstado, nomeRua, nomeCompleto, rg } = tecnicoDTO;
 
+    if (
+      nomePrimeiro === '' ||
+      nomeUltimo === '' ||
+      email === '' ||
+      cpf === '' ||
+      username === '' ||
+      senha === '' ||
+      telefone === '' ||
+      dateJoined === '' ||
+      ultimaConexao === '' ||
+      nomeBairro === '' ||
+      nomeCidade === '' ||
+      nomeEstado === '' ||
+      nomeRua === '' ||
+      nomeCompleto === '' ||
+      rg === ''
+    ) {
+      throw new UnauthorizedException('Existe um campo vazio.');
+    }
+
     const user = await this.userService.getUserBydId(userId);
 
     if (!(user.pessoa === 'Superintendente')) {
@@ -121,6 +141,24 @@ export class TecnicoController {
     const { nomePrimeiro, nomeUltimo, username, senha, telefone, dateJoined, ultimaConexao } = updateUserDTO;
     const { nomeBairro, nomeCidade, nomeEstado, nomeRua, nomeCompleto, rg } = updateTecnicoDTO;
 
+    if (
+      nomePrimeiro === '' ||
+      nomeUltimo === '' ||
+      username === '' ||
+      senha === '' ||
+      telefone === '' ||
+      dateJoined === '' ||
+      ultimaConexao === '' ||
+      nomeBairro === '' ||
+      nomeCidade === '' ||
+      nomeEstado === '' ||
+      nomeRua === '' ||
+      nomeCompleto === '' ||
+      rg === ''
+    ) {
+      throw new UnauthorizedException('Existe um campo vazio.');
+    }
+
     const haskedSenha = await hash(senha, 12);
 
     const tecnico = await this.tecnicoService.getTecnicoBydId(useParamId);
@@ -131,7 +169,7 @@ export class TecnicoController {
 
     const user = await this.userService.getUserBydId(tecnico.userId);
 
-    if (user.pessoa !== 'Tecnico' && user.pessoa !== 'Superintendente') {
+    if (user.pessoa !== 'Superintendente') {
       throw new UnauthorizedException();
     }
 

@@ -1,6 +1,7 @@
 import { IsUUID, IsNotEmpty, IsString, IsOptional } from 'class-validator';
 
 export class CriadorDTO {
+  @IsOptional()
   @IsNotEmpty()
   @IsUUID()
   userId: string;

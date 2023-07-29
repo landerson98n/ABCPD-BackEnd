@@ -10,6 +10,7 @@ import {
   NotFoundException,
   ParseUUIDPipe,
   Put,
+  SetMetadata,
 } from '@nestjs/common';
 import { CriadorService } from './criador.service';
 import { CriadorDTO, UpdateCriadorDTO } from './dto/criador.dto';
@@ -23,27 +24,42 @@ export class CriadorController {
   constructor(private criadorService: CriadorService, private readonly userService: UserService) {}
 
   @Post('cadastrar-criador')
+  @SetMetadata('IS_PUBLIC', true)
   async cadastrarCriador(
     @Body()
     criadorDTO: CriadorDTO,
     @Body()
     userDTO: UserDTO,
-    @ActiveUserId() userId: string,
   ) {
     const { nomePrimeiro, nomeUltimo, email, cpf, username, senha, telefone, dateJoined, ultimaConexao } = userDTO;
 
     const { nomeBairro, nomeCidade, nomeEstado, nomeRua, nomeCompleto, rg, cep } = criadorDTO;
 
-    const user = await this.userService.getUserBydId(userId);
-
-    if (!(user.pessoa === 'Tecnico')) {
-      throw new UnauthorizedException();
+    if (
+      !nomePrimeiro ||
+      !nomeUltimo ||
+      !email ||
+      !cpf ||
+      !username ||
+      !senha ||
+      !telefone ||
+      !dateJoined ||
+      !ultimaConexao ||
+      !nomeBairro ||
+      !nomeCidade ||
+      !nomeEstado ||
+      !nomeRua ||
+      !nomeCompleto ||
+      !rg ||
+      !cep
+    ) {
+      throw new UnauthorizedException('Existe um campo vazio.');
     }
 
     const emailTaken = await this.userService.getUserEmail(email);
 
     if (emailTaken) {
-      throw new ConflictException('This email is already in use');
+      throw new ConflictException('Email já cadastrado!');
     }
 
     const validarCPF = this.validarCPF(cpf);
@@ -64,7 +80,7 @@ export class CriadorController {
       senha: haskedSenha,
       telefone,
       ativo: true,
-      pessoa: 'Criado',
+      pessoa: 'Criador',
       ultimaConexao,
     });
 
@@ -85,7 +101,6 @@ export class CriadorController {
   @Get('get-criadores')
   async getCriadores(@ActiveUserId() userId: string) {
     const user = await this.userService.getUserBydId(userId);
-    console.log(user);
 
     if (!(user.pessoa === 'Tecnico')) {
       throw new UnauthorizedException();
@@ -112,7 +127,7 @@ export class CriadorController {
       throw new NotFoundException('Criador não existe!');
     }
 
-    return this.criadorService.getCriadorBydId(id);
+    return userCriadorService;
   }
 
   @Put('update-criador/:id')
@@ -126,6 +141,25 @@ export class CriadorController {
     const { nomePrimeiro, nomeUltimo, username, senha, telefone, dateJoined, ultimaConexao } = updateUserDTO;
 
     const { nomeBairro, nomeCidade, nomeEstado, nomeRua, nomeCompleto, rg, cep } = updateCriadorDTO;
+
+    if (
+      nomePrimeiro === '' ||
+      nomeUltimo === '' ||
+      username === '' ||
+      senha === '' ||
+      telefone === '' ||
+      dateJoined === '' ||
+      ultimaConexao === '' ||
+      nomeBairro === '' ||
+      nomeCidade === '' ||
+      nomeEstado === '' ||
+      nomeRua === '' ||
+      nomeCompleto === '' ||
+      rg === '' ||
+      cep === ''
+    ) {
+      throw new UnauthorizedException('Existe um campo vazio.');
+    }
 
     const criador = await this.criadorService.getCriadorBydId(useParamId);
 

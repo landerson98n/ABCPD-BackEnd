@@ -1,6 +1,7 @@
 import { IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class TecnicoDTO {
+  @IsOptional()
   @IsUUID()
   @IsNotEmpty()
   userId: string;

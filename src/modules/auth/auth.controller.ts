@@ -1,4 +1,4 @@
-import { Body, Controller, Post, SetMetadata } from '@nestjs/common';
+import { Body, Controller, Post, SetMetadata, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 
@@ -10,6 +10,13 @@ export class AuthController {
   @Post('login')
   @SetMetadata('IS_PUBLIC', true)
   authenticate(@Body() loginDto: LoginDto) {
+    const { email, senha } = loginDto;
+
+    if (email === '' || senha === '') {
+      // Código 401
+      throw new UnauthorizedException('Existe um campo vazio.');
+    }
+
     return this.authService.login(loginDto);
   }
 }

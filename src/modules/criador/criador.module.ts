@@ -7,5 +7,6 @@ import { UserModule } from '../user/user.module';
   imports: [UserModule],
   providers: [CriadorService],
   controllers: [CriadorController],
+  exports: [CriadorService],
 })
 export class CriadorModule {}
