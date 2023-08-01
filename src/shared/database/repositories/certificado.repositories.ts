@@ -9,4 +9,20 @@ export class CertificadoRepository {
   create(createDto: Prisma.CertificadoCreateArgs) {
     return this.prismaService.certificado.create(createDto);
   }
+
+  findMany() {
+    return this.prismaService.certificado.findMany();
+  }
+
+  findUnique(findUniqueCertificado: Prisma.CertificadoFindUniqueArgs) {
+    return this.prismaService.certificado.findUnique({ ...findUniqueCertificado });
+  }
+
+  update(updateCertificado: Prisma.CertificadoUpdateArgs) {
+    return this.prismaService.certificado.update({ ...updateCertificado });
+  }
+
+  delete(deleteCertificado: Prisma.CertificadoDeleteArgs) {
+    return this.prismaService.certificado.delete({ ...deleteCertificado });
+  }
 }

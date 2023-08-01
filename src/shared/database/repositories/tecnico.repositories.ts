@@ -10,8 +10,8 @@ export class TecnicoRepository {
     return this.prismaService.tecnico.create(createDto);
   }
 
-  findMany() {
-    return this.prismaService.tecnico.findMany();
+  findMany(findManyTecnico: Prisma.TecnicoFindManyArgs) {
+    return this.prismaService.tecnico.findMany(findManyTecnico);
   }
 
   findUnique(findUniqueTecnico: Prisma.TecnicoFindUniqueArgs) {

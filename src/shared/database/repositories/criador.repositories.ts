@@ -10,8 +10,8 @@ export class CriadorRepository {
     return this.prismaService.criador.create(createDto);
   }
 
-  findMany() {
-    return this.prismaService.criador.findMany();
+  findMany(findManyCriador: Prisma.CriadorFindManyArgs) {
+    return this.prismaService.criador.findMany(findManyCriador);
   }
 
   findUnique(findUniqueCriador: Prisma.CriadorFindUniqueArgs) {

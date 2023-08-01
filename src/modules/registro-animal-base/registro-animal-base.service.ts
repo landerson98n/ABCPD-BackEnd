@@ -4,17 +4,54 @@ import { RegistroAnimalBaseRepository } from 'src/shared/database/repositories/r
 
 @Injectable()
 export class RegistroAnimalBaseService {
-  constructor(
-    private registroAnimalBaseRepository: RegistroAnimalBaseRepository,
-  ) {}
+  constructor(private registroAnimalBaseRepository: RegistroAnimalBaseRepository) {}
 
   async registroAnimalBase(dto: RegistroAnimalBaseDTO) {
-    const animal = await this.registroAnimalBaseRepository.create({
+    const animalBase = await this.registroAnimalBaseRepository.create({
       data: {
         ...dto,
       },
     });
 
-    return animal;
+    return animalBase;
+  }
+
+  async getRegistroAnimaisBases() {
+    const animaisBases = await this.registroAnimalBaseRepository.findMany();
+
+    return animaisBases;
+  }
+
+  async getRegistroAnimalBaseById(id: string) {
+    const animalBase = await this.registroAnimalBaseRepository.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    return animalBase;
+  }
+
+  async updateRegistroAnimalBase(dto: RegistroAnimalBaseDTO, id: string) {
+    const animalBase = await this.registroAnimalBaseRepository.update({
+      where: {
+        id,
+      },
+      data: {
+        ...dto,
+      },
+    });
+
+    return animalBase;
+  }
+
+  async deleteRegistroAnimalBase(id: string) {
+    const deleteAnimalBase = await this.registroAnimalBaseRepository.delete({
+      where: {
+        id,
+      },
+    });
+
+    return deleteAnimalBase;
   }
 }

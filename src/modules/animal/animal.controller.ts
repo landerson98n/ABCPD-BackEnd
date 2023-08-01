@@ -1,47 +1,349 @@
-import { Body, Controller, Post, Get, Param, Delete } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  Get,
+  Param,
+  Delete,
+  UnauthorizedException,
+  NotFoundException,
+  ParseUUIDPipe,
+  Put,
+} from '@nestjs/common';
 import { AnimalService } from './animal.service';
 import { AnimalDTO, UpdateAnimalDTO } from './dto/animal.dto';
+import { ActiveUserId } from 'src/shared/decorators/ActiverUserId';
+import { UserService } from '../user/user.service';
+import { CriadorService } from '../criador/criador.service';
+import { FazendaService } from '../fazenda/fazenda.service';
+import { RebanhoService } from '../rebanho/rebanho.service';
 
 @Controller('animal')
 export class AnimalController {
-  constructor(private animalService: AnimalService) {}
+  constructor(
+    private readonly animalService: AnimalService,
+    private readonly userService: UserService,
+    private readonly criadorService: CriadorService,
+    private readonly fazendaService: FazendaService,
+    private readonly rebanhoService: RebanhoService,
+  ) {}
 
-  @Post('cadastrarAnimal')
-  cadastrarAnimal(
+  @Post('cadastrar-animal')
+  async cadastrarAnimal(
     @Body()
-    dto: AnimalDTO,
+    animalDTO: AnimalDTO,
+    @ActiveUserId() userId: string,
   ) {
-    return this.animalService.cadastrarAnimal(dto);
+    const {
+      criadorAnimal,
+      fazenda,
+      rebanho,
+      pai,
+      mae,
+      dataAvalicacao,
+      composicaoGenetica,
+      dataRGDAnimalSuper,
+      dataRGDAnimalTecnico,
+      dataRGNAnimalSuper,
+      dataRGNAnimalTecnico,
+      dataNascimentoAnimal,
+      decisaoAnimalSuperRGD,
+      decisaoAnimalSuperRGN,
+      decisaoAnimalTecnicoRGD,
+      decisaoAnimalTecnicoRGN,
+      image01,
+      image02,
+      image03,
+      image04,
+      nomeAnimal,
+      observacaoSuper,
+      observacaoTecnico,
+      pelagemAnimal,
+      racaAnimalMatriz,
+      registradoRGDSuper,
+      registradoRGDTecnico,
+      registradoRGNSuper,
+      registradoRGNTecnico,
+      registro,
+      registroGeral,
+      sexoAnimal,
+      flag,
+    } = animalDTO;
+
+    if (
+      !criadorAnimal ||
+      !fazenda ||
+      !dataAvalicacao ||
+      !composicaoGenetica ||
+      !dataRGDAnimalSuper ||
+      !dataRGDAnimalTecnico ||
+      !dataRGNAnimalSuper ||
+      !dataRGNAnimalTecnico ||
+      !dataNascimentoAnimal ||
+      !decisaoAnimalSuperRGD ||
+      !decisaoAnimalSuperRGN ||
+      !decisaoAnimalTecnicoRGD ||
+      !decisaoAnimalTecnicoRGN ||
+      !image01 ||
+      !image02 ||
+      !image03 ||
+      !image04 ||
+      !nomeAnimal ||
+      !observacaoSuper ||
+      !observacaoTecnico ||
+      !pelagemAnimal ||
+      !racaAnimalMatriz ||
+      !registradoRGDSuper ||
+      !registradoRGDTecnico ||
+      !registradoRGNSuper ||
+      !registradoRGNTecnico ||
+      !registro ||
+      !registroGeral ||
+      !sexoAnimal
+    ) {
+      throw new UnauthorizedException('Existe um campo vazio.');
+    }
+
+    const user = await this.userService.getUserBydId(userId);
+
+    if (!(user.pessoa === 'Tecnico')) {
+      throw new UnauthorizedException();
+    }
+
+    // Existe criador
+    const criador = await this.criadorService.getCriadorBydId(criadorAnimal);
+
+    if (!criador) {
+      throw new NotFoundException('Criador(a) não encontrado(a)!');
+    }
+
+    // Existe fazenda
+    const fazendaEx = await this.fazendaService.getFazendaBydId(fazenda);
+
+    if (!fazenda) {
+      throw new NotFoundException('Fazenda não encontrada!');
+    }
+
+    if (criador.id !== fazendaEx.criadorFazenda) {
+      throw new NotFoundException('O criador não tem vínculo com a fazenda!');
+    }
+
+    // Existe rebanho
+    const rebanhoEx = await this.rebanhoService.getRebanhoBydId(rebanho);
+
+    if (!rebanhoEx) {
+      throw new NotFoundException('Rebanho não encontrada!');
+    }
+    // Landerson??/
+    // Existe pai
+    const paiEx = await this.animalService.getAnimalBydId(pai);
+
+    if (!paiEx) {
+      throw new NotFoundException('Pai não encontrado!');
+    }
+
+    // Existe mãe
+    const mãeEx = await this.animalService.getAnimalBydId(mae);
+
+    if (!mãeEx) {
+      throw new NotFoundException('Mãe não encontrada!');
+    }
+
+    await this.animalService.cadastrarAnimal({
+      criadorAnimal,
+      fazenda,
+      pai: pai || null,
+      mae: mae || null,
+      rebanho,
+      dataAvalicacao,
+      composicaoGenetica,
+      dataRGDAnimalSuper,
+      dataRGDAnimalTecnico,
+      dataRGNAnimalSuper,
+      dataRGNAnimalTecnico,
+      dataNascimentoAnimal,
+      decisaoAnimalSuperRGD,
+      decisaoAnimalSuperRGN,
+      decisaoAnimalTecnicoRGD,
+      decisaoAnimalTecnicoRGN,
+      image01,
+      image02,
+      image03,
+      image04,
+      nomeAnimal,
+      observacaoSuper,
+      observacaoTecnico,
+      pelagemAnimal,
+      racaAnimalMatriz,
+      registradoRGDSuper,
+      registradoRGDTecnico,
+      registradoRGNSuper,
+      registradoRGNTecnico,
+      registro,
+      registroGeral,
+      sexoAnimal,
+      flag,
+    });
+
+    return null;
   }
 
-  @Get('getAnimais')
-  getAnimais() {
+  @Get('get-animal')
+  async getAnimais(@ActiveUserId() userId: string) {
+    const user = await this.userService.getUserBydId(userId);
+
+    if (!(user.pessoa === 'Tecnico')) {
+      throw new UnauthorizedException();
+    }
+
     return this.animalService.getAnimais();
   }
 
-  @Get('getAnimalById/:id')
-  getAnimalById(
-    @Param('id')
+  @Get('get-animal/:id')
+  async getAnimalById(
+    @Param('id', ParseUUIDPipe)
     id: string,
+    @ActiveUserId() userId: string,
   ) {
-    return this.animalService.getAnimalBydId(id);
+    const user = await this.userService.getUserBydId(userId);
+
+    if (!(user.pessoa === 'Tecnico')) {
+      throw new UnauthorizedException();
+    }
+
+    const animalEx = await this.animalService.getAnimalBydId(id);
+
+    if (!animalEx) {
+      throw new NotFoundException('Fazenda não encontrada!');
+    }
+
+    return animalEx;
   }
 
-  @Post('updateAnimal/:id')
-  updateAnimal(
+  @Put('update-animal/:id')
+  async updateAnimal(
     @Body()
-    dto: UpdateAnimalDTO,
-    @Param('id')
+    updateAnimalDTO: UpdateAnimalDTO,
+    @Param('id', ParseUUIDPipe)
     id: string,
+    @ActiveUserId() userId: string,
   ) {
-    return this.animalService.updateAnimal(dto, id);
+    const {
+      dataAvalicacao,
+      composicaoGenetica,
+      dataRGDAnimalSuper,
+      dataRGDAnimalTecnico,
+      dataRGNAnimalSuper,
+      dataRGNAnimalTecnico,
+      dataNascimentoAnimal,
+      decisaoAnimalSuperRGD,
+      decisaoAnimalSuperRGN,
+      decisaoAnimalTecnicoRGD,
+      decisaoAnimalTecnicoRGN,
+      image01,
+      image02,
+      image03,
+      image04,
+      nomeAnimal,
+      observacaoSuper,
+      observacaoTecnico,
+      pelagemAnimal,
+      racaAnimalMatriz,
+      registradoRGDSuper,
+      registradoRGDTecnico,
+      registradoRGNSuper,
+      registradoRGNTecnico,
+      registro,
+      registroGeral,
+      sexoAnimal,
+      flag,
+    } = updateAnimalDTO;
+
+    if (
+      !dataAvalicacao ||
+      !composicaoGenetica ||
+      !dataRGDAnimalSuper ||
+      !dataRGDAnimalTecnico ||
+      !dataRGNAnimalSuper ||
+      !dataRGNAnimalTecnico ||
+      !dataNascimentoAnimal ||
+      !decisaoAnimalSuperRGD ||
+      !decisaoAnimalSuperRGN ||
+      !decisaoAnimalTecnicoRGD ||
+      !decisaoAnimalTecnicoRGN ||
+      !image01 ||
+      !image02 ||
+      !image03 ||
+      !image04 ||
+      !nomeAnimal ||
+      !observacaoSuper ||
+      !observacaoTecnico ||
+      !pelagemAnimal ||
+      !racaAnimalMatriz ||
+      !registradoRGDSuper ||
+      !registradoRGDTecnico ||
+      !registradoRGNSuper ||
+      !registradoRGNTecnico ||
+      !registro ||
+      !registroGeral ||
+      !sexoAnimal
+    ) {
+      throw new UnauthorizedException('Existe um campo vazio.');
+    }
+
+    const user = await this.userService.getUserBydId(userId);
+
+    if (!(user.pessoa === 'Tecnico')) {
+      throw new UnauthorizedException();
+    }
+
+    return this.animalService.updateAnimal(
+      {
+        dataAvalicacao,
+        composicaoGenetica,
+        dataRGDAnimalSuper,
+        dataRGDAnimalTecnico,
+        dataRGNAnimalSuper,
+        dataRGNAnimalTecnico,
+        dataNascimentoAnimal,
+        decisaoAnimalSuperRGD,
+        decisaoAnimalSuperRGN,
+        decisaoAnimalTecnicoRGD,
+        decisaoAnimalTecnicoRGN,
+        image01,
+        image02,
+        image03,
+        image04,
+        nomeAnimal,
+        observacaoSuper,
+        observacaoTecnico,
+        pelagemAnimal,
+        racaAnimalMatriz,
+        registradoRGDSuper,
+        registradoRGDTecnico,
+        registradoRGNSuper,
+        registradoRGNTecnico,
+        registro,
+        registroGeral,
+        sexoAnimal,
+        flag,
+      },
+      id,
+    );
   }
 
   @Delete('deleteAnimal/:id')
-  deleteAnimal(
-    @Param('id')
+  async deleteAnimal(
+    @Param('id', ParseUUIDPipe)
     id: string,
+    @ActiveUserId() userId: string,
   ) {
+    const user = await this.userService.getUserBydId(userId);
+
+    if (!(user.pessoa === 'Tecnico')) {
+      throw new UnauthorizedException();
+    }
+
     return this.animalService.deleteAnimal(id);
   }
 }

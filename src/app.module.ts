@@ -16,6 +16,9 @@ import { SolicitacaoCadastroCriadorModule } from './modules/solicitacao-cadastro
 import { SolicitacaoCadastroFazendaModule } from './modules/solicitacao-cadastro-fazenda/solicitacao-cadastro-fazenda.module';
 import { CertificadoModule } from './modules/certificado/certificado.module';
 import { MatrixModule } from './modules/matrix/matrix.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthGuard } from './modules/auth/auth.guard';
 
 @Module({
   imports: [
@@ -36,8 +39,14 @@ import { MatrixModule } from './modules/matrix/matrix.module';
     SolicitacaoCadastroFazendaModule,
     CertificadoModule,
     MatrixModule,
+    AuthModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+  ],
 })
 export class AppModule {}

@@ -10,7 +10,7 @@ import { TecnicoRepository } from './repositories/tecnico.repositories';
 import { ComunicacaoCoberturaRepository } from './repositories/comunicacao-cobertura.repositories';
 import { ComunicacaoNascimentoRepository } from './repositories/comunicacao-nascimento.repositories';
 import { ComunicacaoObitoRepository } from './repositories/comunicacao-obito.repositories';
-import { TransferirAnimalRepository } from './repositories/transferir-animal.repositories copy';
+import { TransferirAnimalRepository } from './repositories/transferir-animal.repositories';
 import { SolicitacaoRegistroAnimalBaseRepository } from './repositories/solicitacao-registro-animal-base.repositories';
 import { RegistroAnimalBaseRepository } from './repositories/registroAnimalBase.repositories';
 import { SolicitacaoCadatroCriadorRepository } from './repositories/solicitacao-cadastro-criador.repositories';

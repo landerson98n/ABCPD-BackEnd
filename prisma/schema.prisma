@@ -11,40 +11,40 @@ datasource db {
 }
 
 model Animal {
-  id                      String   @id @unique @default(uuid()) @db.Uuid
-  criadorAnimal           String   @unique @map("criador_animal") @db.Uuid
-  fazenda                 String   @unique @db.Uuid
-  mae                     String?  @unique @db.Uuid
-  pai                     String?  @unique @db.Uuid
-  rebanho                 String   @unique @db.Uuid
-  dataAvalicacao          DateTime @map("data_avalicacao")
-  composicaoGenetica      String   @map("composicao_genetica")
-  dataRGDAnimalSuper      DateTime @map("data_RGD_animal_Super")
-  dataRGDAnimalTecnico    DateTime @map("data_RGD_animal_Tecnico")
-  dataRGNAnimalSuper      DateTime @map("data_RGN_animal_Super")
-  dataRGNAnimalTecnico    DateTime @map("data_RGN_animal_Tecnico")
-  dataNascimentoAnimal    DateTime @map("data_nascimento_animal")
-  decisaoAnimalSuperRGD   String   @map("decisao_animal_Super_RGD")
-  decisaoAnimalSuperRGN   String   @map("decisao_animal_Super_RGN")
-  decisaoAnimalTecnicoRGD String   @map("decisao_animal_Tecnico_RGD")
-  decisaoAnimalTecnicoRGN String   @map("decisao_animal_Tecnico_RGN")
-  image01                 String   @map("image_01")
-  image02                 String   @map("image_02")
-  image03                 String   @map("image_03")
-  image04                 String   @map("image_04")
-  nomeAnimal              String   @map("nome_animal")
-  observacaoSuper         String   @map("observacao_Super")
-  observacaoTecnico       String   @map("observacao_Tecnico")
-  pelagemAnimal           String   @map("pelagem_animal")
-  racaAnimalMatriz        String   @map("raca_animal_matriz")
-  registradoRGDSuper      Boolean  @map("registrado_RGD_Super")
-  registradoRGDTecnico    Boolean  @map("registrado_RGD_Tecnico")
-  registradoRGNSuper      Boolean  @map("registrado_RGN_Super")
-  registradoRGNTecnico    Boolean  @map("registrado_RGN_Tecnico")
+  id                      String  @id @unique @default(uuid()) @db.Uuid
+  criadorAnimal           String  @unique @map("criador_animal") @db.Uuid
+  fazenda                 String  @unique @db.Uuid
+  mae                     String? @unique @db.Uuid
+  pai                     String? @unique @db.Uuid
+  rebanho                 String  @unique @db.Uuid
+  dataAvalicacao          String  @map("data_avalicacao")
+  composicaoGenetica      String  @map("composicao_genetica")
+  dataRGDAnimalSuper      String  @map("data_RGD_animal_Super")
+  dataRGDAnimalTecnico    String  @map("data_RGD_animal_Tecnico")
+  dataRGNAnimalSuper      String  @map("data_RGN_animal_Super")
+  dataRGNAnimalTecnico    String  @map("data_RGN_animal_Tecnico")
+  dataNascimentoAnimal    String  @map("data_nascimento_animal")
+  decisaoAnimalSuperRGD   String  @map("decisao_animal_Super_RGD")
+  decisaoAnimalSuperRGN   String  @map("decisao_animal_Super_RGN")
+  decisaoAnimalTecnicoRGD String  @map("decisao_animal_Tecnico_RGD")
+  decisaoAnimalTecnicoRGN String  @map("decisao_animal_Tecnico_RGN")
+  image01                 String  @map("image_01")
+  image02                 String  @map("image_02")
+  image03                 String  @map("image_03")
+  image04                 String  @map("image_04")
+  nomeAnimal              String  @map("nome_animal")
+  observacaoSuper         String  @map("observacao_Super")
+  observacaoTecnico       String  @map("observacao_Tecnico")
+  pelagemAnimal           String  @map("pelagem_animal")
+  racaAnimalMatriz        String  @map("raca_animal_matriz")
+  registradoRGDSuper      Boolean @map("registrado_RGD_Super")
+  registradoRGDTecnico    Boolean @map("registrado_RGD_Tecnico")
+  registradoRGNSuper      Boolean @map("registrado_RGN_Super")
+  registradoRGNTecnico    Boolean @map("registrado_RGN_Tecnico")
   registro                String
-  registroGeral           String   @map("registro_geral")
-  sexoAnimal              String   @map("sexo_animal")
-  flag                    Int
+  registroGeral           String  @map("registro_geral")
+  sexoAnimal              String  @map("sexo_animal")
+  flag                    Int     @default(0)
 
   rebanhoAnimal Rebanho @relation(fields: [rebanho], references: [id])
 
@@ -65,31 +65,31 @@ model Animal {
 }
 
 model Fazenda {
-  id                String   @id @unique @default(uuid()) @db.Uuid
-  criadorFazenda    String   @unique @map("criador_cobertura") @db.Uuid
-  areaFazenda       String   @map("area_fazenda")
+  id                String  @id @unique @default(uuid()) @db.Uuid
+  criadorFazenda    String  @unique @map("criador_fazenda") @db.Uuid
+  areaFazenda       String  @map("area_fazenda")
   atualizacoes      String
-  comoChegar        String   @map("como_chegar")
-  dataDocumentacao  DateTime @map("data_documentacao")
-  fazendaCadastrada Boolean  @map("fazenda_Cadastrada")
-  femeas04Fazenda   Int      @map("femeas_0_4_fazenda")
-  femeas1224Fazenda Int      @map("femeas_12_24_fazenda")
-  femeas2436Fazenda Int      @map("femeas_24_36_fazenda")
-  femeas36Fazenda   Int      @map("femeas_36_fazenda")
-  femeas412Fazenda  Int      @map("femeas_4_12_fazenda")
-  macho04Fazenda    Int      @map("macho_0_4_fazenda")
-  macho1224Fazenda  Int      @map("macho_12_24_fazenda")
-  macho2436Fazenda  Int      @map("macho_24_36_fazenda")
-  macho36Fazenda    Int      @map("macho_36_fazenda")
-  macho412Fazenda   Int      @map("macho_4_12_fazenda")
-  municipioFazenda  Int      @map("municipio_fazenda")
-  nomeFazenda       String   @map("nome_fazenda")
+  comoChegar        String  @map("como_chegar")
+  dataDocumentacao  String  @map("data_documentacao")
+  fazendaCadastrada Boolean @map("fazenda_Cadastrada")
+  femeas04Fazenda   Int     @map("femeas_0_4_fazenda")
+  femeas1224Fazenda Int     @map("femeas_12_24_fazenda")
+  femeas2436Fazenda Int     @map("femeas_24_36_fazenda")
+  femeas36Fazenda   Int     @map("femeas_36_fazenda")
+  femeas412Fazenda  Int     @map("femeas_4_12_fazenda")
+  macho04Fazenda    Int     @map("macho_0_4_fazenda")
+  macho1224Fazenda  Int     @map("macho_12_24_fazenda")
+  macho2436Fazenda  Int     @map("macho_24_36_fazenda")
+  macho36Fazenda    Int     @map("macho_36_fazenda")
+  macho412Fazenda   Int     @map("macho_4_12_fazenda")
+  municipioFazenda  Int     @map("municipio_fazenda")
+  nomeFazenda       String  @map("nome_fazenda")
   observacoes       String
   outrasEspecies    String
-  proponente1       String   @map("proponente_1")
-  proponente2       String   @map("proponente_2")
-  proponente3       String   @map("proponente_3")
-  telefoneFazenda   String   @map("telefone_fazenda")
+  proponente1       String  @map("proponente_1")
+  proponente2       String  @map("proponente_2")
+  proponente3       String  @map("proponente_3")
+  telefoneFazenda   String  @map("telefone_fazenda")
 
   criador                    Criador                      @relation(fields: [criadorFazenda], references: [id])
   animais                    Animal[]
@@ -104,20 +104,18 @@ model Fazenda {
 }
 
 model User {
-  id            String   @id @default(uuid()) @db.Uuid
-  cadastro      Boolean
-  dateJoined    DateTime
-  nomePrimeiro  String   @map("nome_primeiro")
-  nomeUltimo    String   @map("nome_ultimo")
-  email         String   @unique
-  cpf           String   @unique
+  id            String  @id @default(uuid()) @db.Uuid
+  dateJoined    String
+  nomePrimeiro  String  @map("nome_primeiro")
+  nomeUltimo    String  @map("nome_ultimo")
+  email         String  @unique
+  cpf           String  @unique
   username      String
   senha         String
   telefone      String
   ativo         Boolean
-  pessoa        Boolean
-  superusuario  Boolean
-  ultimaConexao DateTime @map("ultima_conexao")
+  pessoa        String
+  ultimaConexao String  @map("ultima_conexao")
 
   tecnico        Tecnico[]
   criador        Criador[]
@@ -154,15 +152,14 @@ model Tecnico {
 }
 
 model Criador {
-  id           String  @id @default(uuid()) @db.Uuid
-  userId       String  @map("user_id") @db.Uuid
+  id           String @id @default(uuid()) @db.Uuid
+  userId       String @map("user_id") @db.Uuid
   cep          String
-  ativo        Boolean
-  nomeBairro   String  @map("nome_bairro")
-  nomeCidade   String  @map("nome_cidade")
-  nomeCompleto String  @map("nome_completo")
-  nomeEstado   String  @map("nome_estado")
-  nomeRua      String  @map("nome_rua")
+  nomeBairro   String @map("nome_bairro")
+  nomeCidade   String @map("nome_cidade")
+  nomeCompleto String @map("nome_completo")
+  nomeEstado   String @map("nome_estado")
+  nomeRua      String @map("nome_rua")
   rg           String
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
