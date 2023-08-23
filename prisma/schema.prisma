@@ -160,7 +160,8 @@ model Criador {
   nomeCompleto String @map("nome_completo")
   nomeEstado   String @map("nome_estado")
   nomeRua      String @map("nome_rua")
-  asaasId      String  @map("asaas_id") @default("")
+  numeroCasa   String @map("numero_casa") @default("")
+  asaasId      String @map("asaas_id") @default("")
   rg           String
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)

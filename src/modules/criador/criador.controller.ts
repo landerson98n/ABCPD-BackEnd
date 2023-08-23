@@ -38,7 +38,7 @@ export class CriadorController {
   ) {
     const { nomePrimeiro, nomeUltimo, email, cpf, username, senha, telefone, dateJoined, ultimaConexao } = userDTO;
 
-    const { nomeBairro, nomeCidade, nomeEstado, nomeRua, nomeCompleto, rg, cep } = criadorDTO;
+    const { nomeBairro, nomeCidade, nomeEstado, nomeRua, nomeCompleto, rg, cep, numeroCasa } = criadorDTO;
 
     if (
       !nomePrimeiro ||
@@ -56,7 +56,8 @@ export class CriadorController {
       !nomeRua ||
       !nomeCompleto ||
       !rg ||
-      !cep
+      !cep ||
+      !numeroCasa
     ) {
       throw new UnauthorizedException('Existe um campo vazio.');
     }
@@ -92,7 +93,7 @@ export class CriadorController {
       telefone,
       ativo: true,
       pessoa: 'Criador',
-      ultimaConexao
+      ultimaConexao,
     });
 
     const url = `${process.env.BASE_URL_ASAAS}/customers`;
@@ -122,7 +123,7 @@ export class CriadorController {
       nomeCompleto,
       rg,
       cep,
-      
+      numeroCasa
     });
 
     fetch(url, options)
@@ -194,7 +195,7 @@ export class CriadorController {
     if (!criador) {
       throw new NotFoundException('Criador não existe!');
     }
-
+    const user = await this.userService.getUserBydId(criador.userId)
     var dataAtual = new Date();
     var diaAtual = dataAtual.getDate();
     var dataAlvo = new Date(dataAtual);
@@ -219,14 +220,94 @@ export class CriadorController {
         customer: criador.asaasId,
         dueDate,
         value,
-        description: 'Pedido 056984',
         postalService: false
       })
     }
 
       fetch(url, options)
       .then(res => res.json())
-      .then(json => console.log(json))
+      .then(json =>{return json.bankSlipUrl})
+      .catch(err => console.error('error:' + err));
+    }
+
+    if(billingType == "CREDIT_CARD"){
+      const url = `${process.env.BASE_URL_ASAAS}/payments`;
+      const options = {
+        method: 'POST',
+        headers: {
+        accept: 'application/json',
+        'content-type': 'application/json',
+        access_token: process.env.TOKEN_ASAAS
+      },
+      body: JSON.stringify({
+        billingType: 'CREDIT_CARD',
+        customer: criador.asaasId,
+        dueDate,
+        value,
+        postalService: false,
+        creditCard:{
+          holderName,
+          number,
+          expiryMonth,
+          expiryYear,
+          ccv
+        },
+        creditCardHolderInfo:{
+          name: criador.nomeCompleto,
+          email: user.email,
+          cpfCnpj: user.cpf,
+          postalCode: criador.cep,
+          addressNumber: criador.numeroCasa ,
+          phone: user.telefone,
+          remoteIp
+        }
+      })
+    }
+
+      fetch(url, options)
+      .then(res => res.json())
+      .then(json =>console.log(json))
+      .catch(err => console.error('error:' + err));
+    }
+
+    if(billingType == "PIX"){
+      const url = `${process.env.BASE_URL_ASAAS}/payments`;
+      const options = {
+        method: 'POST',
+        headers: {
+        accept: 'application/json',
+        'content-type': 'application/json',
+        access_token: process.env.TOKEN_ASAAS
+      },
+      body: JSON.stringify({
+        billingType: 'UNDEFINED',
+        customer: criador.asaasId,
+        dueDate,
+        value,
+        postalService: false
+      })
+    }
+
+    const pagamento = await fetch(url, options)
+      .then(res => res.json())
+      .then(json =>{return json})
+      .catch(err => console.error('error:' + err));
+    console.log(pagamento);
+    
+
+      const urlPix = `${process.env.BASE_URL_ASAAS}/payments/${pagamento.id}/pixQrCode`;
+      const optionsPix = {
+        method: 'GET',
+        headers: {
+        accept: 'application/json',
+        'content-type': 'application/json',
+        access_token: process.env.TOKEN_ASAAS
+      },
+    }
+
+    fetch(urlPix, optionsPix)
+      .then(res => res.json())
+      .then(json =>console.log(json))
       .catch(err => console.error('error:' + err));
     }
   }
