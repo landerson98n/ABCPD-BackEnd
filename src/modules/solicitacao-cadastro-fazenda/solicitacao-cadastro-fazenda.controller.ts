@@ -6,17 +6,17 @@ import { solicitacaoCadastroFazendaDTO } from './dto/solicitacao-cadastro-fazend
 export class SolicitacaoCadastroFazendaController {
   constructor(private readonly solicitacaoCadastroFazendaService: SolicitacaoCadastroFazendaService) {}
 
-  @Post()
-  cadastrarAnimal(@Body() dto: solicitacaoCadastroFazendaDTO) {
+  @Post('solicitacao-cadastro-fazenda')
+  solicitacaoCadastroFazenda(@Body() dto: solicitacaoCadastroFazendaDTO) {
     return this.solicitacaoCadastroFazendaService.solicitacaoCadastroFazenda(dto);
   }
 
-  @Get('getAnimais')
-  getAnimais() {
+  @Get('get-solicitacoes-cadastros-fazendas')
+  getSolicitacoesCadastrosFazendas() {
     return this.solicitacaoCadastroFazendaService.getSolicitacaoCadastroFazenda();
   }
 
-  @Get('getAnimalById/:id')
+  @Get('get-solicitacao-cadastro-fazenda-ById/:id')
   getAnimalById(
     @Param('id')
     id: string,
@@ -24,7 +24,7 @@ export class SolicitacaoCadastroFazendaController {
     return this.solicitacaoCadastroFazendaService.getSolicitacaoCadastroFazendaById(id);
   }
 
-  @Post('updateAnimal/:id')
+  @Post('update-solicitacao-cadastro-fazenda/:id')
   updateAnimal(
     @Body()
     dto: solicitacaoCadastroFazendaDTO,
@@ -34,7 +34,7 @@ export class SolicitacaoCadastroFazendaController {
     return this.solicitacaoCadastroFazendaService.updateSolicitacaoCadastroFazenda(dto, id);
   }
 
-  @Delete('deleteAnimal/:id')
+  @Delete('delete-solicitacao-cadastro-fazenda/:id')
   deleteAnimal(
     @Param('id')
     id: string,

@@ -9,6 +9,7 @@ import {
   ParseUUIDPipe,
   NotFoundException,
   UnauthorizedException,
+  SetMetadata,
 } from '@nestjs/common';
 import { SuperintendenteService } from './superintendente.service';
 import { UserService } from '../user/user.service';
@@ -22,6 +23,7 @@ export class SuperintendenteController {
     private readonly userService: UserService,
   ) {}
 
+  @SetMetadata('IS_PUBLIC', true)
   @Post('cadastrar-superintendente')
   async cadastrarSuperintendente(
     @Body()

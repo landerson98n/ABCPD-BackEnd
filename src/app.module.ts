@@ -11,8 +11,6 @@ import { ComunicacaoCoberturaModule } from './modules/comunicacao-cobertura/comu
 import { ComunicacaoObitoModule } from './modules/comunicacao-obito/comunicacao-obito.module';
 import { TransferirAnimalModule } from './modules/transferir-animal/transferir-animal.module';
 import { SolicitacaoRegistroAnimalBaseModule } from './modules/solicitacao-registro-animal-base/solicitacao-registro-animal-base.module';
-import { RegistroAnimalBaseModule } from './modules/registro-animal-base/registro-animal-base.module';
-import { SolicitacaoCadastroCriadorModule } from './modules/solicitacao-cadastro-criador/solicitacao-cadastro-criador.module';
 import { SolicitacaoCadastroFazendaModule } from './modules/solicitacao-cadastro-fazenda/solicitacao-cadastro-fazenda.module';
 import { CertificadoModule } from './modules/certificado/certificado.module';
 import { MatrixModule } from './modules/matrix/matrix.module';
@@ -34,8 +32,6 @@ import { AuthGuard } from './modules/auth/auth.guard';
     ComunicacaoObitoModule,
     TransferirAnimalModule,
     SolicitacaoRegistroAnimalBaseModule,
-    RegistroAnimalBaseModule,
-    SolicitacaoCadastroCriadorModule,
     SolicitacaoCadastroFazendaModule,
     CertificadoModule,
     MatrixModule,

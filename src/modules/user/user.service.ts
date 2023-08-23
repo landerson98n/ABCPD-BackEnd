@@ -40,6 +40,15 @@ export class UserService {
     return user;
   }
 
+  async getUserCpf(cpf: string) {
+    const user = await this.userRepository.findUnique({
+      where: { cpf },
+      select: { id: true },
+    });
+
+    return user;
+  }
+
   async updateUser(dto: UpdateUserDTO, id: string) {
     const updateUser = await this.userRepository.update({
       where: {

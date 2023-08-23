@@ -8,7 +8,7 @@ export const ActiveUserId = createParamDecorator<undefined>((data, context: Exec
   const userId = request.userId;
 
   if (!userId) {
-    throw new UnauthorizedException();
+    throw new UnauthorizedException("User Id invalido");
   }
 
   return userId;

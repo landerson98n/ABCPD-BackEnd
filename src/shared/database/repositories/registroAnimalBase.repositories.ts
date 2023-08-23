@@ -6,23 +6,23 @@ import { PrismaService } from '../prisma.service';
 export class RegistroAnimalBaseRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  create(createDto: Prisma.RegistroAnimalBaseCreateArgs) {
-    return this.prismaService.registroAnimalBase.create(createDto);
+  create(createDto: Prisma.SolicitacaoRegistroAnimalBaseCreateArgs) {
+    return this.prismaService.solicitacaoRegistroAnimalBase.create(createDto);
   }
 
   findMany() {
-    return this.prismaService.registroAnimalBase.findMany();
+    return this.prismaService.solicitacaoRegistroAnimalBase.findMany();
   }
 
-  findUnique(findUniqueRegistroAnimalBase: Prisma.RegistroAnimalBaseFindUniqueArgs) {
-    return this.prismaService.registroAnimalBase.findUnique({ ...findUniqueRegistroAnimalBase });
+  findUnique(findUniqueRegistroAnimalBase: Prisma.SolicitacaoRegistroAnimalBaseFindUniqueArgs) {
+    return this.prismaService.solicitacaoRegistroAnimalBase.findUnique({ ...findUniqueRegistroAnimalBase });
   }
 
-  update(updateRegistroAnimalBase: Prisma.RegistroAnimalBaseUpdateArgs) {
-    return this.prismaService.registroAnimalBase.update({ ...updateRegistroAnimalBase });
+  update(updateRegistroAnimalBase: Prisma.SolicitacaoRegistroAnimalBaseUpdateArgs) {
+    return this.prismaService.solicitacaoRegistroAnimalBase.update({ ...updateRegistroAnimalBase });
   }
 
-  delete(deleteRegistroAnimalBase: Prisma.RegistroAnimalBaseDeleteArgs) {
-    return this.prismaService.registroAnimalBase.delete({ ...deleteRegistroAnimalBase });
+  delete(deleteRegistroAnimalBase: Prisma.SolicitacaoRegistroAnimalBaseDeleteArgs) {
+    return this.prismaService.solicitacaoRegistroAnimalBase.delete({ ...deleteRegistroAnimalBase });
   }
 }

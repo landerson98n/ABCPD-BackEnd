@@ -160,6 +160,7 @@ model Criador {
   nomeCompleto String @map("nome_completo")
   nomeEstado   String @map("nome_estado")
   nomeRua      String @map("nome_rua")
+  asaasId      String  @map("asaas_id") @default("")
   rg           String
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -256,25 +257,15 @@ model SolicitacaoRegistroAnimalBase {
   criadorId         String @map("criador_id") @db.Uuid
   tecnicoId         String @map("tecnico_id") @db.Uuid
   estadoSolicitacao String @map("estado_solicitacao")
+  quantidadeAnimais Int    @map("quantidade_animais")
 
   criador Criador @relation(fields: [criadorId], references: [id], onDelete: SetDefault)
 
   tecnico Tecnico @relation(fields: [tecnicoId], references: [id], onDelete: Cascade)
 
-  registroAnimalBase RegistroAnimalBase[]
-
   @@map("solicitacoes_registros_animais_base")
 }
 
-model RegistroAnimalBase {
-  id                String @id @default(uuid()) @db.Uuid
-  solicitacao       String @db.Uuid
-  quantidadeAnimais Int    @map("quantidade_animais")
-
-  solicitacaoRegistroAnimalBase SolicitacaoRegistroAnimalBase @relation(fields: [solicitacao], references: [id], onDelete: Cascade)
-
-  @@map("registros_animais_base")
-}
 
 model Rebanho {
   id        String @id @default(uuid()) @db.Uuid

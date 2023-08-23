@@ -43,4 +43,7 @@ export class UpdateCriadorDTO {
   @IsString()
   @IsOptional()
   rg: string;
+  @IsOptional()
+  @IsString()
+  asaasId: string
 }

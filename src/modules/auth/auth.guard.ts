@@ -10,7 +10,7 @@ export class AuthGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
-
+ 
     const isPublic = this.reflector.getAllAndOverride<boolean>('IS_PUBLIC', [context.getClass(), context.getHandler()]);
 
     if (isPublic) {
@@ -18,7 +18,7 @@ export class AuthGuard implements CanActivate {
     }
 
     if (!token) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException("Token não enviado");
     }
 
     try {
@@ -26,11 +26,14 @@ export class AuthGuard implements CanActivate {
         // Utilizar a palavra secreta do .env
         secret: process.env.JWT_SECRET,
       });
+      
+      
 
       // Só enviar o id do usuário
       request['userId'] = payload.sub;
     } catch {
-      throw new UnauthorizedException();
+    
+      throw new UnauthorizedException("Token invalido");
     }
 
     return true;

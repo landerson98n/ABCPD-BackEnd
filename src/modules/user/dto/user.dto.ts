@@ -1,28 +1,36 @@
-import { IsString, IsBoolean, IsOptional, IsDateString } from 'class-validator';
+import { IsString, IsBoolean, IsOptional, IsDateString, IsNotEmpty } from 'class-validator';
 
 export class UserDTO {
   @IsDateString()
+  @IsNotEmpty()
   dateJoined: string;
 
   @IsString()
+  @IsNotEmpty()
   nomePrimeiro: string;
 
   @IsString()
+  @IsNotEmpty()
   nomeUltimo: string;
 
   @IsString()
+  @IsNotEmpty()
   email: string;
 
   @IsString()
+  @IsNotEmpty()
   cpf: string;
 
   @IsString()
+  @IsNotEmpty()
   username: string;
 
   @IsString()
+  @IsNotEmpty()
   senha: string;
 
   @IsString()
+  @IsNotEmpty()
   telefone: string;
 
   @IsOptional()
@@ -35,6 +43,7 @@ export class UserDTO {
   pessoa: string;
 
   @IsDateString()
+  @IsNotEmpty()
   ultimaConexao: string;
 }
 
@@ -74,4 +83,6 @@ export class UpdateUserDTO {
   @IsOptional()
   @IsDateString()
   ultimaConexao: string;
+
+
 }

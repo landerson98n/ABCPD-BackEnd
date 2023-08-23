@@ -1,4 +1,4 @@
-import { IsUUID, IsNotEmpty, IsString } from 'class-validator';
+import { IsUUID, IsNotEmpty, IsString, IsInt } from 'class-validator';
 
 export class SolicitacaoRegistroAnimalBaseDTO {
   @IsUUID()
@@ -11,4 +11,8 @@ export class SolicitacaoRegistroAnimalBaseDTO {
 
   @IsString()
   estadoSolicitacao: string;
+
+  @IsInt()
+  @IsNotEmpty()
+  quantidadeAnimais: number;
 }

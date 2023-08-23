@@ -11,6 +11,7 @@ import {
   ParseUUIDPipe,
   Put,
   SetMetadata,
+  BadRequestException,
 } from '@nestjs/common';
 import { CriadorService } from './criador.service';
 import { CriadorDTO, UpdateCriadorDTO } from './dto/criador.dto';
@@ -18,11 +19,15 @@ import { ActiveUserId } from 'src/shared/decorators/ActiverUserId';
 import { UpdateUserDTO, UserDTO } from '../user/dto';
 import { UserService } from '../user/user.service';
 import { hash } from 'bcrypt';
+import fetch from 'node-fetch'
+import { PaymentDTO } from './dto/payment.dto';
 
 @Controller('criador')
 export class CriadorController {
   constructor(private criadorService: CriadorService, private readonly userService: UserService) {}
 
+
+  
   @Post('cadastrar-criador')
   @SetMetadata('IS_PUBLIC', true)
   async cadastrarCriador(
@@ -62,6 +67,12 @@ export class CriadorController {
       throw new ConflictException('Email já cadastrado!');
     }
 
+    const cpfTaken = await this.userService.getUserCpf(cpf);
+
+    if (cpfTaken) {
+      throw new ConflictException('CPF já cadastrado!');
+    }
+
     const validarCPF = this.validarCPF(cpf);
 
     if (!validarCPF) {
@@ -81,12 +92,28 @@ export class CriadorController {
       telefone,
       ativo: true,
       pessoa: 'Criador',
-      ultimaConexao,
+      ultimaConexao
     });
+
+    const url = `${process.env.BASE_URL_ASAAS}/customers`;
+    const options = {
+      method: 'POST',
+      headers: {
+      accept: 'application/json',
+      'content-type': 'application/json',
+      access_token: process.env.TOKEN_ASAAS
+    },
+    body: JSON.stringify({
+      name: `${nomePrimeiro} ${nomeUltimo} `,
+      email,
+      cpfCnpj: cpf,
+      })
+    };
 
     const { id } = createdUser;
 
-    return this.criadorService.cadastrarCriador({
+    
+    const criador = this.criadorService.cadastrarCriador({
       userId: id,
       nomeBairro,
       nomeCidade,
@@ -95,7 +122,30 @@ export class CriadorController {
       nomeCompleto,
       rg,
       cep,
+      
     });
+
+    fetch(url, options)
+    .then(res => res.json())
+    .then(async json => {
+     await this.criadorService.updateCriador(
+        {
+          nomeBairro,
+          nomeCidade,
+          nomeEstado,
+          nomeRua,
+          nomeCompleto,
+          rg,
+          cep,
+          asaasId: json.id
+        },
+        (await criador).id,
+      );
+    })
+    .catch(err => console.error('error:' + err));
+
+
+  return criador
   }
 
   @Get('get-criadores')
@@ -128,6 +178,57 @@ export class CriadorController {
     }
 
     return userCriadorService;
+  }
+
+  @Post('payment/:id')
+  async payment(
+    @Body()
+    paymentDTO: PaymentDTO,
+    @Param('id', ParseUUIDPipe)
+    id: string,
+  ) {
+
+    const {billingType, value, holderName, number, expiryMonth, expiryYear, ccv, remoteIp} = paymentDTO
+    const criador = await this.criadorService.getCriadorBydId(id)
+
+    if (!criador) {
+      throw new NotFoundException('Criador não existe!');
+    }
+
+    var dataAtual = new Date();
+    var diaAtual = dataAtual.getDate();
+    var dataAlvo = new Date(dataAtual);
+    dataAlvo.setDate(diaAtual + 3);
+    if (dataAlvo.getMonth() !== dataAtual.getMonth()) {
+      dataAlvo = new Date(dataAtual.getFullYear(), dataAtual.getMonth() + 1, 0);
+    }
+
+    var dueDate = dataAlvo;
+
+    if(billingType == "BOLETO"){
+      const url = `${process.env.BASE_URL_ASAAS}/payments`;
+      const options = {
+        method: 'POST',
+        headers: {
+        accept: 'application/json',
+        'content-type': 'application/json',
+        access_token: process.env.TOKEN_ASAAS
+      },
+      body: JSON.stringify({
+        billingType: 'BOLETO',
+        customer: criador.asaasId,
+        dueDate,
+        value,
+        description: 'Pedido 056984',
+        postalService: false
+      })
+    }
+
+      fetch(url, options)
+      .then(res => res.json())
+      .then(json => console.log(json))
+      .catch(err => console.error('error:' + err));
+    }
   }
 
   @Put('update-criador/:id')
@@ -199,6 +300,7 @@ export class CriadorController {
         nomeCompleto,
         rg,
         cep,
+        asaasId: criador.asaasId
       },
       useParamId,
     );
@@ -224,9 +326,21 @@ export class CriadorController {
 
     const user = await this.userService.getUserBydId(criador.userId);
 
+    const url = `${process.env.BASE_URL_ASAAS}/customers/${criador.asaasId}`;;
+    const options = {
+      method: 'DELETE',
+      headers: {
+        accept: 'application/json',
+        access_token: process.env.TOKEN_ASAAS
+      }
+    };
+
+    fetch(url, options)
+
     this.criadorService.deleteCriador(useParamId);
     this.userService.deleteUser(user.id);
 
+    
     return null;
   }
 
