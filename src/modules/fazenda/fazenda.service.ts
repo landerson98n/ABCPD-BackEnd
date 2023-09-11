@@ -17,7 +17,7 @@ export class FazendaService {
   }
 
   async getFazendas() {
-    const fazendas = await this.fazendaRepository.findMany();
+    const fazendas = await this.fazendaRepository.findMany({});
 
     return fazendas;
   }
@@ -26,6 +26,16 @@ export class FazendaService {
     const Fazenda = await this.fazendaRepository.findUnique({
       where: {
         id,
+      },
+    });
+
+    return Fazenda;
+  }
+
+  async getFazendaBydIdCriador(id: string) {
+    const Fazenda = await this.fazendaRepository.findMany({
+      where: {
+        criadorFazenda: id,
       },
     });
 

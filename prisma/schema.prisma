@@ -60,7 +60,7 @@ model Animal {
   reprodutorAnimal ComunicacaoNascimento[] @relation("ReprodutorAnimal")
   obito            ComunicacaoObito[]
   transferirAnimal TransferirAnimal[]
-
+  comunicacoesCobertura AnimaisComunicacaoCobertura[]
   @@map("animais")
 }
 
@@ -70,7 +70,6 @@ model Fazenda {
   areaFazenda       String  @map("area_fazenda")
   atualizacoes      String
   comoChegar        String  @map("como_chegar")
-  dataDocumentacao  String  @map("data_documentacao")
   fazendaCadastrada Boolean @map("fazenda_Cadastrada")
   femeas04Fazenda   Int     @map("femeas_0_4_fazenda")
   femeas1224Fazenda Int     @map("femeas_12_24_fazenda")
@@ -82,13 +81,10 @@ model Fazenda {
   macho2436Fazenda  Int     @map("macho_24_36_fazenda")
   macho36Fazenda    Int     @map("macho_36_fazenda")
   macho412Fazenda   Int     @map("macho_4_12_fazenda")
-  municipioFazenda  Int     @map("municipio_fazenda")
+  municipioFazenda  String  @map("municipio_fazenda")
   nomeFazenda       String  @map("nome_fazenda")
   observacoes       String
   outrasEspecies    String
-  proponente1       String  @map("proponente_1")
-  proponente2       String  @map("proponente_2")
-  proponente3       String  @map("proponente_3")
   telefoneFazenda   String  @map("telefone_fazenda")
 
   criador                    Criador                      @relation(fields: [criadorFazenda], references: [id])
@@ -207,19 +203,28 @@ model ComunicacaoCobertura {
   id                   String   @id @default(uuid()) @db.Uuid
   criadorCobertura     String   @map("criador_cobertura") @db.Uuid
   fazendaCobertura     String   @map("fazenda_cobertura") @db.Uuid
-  comprovantePagamento String   @map("comprovante_pagamento")
+  pago                 Boolean  @map("comprovante_pagamento")
   dataCobertura        DateTime @default(now()) @map("data_cobertura")
   finalizadoCobertura  Boolean  @map("finalizado_cobertura")
   nomeCobertura        String   @map("nome_cobertura")
   observacoes          String
   statusCobertura      String   @map("status_cobertura")
   tipoCobertura        String   @map("tipo_cobertura")
-
+          
   criador               Criador                 @relation(fields: [criadorCobertura], references: [id], onDelete: Cascade)
   fazenda               Fazenda                 @relation(fields: [fazendaCobertura], references: [id], onDelete: Cascade)
-  ComunicacaoNascimento ComunicacaoNascimento[]
-
+  ComunicacaoNascimento ComunicacaoNascimento[] 
+  animais               AnimaisComunicacaoCobertura[]
   @@map("comunicacoes_coberturas")
+}
+
+model AnimaisComunicacaoCobertura{
+  id                        String    @id @default(uuid()) @db.Uuid
+  animalId                  String    @map("reprodutor_id") @db.Uuid
+  cobertura                 String    @map("cobertura_id") @db.Uuid
+
+  animais                 Animal  @relation(fields: [animalId], references: [id])
+  comunicacaoCobertura    ComunicacaoCobertura @relation(fields: [cobertura], references: [id])
 }
 
 model ComunicacaoObito {
@@ -271,7 +276,7 @@ model SolicitacaoRegistroAnimalBase {
 model Rebanho {
   id        String @id @default(uuid()) @db.Uuid
   fazendaId String @map("fazenda_id") @db.Uuid
-  serie     String
+  serie     String @unique 
 
   fazendaRebanho Fazenda  @relation(fields: [fazendaId], references: [id])
   animais        Animal[]

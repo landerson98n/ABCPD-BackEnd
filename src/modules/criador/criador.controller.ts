@@ -19,15 +19,13 @@ import { ActiveUserId } from 'src/shared/decorators/ActiverUserId';
 import { UpdateUserDTO, UserDTO } from '../user/dto';
 import { UserService } from '../user/user.service';
 import { hash } from 'bcrypt';
-import fetch from 'node-fetch'
+import fetch from 'node-fetch';
 import { PaymentDTO } from './dto/payment.dto';
 
 @Controller('criador')
 export class CriadorController {
   constructor(private criadorService: CriadorService, private readonly userService: UserService) {}
 
-
-  
   @Post('cadastrar-criador')
   @SetMetadata('IS_PUBLIC', true)
   async cadastrarCriador(
@@ -100,20 +98,19 @@ export class CriadorController {
     const options = {
       method: 'POST',
       headers: {
-      accept: 'application/json',
-      'content-type': 'application/json',
-      access_token: process.env.TOKEN_ASAAS
-    },
-    body: JSON.stringify({
-      name: `${nomePrimeiro} ${nomeUltimo} `,
-      email,
-      cpfCnpj: cpf,
-      })
+        accept: 'application/json',
+        'content-type': 'application/json',
+        access_token: process.env.TOKEN_ASAAS,
+      },
+      body: JSON.stringify({
+        name: `${nomePrimeiro} ${nomeUltimo} `,
+        email,
+        cpfCnpj: cpf,
+      }),
     };
 
     const { id } = createdUser;
 
-    
     const criador = this.criadorService.cadastrarCriador({
       userId: id,
       nomeBairro,
@@ -123,30 +120,31 @@ export class CriadorController {
       nomeCompleto,
       rg,
       cep,
-      numeroCasa
+      numeroCasa,
     });
 
     fetch(url, options)
-    .then(res => res.json())
-    .then(async json => {
-     await this.criadorService.updateCriador(
-        {
-          nomeBairro,
-          nomeCidade,
-          nomeEstado,
-          nomeRua,
-          nomeCompleto,
-          rg,
-          cep,
-          asaasId: json.id
-        },
-        (await criador).id,
-      );
-    })
-    .catch(err => console.error('error:' + err));
+      .then((res) => res.json())
+      .then(async (json) => {
+        await this.criadorService.updateCriador(
+          {
+            nomeBairro,
+            nomeCidade,
+            nomeEstado,
+            nomeRua,
+            nomeCompleto,
+            rg,
+            cep,
+            asaasId: json.id,
+          },
+          (
+            await criador
+          ).id,
+        );
+      })
+      .catch((err) => console.error('error:' + err));
 
-
-  return criador
+    return criador;
   }
 
   @Get('get-criadores')
@@ -181,6 +179,7 @@ export class CriadorController {
     return userCriadorService;
   }
 
+  @SetMetadata('IS_PUBLIC', true)
   @Post('payment/:id')
   async payment(
     @Body()
@@ -188,129 +187,144 @@ export class CriadorController {
     @Param('id', ParseUUIDPipe)
     id: string,
   ) {
-
-    const {billingType, value, holderName, number, expiryMonth, expiryYear, ccv, remoteIp} = paymentDTO
-    const criador = await this.criadorService.getCriadorBydId(id)
+    const { billingType, value, holderName, number, expiryMonth, expiryYear, ccv, remoteIp } = paymentDTO;
+    const criador = await this.criadorService.getCriadorBydId(id);
 
     if (!criador) {
       throw new NotFoundException('Criador não existe!');
     }
-    const user = await this.userService.getUserBydId(criador.userId)
-    var dataAtual = new Date();
-    var diaAtual = dataAtual.getDate();
-    var dataAlvo = new Date(dataAtual);
+    const user = await this.userService.getUserBydId(criador.userId);
+    const dataAtual = new Date();
+    const diaAtual = dataAtual.getDate();
+    let dataAlvo = new Date(dataAtual);
     dataAlvo.setDate(diaAtual + 3);
     if (dataAlvo.getMonth() !== dataAtual.getMonth()) {
       dataAlvo = new Date(dataAtual.getFullYear(), dataAtual.getMonth() + 1, 0);
     }
 
-    var dueDate = dataAlvo;
+    const dueDate = dataAlvo;
 
-    if(billingType == "BOLETO"){
+    if (billingType == 'BOLETO') {
       const url = `${process.env.BASE_URL_ASAAS}/payments`;
       const options = {
         method: 'POST',
         headers: {
-        accept: 'application/json',
-        'content-type': 'application/json',
-        access_token: process.env.TOKEN_ASAAS
-      },
-      body: JSON.stringify({
-        billingType: 'BOLETO',
-        customer: criador.asaasId,
-        dueDate,
-        value,
-        postalService: false
-      })
-    }
-
-      fetch(url, options)
-      .then(res => res.json())
-      .then(json =>{return json.bankSlipUrl})
-      .catch(err => console.error('error:' + err));
-    }
-
-    if(billingType == "CREDIT_CARD"){
-      const url = `${process.env.BASE_URL_ASAAS}/payments`;
-      const options = {
-        method: 'POST',
-        headers: {
-        accept: 'application/json',
-        'content-type': 'application/json',
-        access_token: process.env.TOKEN_ASAAS
-      },
-      body: JSON.stringify({
-        billingType: 'CREDIT_CARD',
-        customer: criador.asaasId,
-        dueDate,
-        value,
-        postalService: false,
-        creditCard:{
-          holderName,
-          number,
-          expiryMonth,
-          expiryYear,
-          ccv
+          accept: 'application/json',
+          'content-type': 'application/json',
+          access_token: process.env.TOKEN_ASAAS,
         },
-        creditCardHolderInfo:{
-          name: criador.nomeCompleto,
-          email: user.email,
-          cpfCnpj: user.cpf,
-          postalCode: criador.cep,
-          addressNumber: criador.numeroCasa ,
-          phone: user.telefone,
-          remoteIp
-        }
-      })
+        body: JSON.stringify({
+          billingType: 'BOLETO',
+          customer: criador.asaasId,
+          dueDate,
+          value,
+          postalService: false,
+        }),
+      };
+
+      try {
+        const response = await fetch(url, options);
+        const jsonData = await response.json();
+        return jsonData;
+      } catch (error) {
+        return { error: 'Erro ao fazer a requisição' };
+      }
     }
 
-      fetch(url, options)
-      .then(res => res.json())
-      .then(json =>console.log(json))
-      .catch(err => console.error('error:' + err));
-    }
-
-    if(billingType == "PIX"){
+    if (billingType == 'CREDIT_CARD') {
       const url = `${process.env.BASE_URL_ASAAS}/payments`;
       const options = {
         method: 'POST',
         headers: {
-        accept: 'application/json',
-        'content-type': 'application/json',
-        access_token: process.env.TOKEN_ASAAS
-      },
-      body: JSON.stringify({
-        billingType: 'UNDEFINED',
-        customer: criador.asaasId,
-        dueDate,
-        value,
-        postalService: false
-      })
+          accept: 'application/json',
+          'content-type': 'application/json',
+          access_token: process.env.TOKEN_ASAAS,
+        },
+        body: JSON.stringify({
+          billingType: 'CREDIT_CARD',
+          customer: criador.asaasId,
+          dueDate,
+          value,
+          postalService: false,
+          creditCard: {
+            holderName,
+            number,
+            expiryMonth,
+            expiryYear,
+            ccv,
+          },
+          creditCardHolderInfo: {
+            name: criador.nomeCompleto,
+            email: user.email,
+            cpfCnpj: user.cpf,
+            postalCode: criador.cep,
+            addressNumber: criador.numeroCasa,
+            phone: user.telefone,
+            remoteIp,
+          },
+        }),
+      };
+
+      try {
+        const response = await fetch(url, options);
+        const jsonData = await response.json();
+        return jsonData;
+      } catch (error) {
+        return { error: 'Erro ao fazer a requisição' };
+      }
     }
 
-    const pagamento = await fetch(url, options)
-      .then(res => res.json())
-      .then(json =>{return json})
-      .catch(err => console.error('error:' + err));
-    console.log(pagamento);
-    
+    if (billingType == 'PIX') {
+      const url = `${process.env.BASE_URL_ASAAS}/payments`;
+      const options = {
+        method: 'POST',
+        headers: {
+          accept: 'application/json',
+          'content-type': 'application/json',
+          access_token: process.env.TOKEN_ASAAS,
+        },
+        body: JSON.stringify({
+          billingType: 'UNDEFINED',
+          customer: criador.asaasId,
+          dueDate,
+          value,
+          postalService: false,
+        }),
+      };
+
+      const pagamento = await fetch(url, options)
+        .then((res) => res.json())
+        .then((json) => {
+          return json;
+        });
 
       const urlPix = `${process.env.BASE_URL_ASAAS}/payments/${pagamento.id}/pixQrCode`;
       const optionsPix = {
         method: 'GET',
         headers: {
-        accept: 'application/json',
-        'content-type': 'application/json',
-        access_token: process.env.TOKEN_ASAAS
-      },
-    }
+          accept: 'application/json',
+          'content-type': 'application/json',
+          access_token: process.env.TOKEN_ASAAS,
+        },
+      };
 
-    fetch(urlPix, optionsPix)
-      .then(res => res.json())
-      .then(json =>console.log(json))
-      .catch(err => console.error('error:' + err));
+      try {
+        const response = await fetch(urlPix, optionsPix);
+        const jsonData = await response.json();
+        return jsonData;
+      } catch (error) {
+        return { error: 'Erro ao fazer a requisição' };
+      }
     }
   }
+
+  @Post('webhook/:id')
+  async webhooks(
+    @Body()
+    paymentDTO: PaymentDTO,
+    @Param('id', ParseUUIDPipe)
+    id: string,
+  ) {}
 
   @Put('update-criador/:id')
   async updateCriador(
@@ -381,7 +395,7 @@ export class CriadorController {
         nomeCompleto,
         rg,
         cep,
-        asaasId: criador.asaasId
+        asaasId: criador.asaasId,
       },
       useParamId,
     );
@@ -407,21 +421,20 @@ export class CriadorController {
 
     const user = await this.userService.getUserBydId(criador.userId);
 
-    const url = `${process.env.BASE_URL_ASAAS}/customers/${criador.asaasId}`;;
+    const url = `${process.env.BASE_URL_ASAAS}/customers/${criador.asaasId}`;
     const options = {
       method: 'DELETE',
       headers: {
         accept: 'application/json',
-        access_token: process.env.TOKEN_ASAAS
-      }
+        access_token: process.env.TOKEN_ASAAS,
+      },
     };
 
-    fetch(url, options)
+    fetch(url, options);
 
     this.criadorService.deleteCriador(useParamId);
     this.userService.deleteUser(user.id);
 
-    
     return null;
   }
 

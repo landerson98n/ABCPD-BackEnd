@@ -8,6 +8,7 @@ import {
   NotFoundException,
   UnauthorizedException,
   ParseUUIDPipe,
+  SetMetadata,
 } from '@nestjs/common';
 import { RebanhoService } from './rebanho.service';
 import { RebanhoDTO, UpdateRebanhoDTO } from './dto';
@@ -65,11 +66,12 @@ export class RebanhoController {
     return this.rebanhoService.getRebanhos();
   }
 
-  @Get('get-rebanho/:id')
+
+  @SetMetadata('IS_PUBLIC', true)
+  @Get('get-rebanho/:serie')
   getRebanhoById(
-    @Param('id', ParseUUIDPipe)
-    id: string,
-    @ActiveUserId() userId: string,
+    @Param('serie', ParseUUIDPipe)
+    serie: string,
   ) {
     // const user = await this.userService.getUserBydId(userId);
 
@@ -78,7 +80,7 @@ export class RebanhoController {
     //   throw new UnauthorizedException();
     // }
 
-    return this.rebanhoService.getRebanhoBydId(id);
+    return this.rebanhoService.getRebanhoBydSerie(serie);
   }
 
   @Post('update-rebanho/:id')

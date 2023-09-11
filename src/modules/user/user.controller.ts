@@ -1,7 +1,7 @@
 import { Body, Controller, Post, Get, Delete, Param } from '@nestjs/common';
 import { UserService } from 'src/modules/user/user.service';
 import { UpdateUserDTO, UserDTO } from 'src/modules/user/dto';
-
+import { SetMetadata } from '@nestjs/common/decorators';
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
@@ -25,6 +25,15 @@ export class UserController {
     id: string,
   ) {
     return this.userService.getUserBydId(id);
+  }
+
+  @SetMetadata('IS_PUBLIC', true)
+  @Get('getUserByEmailCpf/:data')
+  getUserByEmail(
+    @Param('data')
+    data: string,
+  ) {
+    return this.userService.getUserByEmailCpf(data);
   }
 
   @Post('updateUser/:id')

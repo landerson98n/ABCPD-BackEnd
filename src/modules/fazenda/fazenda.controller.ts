@@ -9,6 +9,7 @@ import {
   ParseUUIDPipe,
   NotFoundException,
   Put,
+  SetMetadata,
 } from '@nestjs/common';
 import { FazendaService } from './fazenda.service';
 import { FazendaDTO, UpdateFazendaDTO } from './dto/fazenda.dto';
@@ -18,19 +19,17 @@ import { UserService } from '../user/user.service';
 @Controller('fazenda')
 export class FazendaController {
   constructor(private readonly fazendaService: FazendaService, private readonly userService: UserService) {}
-
+  @SetMetadata('IS_PUBLIC', true)
   @Post('cadastrar-fazenda')
   async cadastrarFazenda(
     @Body()
     fazendaDTO: FazendaDTO,
-    @ActiveUserId() userId: string,
   ) {
     const {
       criadorFazenda,
       areaFazenda,
       atualizacoes,
       comoChegar,
-      dataDocumentacao,
       fazendaCadastrada,
       femeas04Fazenda,
       femeas1224Fazenda,
@@ -46,45 +45,28 @@ export class FazendaController {
       nomeFazenda,
       observacoes,
       outrasEspecies,
-      proponente1,
-      proponente2,
-      proponente3,
       telefoneFazenda,
     } = fazendaDTO;
 
     if (
       !criadorFazenda ||
       !areaFazenda ||
-      !atualizacoes ||
-      !comoChegar ||
-      !femeas04Fazenda ||
+      femeas04Fazenda === undefined||
       fazendaCadastrada ||
-      !dataDocumentacao ||
-      !femeas1224Fazenda ||
-      !femeas2436Fazenda ||
-      !femeas36Fazenda ||
-      !femeas412Fazenda ||
-      !macho04Fazenda ||
-      !macho1224Fazenda ||
-      !macho2436Fazenda ||
-      !macho36Fazenda ||
-      !macho412Fazenda ||
+      femeas1224Fazenda=== undefined ||
+      femeas2436Fazenda=== undefined||
+      femeas36Fazenda === undefined||
+      femeas412Fazenda === undefined||
+      macho04Fazenda === undefined||
+      macho1224Fazenda === undefined||
+      macho2436Fazenda === undefined||
+      macho36Fazenda === undefined||
+      macho412Fazenda === undefined||
       !municipioFazenda ||
       !nomeFazenda ||
-      !observacoes ||
-      !outrasEspecies ||
-      !proponente1 ||
-      !proponente2 ||
-      !proponente3 ||
       !telefoneFazenda
     ) {
       throw new UnauthorizedException('Existe um campo vazio.');
-    }
-
-    const user = await this.userService.getUserBydId(userId);
-
-    if (!(user.pessoa === 'Tecnico')) {
-      throw new UnauthorizedException();
     }
 
     return await this.fazendaService.cadastrarFazenda({
@@ -92,7 +74,6 @@ export class FazendaController {
       areaFazenda,
       atualizacoes,
       comoChegar,
-      dataDocumentacao,
       fazendaCadastrada,
       femeas04Fazenda,
       femeas1224Fazenda,
@@ -108,9 +89,6 @@ export class FazendaController {
       nomeFazenda,
       observacoes,
       outrasEspecies,
-      proponente1,
-      proponente2,
-      proponente3,
       telefoneFazenda,
     });
   }
@@ -147,6 +125,23 @@ export class FazendaController {
     return userCriadorService;
   }
 
+  @Get('get-fazendas-criador/:id')
+  async getFazendaByIdCriador(
+    @Param('id', ParseUUIDPipe)
+    id: string,
+    @ActiveUserId() userId: string,
+  ) {
+    const user = await this.userService.getUserBydId(userId);
+
+    if (!(user.pessoa === 'Criador')) {
+      throw new UnauthorizedException();
+    }
+
+    const userCriadorService = await this.fazendaService.getFazendaBydIdCriador(id)
+
+    return userCriadorService;
+  }
+
   @Put('update-fazenda/:id')
   async updateFazenda(
     @Body()
@@ -159,7 +154,6 @@ export class FazendaController {
       areaFazenda,
       atualizacoes,
       comoChegar,
-      dataDocumentacao,
       fazendaCadastrada,
       femeas04Fazenda,
       femeas1224Fazenda,
@@ -175,9 +169,6 @@ export class FazendaController {
       nomeFazenda,
       observacoes,
       outrasEspecies,
-      proponente1,
-      proponente2,
-      proponente3,
       telefoneFazenda,
     } = fazendaDTO;
 
@@ -187,7 +178,6 @@ export class FazendaController {
       !comoChegar ||
       !femeas04Fazenda ||
       fazendaCadastrada ||
-      !dataDocumentacao ||
       !femeas1224Fazenda ||
       !femeas2436Fazenda ||
       !femeas36Fazenda ||
@@ -201,9 +191,6 @@ export class FazendaController {
       !nomeFazenda ||
       !observacoes ||
       !outrasEspecies ||
-      !proponente1 ||
-      !proponente2 ||
-      !proponente3 ||
       !telefoneFazenda
     ) {
       throw new UnauthorizedException('Existe um campo vazio.');
@@ -226,7 +213,6 @@ export class FazendaController {
         areaFazenda,
         atualizacoes,
         comoChegar,
-        dataDocumentacao,
         fazendaCadastrada,
         femeas04Fazenda,
         femeas1224Fazenda,
@@ -242,9 +228,6 @@ export class FazendaController {
         nomeFazenda,
         observacoes,
         outrasEspecies,
-        proponente1,
-        proponente2,
-        proponente3,
         telefoneFazenda,
       },
       id,

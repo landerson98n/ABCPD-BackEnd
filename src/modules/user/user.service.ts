@@ -31,6 +31,30 @@ export class UserService {
     return user;
   }
 
+  async getUserByEmailCpf(data: string) {
+    let user = await this.userRepository.findFirst({
+      where: {
+        cpf : data,
+      },
+    });
+    
+    if(user){
+      return true;
+    }
+
+    user = await this.userRepository.findFirst({
+      where: {
+        email : data,
+      },
+    });
+    
+    if(user){
+      return true;
+    }
+    
+    return false
+  }
+
   async getUserEmail(email: string) {
     const user = await this.userRepository.findUnique({
       where: { email },

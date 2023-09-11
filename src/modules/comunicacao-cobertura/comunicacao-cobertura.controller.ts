@@ -31,7 +31,7 @@ export class ComunicacaoCoberturaController {
     const {
       criadorCobertura,
       fazendaCobertura,
-      comprovantePagamento,
+      pago,
       finalizadoCobertura,
       nomeCobertura,
       observacoes,
@@ -42,7 +42,7 @@ export class ComunicacaoCoberturaController {
     if (
       !criadorCobertura ||
       !fazendaCobertura ||
-      !comprovantePagamento ||
+      pago ||
       finalizadoCobertura ||
       !nomeCobertura ||
       !observacoes ||
@@ -77,7 +77,7 @@ export class ComunicacaoCoberturaController {
     await this.comunicacaoCoberturaService.cadastrarCobertura({
       criadorCobertura,
       fazendaCobertura,
-      comprovantePagamento,
+      pago,
       finalizadoCobertura,
       nomeCobertura,
       observacoes,
@@ -126,18 +126,18 @@ export class ComunicacaoCoberturaController {
     const {
       criadorCobertura,
       fazendaCobertura,
-      comprovantePagamento,
       finalizadoCobertura,
       nomeCobertura,
       observacoes,
       statusCobertura,
       tipoCobertura,
+      pago
     } = coberturaDTO;
 
     if (
       !criadorCobertura ||
       !fazendaCobertura ||
-      !comprovantePagamento ||
+      pago ||
       finalizadoCobertura ||
       !nomeCobertura ||
       !observacoes ||
@@ -171,12 +171,12 @@ export class ComunicacaoCoberturaController {
       {
         criadorCobertura,
         fazendaCobertura,
-        comprovantePagamento,
         finalizadoCobertura,
         nomeCobertura,
         observacoes,
         statusCobertura,
         tipoCobertura,
+        pago
       },
       id,
     );

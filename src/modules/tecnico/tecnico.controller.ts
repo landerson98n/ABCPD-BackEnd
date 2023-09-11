@@ -104,8 +104,8 @@ export class TecnicoController {
   async getTecnicoes(@ActiveUserId() userId: string) {
     const user = await this.userService.getUserBydId(userId);
 
-    if (!(user.pessoa === 'Superintendente')) {
-      throw new UnauthorizedException();
+    if (!user) {
+      throw new NotFoundException();
     }
 
     return this.tecnicoService.getTecnicos();

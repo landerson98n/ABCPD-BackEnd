@@ -13,7 +13,7 @@ export class AuthService {
 
     // Verificando se o usuário existe
     const user = await this.usersRepo.findUnique({
-      where: { email: email },
+      where: { email },
     });
 
     if (!user) {
@@ -23,7 +23,6 @@ export class AuthService {
 
     const isPasswordValid = await compare(senha, user.senha);
 
-    console.log(isPasswordValid);
 
     if (!isPasswordValid) {
       // Código 401
@@ -36,6 +35,6 @@ export class AuthService {
 
     const acessToken = await this.jwtService.signAsync(payload);
 
-    return { acessToken };
+    return { acessToken, pessoa: user.pessoa };
   }
 }

@@ -62,7 +62,6 @@ export class SuperintendenteService {
       },
     });
 
-    console.log(superintendente);
 
     return superintendente;
   }

@@ -10,9 +10,10 @@ export class FazendaRepository {
     return this.prismaService.fazenda.create(createDto);
   }
 
-  findMany() {
+  findMany(findManyFazenda: Prisma.FazendaFindManyArgs) {
     return this.prismaService.fazenda.findMany();
   }
+  
 
   findUnique(findUniqueFazenda: Prisma.FazendaFindUniqueArgs) {
     return this.prismaService.fazenda.findUnique({ ...findUniqueFazenda });

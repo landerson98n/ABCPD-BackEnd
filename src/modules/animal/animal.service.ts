@@ -17,7 +17,17 @@ export class AnimalService {
   }
 
   async getAnimais() {
-    const animais = await this.animalRepository.findMany();
+    const animais = await this.animalRepository.findMany({});
+
+    return animais;
+  }
+
+  async getAnimaisCriador(criador) {
+    const animais = await this.animalRepository.findMany({
+      where:{
+        criadorAnimal: criador
+      }
+    });
 
     return animais;
   }

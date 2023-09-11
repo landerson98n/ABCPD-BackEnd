@@ -45,7 +45,6 @@ CREATE TABLE "fazendas" (
     "area_fazenda" TEXT NOT NULL,
     "atualizacoes" TEXT NOT NULL,
     "como_chegar" TEXT NOT NULL,
-    "data_documentacao" TEXT NOT NULL,
     "fazenda_Cadastrada" BOOLEAN NOT NULL,
     "femeas_0_4_fazenda" INTEGER NOT NULL,
     "femeas_12_24_fazenda" INTEGER NOT NULL,
@@ -57,13 +56,10 @@ CREATE TABLE "fazendas" (
     "macho_24_36_fazenda" INTEGER NOT NULL,
     "macho_36_fazenda" INTEGER NOT NULL,
     "macho_4_12_fazenda" INTEGER NOT NULL,
-    "municipio_fazenda" INTEGER NOT NULL,
+    "municipio_fazenda" TEXT NOT NULL,
     "nome_fazenda" TEXT NOT NULL,
     "observacoes" TEXT NOT NULL,
     "outrasEspecies" TEXT NOT NULL,
-    "proponente_1" TEXT NOT NULL,
-    "proponente_2" TEXT NOT NULL,
-    "proponente_3" TEXT NOT NULL,
     "telefone_fazenda" TEXT NOT NULL,
 
     CONSTRAINT "fazendas_pkey" PRIMARY KEY ("id")
@@ -119,6 +115,8 @@ CREATE TABLE "criadores" (
     "nome_completo" TEXT NOT NULL,
     "nome_estado" TEXT NOT NULL,
     "nome_rua" TEXT NOT NULL,
+    "numero_casa" TEXT NOT NULL DEFAULT '',
+    "asaas_id" TEXT NOT NULL DEFAULT '',
     "rg" TEXT NOT NULL,
 
     CONSTRAINT "criadores_pkey" PRIMARY KEY ("id")
@@ -134,8 +132,8 @@ CREATE TABLE "comunicaoes_nascimentos" (
     "reprodutor_animal_id" UUID NOT NULL,
     "tecnico_nascimento_id" UUID NOT NULL,
     "animal_bezerro" TEXT NOT NULL,
-    "data_comunicacao" TIMESTAMP(3) NOT NULL,
-    "data_nascimento" TIMESTAMP(3) NOT NULL,
+    "data_comunicacao" TEXT NOT NULL,
+    "data_nascimento" TEXT NOT NULL,
     "finalizado_nascimento" BOOLEAN NOT NULL,
     "observacoes" TEXT NOT NULL,
     "status_nascimento" TEXT NOT NULL,
@@ -148,7 +146,7 @@ CREATE TABLE "comunicacoes_coberturas" (
     "id" UUID NOT NULL,
     "criador_cobertura" UUID NOT NULL,
     "fazenda_cobertura" UUID NOT NULL,
-    "comprovante_pagamento" TEXT NOT NULL,
+    "comprovante_pagamento" BOOLEAN NOT NULL,
     "data_cobertura" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "finalizado_cobertura" BOOLEAN NOT NULL,
     "nome_cobertura" TEXT NOT NULL,
@@ -157,6 +155,15 @@ CREATE TABLE "comunicacoes_coberturas" (
     "tipo_cobertura" TEXT NOT NULL,
 
     CONSTRAINT "comunicacoes_coberturas_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "AnimaisComunicacaoCobertura" (
+    "id" UUID NOT NULL,
+    "reprodutor_id" UUID NOT NULL,
+    "cobertura_id" UUID NOT NULL,
+
+    CONSTRAINT "AnimaisComunicacaoCobertura_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -190,17 +197,9 @@ CREATE TABLE "solicitacoes_registros_animais_base" (
     "criador_id" UUID NOT NULL,
     "tecnico_id" UUID NOT NULL,
     "estado_solicitacao" TEXT NOT NULL,
-
-    CONSTRAINT "solicitacoes_registros_animais_base_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "registros_animais_base" (
-    "id" UUID NOT NULL,
-    "solicitacao" UUID NOT NULL,
     "quantidade_animais" INTEGER NOT NULL,
 
-    CONSTRAINT "registros_animais_base_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "solicitacoes_registros_animais_base_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -331,6 +330,12 @@ ALTER TABLE "comunicacoes_coberturas" ADD CONSTRAINT "comunicacoes_coberturas_cr
 ALTER TABLE "comunicacoes_coberturas" ADD CONSTRAINT "comunicacoes_coberturas_fazenda_cobertura_fkey" FOREIGN KEY ("fazenda_cobertura") REFERENCES "fazendas"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "AnimaisComunicacaoCobertura" ADD CONSTRAINT "AnimaisComunicacaoCobertura_reprodutor_id_fkey" FOREIGN KEY ("reprodutor_id") REFERENCES "animais"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "AnimaisComunicacaoCobertura" ADD CONSTRAINT "AnimaisComunicacaoCobertura_cobertura_id_fkey" FOREIGN KEY ("cobertura_id") REFERENCES "comunicacoes_coberturas"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "comunicacao_Obitos" ADD CONSTRAINT "comunicacao_Obitos_animal_id_fkey" FOREIGN KEY ("animal_id") REFERENCES "animais"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -353,9 +358,6 @@ ALTER TABLE "solicitacoes_registros_animais_base" ADD CONSTRAINT "solicitacoes_r
 
 -- AddForeignKey
 ALTER TABLE "solicitacoes_registros_animais_base" ADD CONSTRAINT "solicitacoes_registros_animais_base_tecnico_id_fkey" FOREIGN KEY ("tecnico_id") REFERENCES "tecnicos"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "registros_animais_base" ADD CONSTRAINT "registros_animais_base_solicitacao_fkey" FOREIGN KEY ("solicitacao") REFERENCES "solicitacoes_registros_animais_base"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "rebanhos" ADD CONSTRAINT "rebanhos_fazenda_id_fkey" FOREIGN KEY ("fazenda_id") REFERENCES "fazendas"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

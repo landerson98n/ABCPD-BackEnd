@@ -14,9 +14,6 @@ export class FazendaDTO {
   @IsString()
   comoChegar: string;
 
-  @IsDateString()
-  dataDocumentacao: string;
-
   @IsBoolean()
   fazendaCadastrada: boolean;
 
@@ -50,8 +47,8 @@ export class FazendaDTO {
   @IsInt()
   macho412Fazenda: number;
 
-  @IsInt()
-  municipioFazenda: number;
+  @IsString()
+  municipioFazenda: string;
 
   @IsString()
   nomeFazenda: string;
@@ -61,15 +58,6 @@ export class FazendaDTO {
 
   @IsString()
   outrasEspecies: string;
-
-  @IsString()
-  proponente1: string;
-
-  @IsString()
-  proponente2: string;
-
-  @IsString()
-  proponente3: string;
 
   @IsString()
   telefoneFazenda: string;
@@ -89,10 +77,6 @@ export class UpdateFazendaDTO {
   comoChegar: string;
 
   @IsOptional()
-  @IsDateString()
-  dataDocumentacao: string;
-
-  @IsOptional()
   @IsBoolean()
   fazendaCadastrada: boolean;
 
@@ -138,7 +122,7 @@ export class UpdateFazendaDTO {
 
   @IsOptional()
   @IsInt()
-  municipioFazenda: number;
+  municipioFazenda: string;
 
   @IsOptional()
   @IsString()
@@ -151,18 +135,6 @@ export class UpdateFazendaDTO {
   @IsOptional()
   @IsString()
   outrasEspecies: string;
-
-  @IsOptional()
-  @IsString()
-  proponente1: string;
-
-  @IsOptional()
-  @IsString()
-  proponente2: string;
-
-  @IsOptional()
-  @IsString()
-  proponente3: string;
 
   @IsOptional()
   @IsString()

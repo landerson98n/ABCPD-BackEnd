@@ -9,8 +9,8 @@ export class ComunicacaoCoberturaDto {
   @IsNotEmpty()
   fazendaCobertura: string;
 
-  @IsString()
-  comprovantePagamento: string;
+  @IsBoolean()
+  pago: boolean;
 
   // @IsISO8601()
   // dataCobertura: Date;

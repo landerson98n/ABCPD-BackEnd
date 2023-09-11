@@ -134,8 +134,7 @@ export class AnimalController {
     if (!rebanhoEx) {
       throw new NotFoundException('Rebanho não encontrada!');
     }
-    // Landerson??/
-    // Existe pai
+
     const paiEx = await this.animalService.getAnimalBydId(pai);
 
     if (!paiEx) {
@@ -197,6 +196,17 @@ export class AnimalController {
     }
 
     return this.animalService.getAnimais();
+  }
+
+  @Get('get-animal-criador')
+  async getAnimaisCriador(@ActiveUserId() userId: string) {
+    const user = await this.userService.getUserBydId(userId);
+
+    if (!user) {
+      throw new NotFoundException();
+    }
+
+    return this.animalService.getAnimaisCriador(userId);
   }
 
   @Get('get-animal/:id')

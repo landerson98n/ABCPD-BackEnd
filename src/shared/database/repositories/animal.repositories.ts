@@ -10,8 +10,8 @@ export class AnimalRepository {
     return this.prismaService.animal.create(createDto);
   }
 
-  findMany() {
-    return this.prismaService.animal.findMany();
+  findMany(findManyAnimal: Prisma.AnimalFindManyArgs) {
+    return this.prismaService.animal.findMany(findManyAnimal);
   }
 
   findUnique(findUniqueAnimal: Prisma.AnimalFindUniqueArgs) {

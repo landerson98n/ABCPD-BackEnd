@@ -18,6 +18,10 @@ export class RebanhoRepository {
     return this.prismaService.rebanho.findUnique({ ...findUniqueRebanho });
   }
 
+  findFirst(findFirstRebanho: Prisma.RebanhoFindFirstArgs) {
+    return this.prismaService.rebanho.findFirst({ ...findFirstRebanho });
+  }
+
   update(updateRebanho: Prisma.RebanhoUpdateArgs) {
     return this.prismaService.rebanho.update({ ...updateRebanho });
   }

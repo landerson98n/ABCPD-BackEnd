@@ -6,7 +6,7 @@ import { ComunicacaoCoberturaRepository } from 'src/shared/database/repositories
 export class ComunicacaoCoberturaService {
   constructor(private comunicacaoCoberturaRepository: ComunicacaoCoberturaRepository) {}
 
-  async cadastrarCobertura(dto: ComunicacaoCoberturaDto) {
+  async cadastrarCobertura(dto) {
     const comunicacaoCobertura = await this.comunicacaoCoberturaRepository.create({
       data: {
         ...dto,

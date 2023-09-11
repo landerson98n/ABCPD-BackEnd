@@ -18,6 +18,10 @@ export class UserRepository {
     return this.prismaService.user.findUnique({ ...findUniqueUser });
   }
 
+  findFirst(findFirstUser: Prisma.UserFindFirstArgs) {
+    return this.prismaService.user.findFirst({ ...findFirstUser });
+  }
+
   update(updateUser: Prisma.UserUpdateArgs) {
     return this.prismaService.user.update({ ...updateUser });
   }

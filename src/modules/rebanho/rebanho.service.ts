@@ -32,6 +32,16 @@ export class RebanhoService {
     return Rebanho;
   }
 
+  async getRebanhoBydSerie(serie: string) {
+    const Rebanho = await this.rebanhoRepository.findFirst({
+      where: {
+        serie,
+      },
+    });
+
+    return Rebanho;
+  }
+
   async updateRebanho(dto: UpdateRebanhoDTO, id: string) {
     const updateRebanho = await this.rebanhoRepository.update({
       where: {
