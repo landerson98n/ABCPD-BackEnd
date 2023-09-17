@@ -34,9 +34,10 @@ export class ComunicacaoCoberturaController {
       pago,
       finalizadoCobertura,
       nomeCobertura,
-      observacoes,
       statusCobertura,
       tipoCobertura,
+      animais,
+      observacoes
     } = coberturaDTO;
 
     if (
@@ -45,10 +46,9 @@ export class ComunicacaoCoberturaController {
       pago ||
       finalizadoCobertura ||
       !nomeCobertura ||
-      !observacoes ||
       !statusCobertura ||
-      !tipoCobertura
-    ) {
+      !tipoCobertura ||
+      !animais) {
       throw new UnauthorizedException('Existe um campo vazio.');
     }
 
@@ -82,14 +82,14 @@ export class ComunicacaoCoberturaController {
       nomeCobertura,
       observacoes,
       statusCobertura,
-      tipoCobertura,
-    });
+      tipoCobertura
+    }, animais);
 
     return null;
   }
 
   @Get('get-coberturas')
-  async getAnimais(@ActiveUserId() userId: string) {
+  async getCoberturas(@ActiveUserId() userId: string) {
     const user = await this.userService.getUserBydId(userId);
 
     if (!(user.pessoa === 'Superintendente')) {
@@ -97,6 +97,18 @@ export class ComunicacaoCoberturaController {
     }
 
     return this.comunicacaoCoberturaService.getCoberturas();
+  }
+
+  @Get('get-coberturas-criador/:id')
+  async getCoberturasCriador(@Param('id', ParseUUIDPipe)
+  id: string,@ActiveUserId() userId: string) {
+    const user = await this.userService.getUserBydId(userId);
+
+    if (!(user)) {
+      throw new UnauthorizedException();
+    }
+
+    return this.comunicacaoCoberturaService.getCoberturasByCriadorId(id);
   }
 
   @Get('get-coberturas/:id')
@@ -131,7 +143,8 @@ export class ComunicacaoCoberturaController {
       observacoes,
       statusCobertura,
       tipoCobertura,
-      pago
+      pago,
+      animais
     } = coberturaDTO;
 
     if (
@@ -142,7 +155,8 @@ export class ComunicacaoCoberturaController {
       !nomeCobertura ||
       !observacoes ||
       !statusCobertura ||
-      !tipoCobertura
+      !tipoCobertura ||
+      !animais
     ) {
       throw new UnauthorizedException('Existe um campo vazio.');
     }
@@ -178,6 +192,7 @@ export class ComunicacaoCoberturaController {
         tipoCobertura,
         pago
       },
+      animais,
       id,
     );
 

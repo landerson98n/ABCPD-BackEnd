@@ -42,6 +42,17 @@ export class RebanhoService {
     return Rebanho;
   }
 
+  async getRebanhoByFazendaId(id: string) {
+    const Rebanho = await this.rebanhoRepository.findFirst({
+      where: {
+        fazendaId: id,
+      },
+    });
+
+    return Rebanho;
+  }
+
+
   async updateRebanho(dto: UpdateRebanhoDTO, id: string) {
     const updateRebanho = await this.rebanhoRepository.update({
       where: {

@@ -12,28 +12,28 @@ datasource db {
 
 model Animal {
   id                      String  @id @unique @default(uuid()) @db.Uuid
-  criadorAnimal           String  @unique @map("criador_animal") @db.Uuid
-  fazenda                 String  @unique @db.Uuid
-  mae                     String? @unique @db.Uuid
-  pai                     String? @unique @db.Uuid
-  rebanho                 String  @unique @db.Uuid
+  criadorAnimal           String  @map("criador_animal") @db.Uuid
+  fazenda                 String  @db.Uuid
+  mae                     String? @db.Uuid
+  pai                     String? @db.Uuid
+  rebanho                 String  @db.Uuid
   dataAvalicacao          String  @map("data_avalicacao")
-  composicaoGenetica      String  @map("composicao_genetica")
-  dataRGDAnimalSuper      String  @map("data_RGD_animal_Super")
-  dataRGDAnimalTecnico    String  @map("data_RGD_animal_Tecnico")
-  dataRGNAnimalSuper      String  @map("data_RGN_animal_Super")
+  composicaoGenetica      String?  @map("composicao_genetica")
+  dataRGDAnimalSuper      String?  @map("data_RGD_animal_Super")
+  dataRGDAnimalTecnico    String? @map("data_RGD_animal_Tecnico")
+  dataRGNAnimalSuper      String?  @map("data_RGN_animal_Super")
   dataRGNAnimalTecnico    String  @map("data_RGN_animal_Tecnico")
   dataNascimentoAnimal    String  @map("data_nascimento_animal")
-  decisaoAnimalSuperRGD   String  @map("decisao_animal_Super_RGD")
-  decisaoAnimalSuperRGN   String  @map("decisao_animal_Super_RGN")
-  decisaoAnimalTecnicoRGD String  @map("decisao_animal_Tecnico_RGD")
+  decisaoAnimalSuperRGD   String?  @map("decisao_animal_Super_RGD")
+  decisaoAnimalSuperRGN   String?  @map("decisao_animal_Super_RGN")
+  decisaoAnimalTecnicoRGD String?  @map("decisao_animal_Tecnico_RGD")
   decisaoAnimalTecnicoRGN String  @map("decisao_animal_Tecnico_RGN")
   image01                 String  @map("image_01")
   image02                 String  @map("image_02")
   image03                 String  @map("image_03")
   image04                 String  @map("image_04")
   nomeAnimal              String  @map("nome_animal")
-  observacaoSuper         String  @map("observacao_Super")
+  observacaoSuper         String?  @map("observacao_Super")
   observacaoTecnico       String  @map("observacao_Tecnico")
   pelagemAnimal           String  @map("pelagem_animal")
   racaAnimalMatriz        String  @map("raca_animal_matriz")
@@ -42,10 +42,29 @@ model Animal {
   registradoRGNSuper      Boolean @map("registrado_RGN_Super")
   registradoRGNTecnico    Boolean @map("registrado_RGN_Tecnico")
   registro                String
-  registroGeral           String  @map("registro_geral")
+  registroGeral           String?  @map("registro_geral")
   sexoAnimal              String  @map("sexo_animal")
+  formaCabeca             Int     @default(0)
+  orelhasCabeca           Int     @default(0)
+  chifresCabeca           Int     @default(0)
+  formaPescoco            Int     @default(0)
+  barbelaPescoco          Int     @default(0)
+  morrilhoPescoco         Int     @default(0)
+  insercaoPescoco         Int     @default(0)
+  aparenciaGeral          Int     @default(0)
+  peso                    Int     @default(0)
+  membrosAnterioresZoot   Int     @default(0)
+  membrosAnterioresRacial Int     @default(0)
+  profundidadeTorax       Int     @default(0)
+  dorsoTorax              Int     @default(0)
+  lomboFlancoTorax        Int     @default(0)
+  traseira                Int     @default(0)
+  umbigo                  Int     @default(0)
+  testiculoZoot           Int     @default(0)
+  testiculoUbere          Int     @default(0)
+  membrosPosteriores      Int     @default(0)
+  mucosa                  Int     @default(0)
   flag                    Int     @default(0)
-
   rebanhoAnimal Rebanho @relation(fields: [rebanho], references: [id])
 
   paiAnimal Animal? @relation("RelacaoPaiAnimal", fields: [pai], references: [id])
@@ -60,7 +79,7 @@ model Animal {
   reprodutorAnimal ComunicacaoNascimento[] @relation("ReprodutorAnimal")
   obito            ComunicacaoObito[]
   transferirAnimal TransferirAnimal[]
-  comunicacoesCobertura AnimaisComunicacaoCobertura[]
+  coberturas       ComunicacaoCobertura[]
   @@map("animais")
 }
 
@@ -210,21 +229,12 @@ model ComunicacaoCobertura {
   observacoes          String
   statusCobertura      String   @map("status_cobertura")
   tipoCobertura        String   @map("tipo_cobertura")
-          
+  
+  animais               Animal[] 
   criador               Criador                 @relation(fields: [criadorCobertura], references: [id], onDelete: Cascade)
   fazenda               Fazenda                 @relation(fields: [fazendaCobertura], references: [id], onDelete: Cascade)
   ComunicacaoNascimento ComunicacaoNascimento[] 
-  animais               AnimaisComunicacaoCobertura[]
   @@map("comunicacoes_coberturas")
-}
-
-model AnimaisComunicacaoCobertura{
-  id                        String    @id @default(uuid()) @db.Uuid
-  animalId                  String    @map("reprodutor_id") @db.Uuid
-  cobertura                 String    @map("cobertura_id") @db.Uuid
-
-  animais                 Animal  @relation(fields: [animalId], references: [id])
-  comunicacaoCobertura    ComunicacaoCobertura @relation(fields: [cobertura], references: [id])
 }
 
 model ComunicacaoObito {

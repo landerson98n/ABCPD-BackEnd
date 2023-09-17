@@ -74,31 +74,17 @@ export class AnimalController {
       !criadorAnimal ||
       !fazenda ||
       !dataAvalicacao ||
-      !composicaoGenetica ||
-      !dataRGDAnimalSuper ||
-      !dataRGDAnimalTecnico ||
-      !dataRGNAnimalSuper ||
       !dataRGNAnimalTecnico ||
       !dataNascimentoAnimal ||
-      !decisaoAnimalSuperRGD ||
-      !decisaoAnimalSuperRGN ||
-      !decisaoAnimalTecnicoRGD ||
       !decisaoAnimalTecnicoRGN ||
       !image01 ||
       !image02 ||
       !image03 ||
       !image04 ||
       !nomeAnimal ||
-      !observacaoSuper ||
-      !observacaoTecnico ||
       !pelagemAnimal ||
-      !racaAnimalMatriz ||
-      !registradoRGDSuper ||
-      !registradoRGDTecnico ||
-      !registradoRGNSuper ||
       !registradoRGNTecnico ||
       !registro ||
-      !registroGeral ||
       !sexoAnimal
     ) {
       throw new UnauthorizedException('Existe um campo vazio.');
@@ -133,19 +119,6 @@ export class AnimalController {
 
     if (!rebanhoEx) {
       throw new NotFoundException('Rebanho não encontrada!');
-    }
-
-    const paiEx = await this.animalService.getAnimalBydId(pai);
-
-    if (!paiEx) {
-      throw new NotFoundException('Pai não encontrado!');
-    }
-
-    // Existe mãe
-    const mãeEx = await this.animalService.getAnimalBydId(mae);
-
-    if (!mãeEx) {
-      throw new NotFoundException('Mãe não encontrada!');
     }
 
     await this.animalService.cadastrarAnimal({
@@ -205,8 +178,21 @@ export class AnimalController {
     if (!user) {
       throw new NotFoundException();
     }
+    const userCriadorService = await this.criadorService.getCriadorByUserId(userId);
 
-    return this.animalService.getAnimaisCriador(userId);
+    return this.animalService.getAnimaisCriador(userCriadorService.id);
+  }
+
+  @Get('get-animal-criador/:id')
+  async getAnimaisCriadorId(@Param('id', ParseUUIDPipe)
+  id: string, @ActiveUserId() userId: string) {
+    const user = await this.userService.getUserBydId(userId);
+
+    if (!user) {
+      throw new NotFoundException();
+    }
+
+    return this.animalService.getAnimaisCriador(id);
   }
 
   @Get('get-animal/:id')

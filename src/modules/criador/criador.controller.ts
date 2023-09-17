@@ -179,6 +179,28 @@ export class CriadorController {
     return userCriadorService;
   }
 
+  @Get('get-criador-user/:id')
+  async getCriadorByUserId(
+    @Param('id', ParseUUIDPipe)
+    id: string,
+    @ActiveUserId() userId: string,
+  ) {
+    const user = await this.userService.getUserBydId(userId);
+
+    if (!(user.pessoa === 'Criador')) {
+      throw new UnauthorizedException();
+    }
+
+    const userCriadorService = await this.criadorService.getCriadorByUserId(id);
+
+    if (!userCriadorService) {
+      throw new NotFoundException('Criador não existe!');
+    }
+
+    return userCriadorService;
+  }
+
+
   @SetMetadata('IS_PUBLIC', true)
   @Post('payment/:id')
   async payment(

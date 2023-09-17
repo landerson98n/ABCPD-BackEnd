@@ -6,18 +6,38 @@ import { ComunicacaoCoberturaRepository } from 'src/shared/database/repositories
 export class ComunicacaoCoberturaService {
   constructor(private comunicacaoCoberturaRepository: ComunicacaoCoberturaRepository) {}
 
-  async cadastrarCobertura(dto) {
+  async cadastrarCobertura(dto, animaisData) {
+    const animais = animaisData.map((animal) => ({
+       id: animal.id ,
+    }));
+
     const comunicacaoCobertura = await this.comunicacaoCoberturaRepository.create({
       data: {
         ...dto,
+        animais: {
+        connect: animais,
       },
+      }
     });
 
     return comunicacaoCobertura;
   }
 
   async getCoberturas() {
-    const coberturas = await this.comunicacaoCoberturaRepository.findMany();
+    const coberturas = await this.comunicacaoCoberturaRepository.findMany({});
+
+    return coberturas;
+  }
+
+  async getCoberturasByCriadorId(id: string) {
+    const coberturas = await this.comunicacaoCoberturaRepository.findMany({
+      where:{
+        criadorCobertura: id
+      },
+      include: {
+        animais: true
+      }
+    });
 
     return coberturas;
   }
@@ -32,13 +52,14 @@ export class ComunicacaoCoberturaService {
     return coberturas;
   }
 
-  async updateCobertura(dto: ComunicacaoCoberturaDto, id: string) {
+  async updateCobertura(dto, animais, id: string) {
     const updateCobertura = await this.comunicacaoCoberturaRepository.update({
       where: {
         id,
       },
       data: {
         ...dto,
+        animais
       },
     });
 

@@ -25,6 +25,7 @@ export class FazendaController {
     @Body()
     fazendaDTO: FazendaDTO,
   ) {
+
     const {
       criadorFazenda,
       areaFazenda,
@@ -133,7 +134,7 @@ export class FazendaController {
   ) {
     const user = await this.userService.getUserBydId(userId);
 
-    if (!(user.pessoa === 'Criador')) {
+    if (!(user)) {
       throw new UnauthorizedException();
     }
 

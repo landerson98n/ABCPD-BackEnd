@@ -23,12 +23,12 @@ export class RebanhoController {
     private readonly fazendaService: FazendaService,
     private readonly userService: UserService,
   ) {}
-
+  
+  @SetMetadata('IS_PUBLIC', true)
   @Post('cadastrar-rebanho')
   async cadastrarRebanho(
     @Body()
     rebanhoDTO: RebanhoDTO,
-    @ActiveUserId() userId: string,
   ) {
     const { fazendaId, serie } = rebanhoDTO;
 
@@ -81,6 +81,22 @@ export class RebanhoController {
     // }
 
     return this.rebanhoService.getRebanhoBydSerie(serie);
+  }
+
+  @SetMetadata('IS_PUBLIC', true)
+  @Get('rebanho-fazenda-id/:id')
+  getRebanhoByFazendaId(
+    @Param('id', ParseUUIDPipe)
+    id: string,
+  ) {
+    // const user = await this.userService.getUserBydId(userId);
+
+    // ??????
+    // if (!(user.pessoa === 'Criador')) {
+    //   throw new UnauthorizedException();
+    // }
+
+    return this.rebanhoService.getRebanhoByFazendaId(id);
   }
 
   @Post('update-rebanho/:id')

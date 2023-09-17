@@ -27,12 +27,15 @@ export class AnimalDTO {
   @IsString()
   composicaoGenetica: string;
 
+  @IsOptional()
   @IsDateString()
   dataRGDAnimalSuper: string;
 
   @IsDateString()
+  @IsOptional()
   dataRGDAnimalTecnico: string;
 
+  @IsOptional()
   @IsDateString()
   dataRGNAnimalSuper: string;
 
@@ -42,12 +45,15 @@ export class AnimalDTO {
   @IsDateString()
   dataNascimentoAnimal: string;
 
+  @IsOptional()
   @IsString()
   decisaoAnimalSuperRGD: string;
 
+  @IsOptional()
   @IsString()
   decisaoAnimalSuperRGN: string;
-
+  
+  @IsOptional()
   @IsString()
   decisaoAnimalTecnicoRGD: string;
 
@@ -69,9 +75,11 @@ export class AnimalDTO {
   @IsString()
   nomeAnimal: string;
 
+  @IsOptional()
   @IsString()
   observacaoSuper: string;
 
+  @IsOptional()
   @IsString()
   observacaoTecnico: string;
 

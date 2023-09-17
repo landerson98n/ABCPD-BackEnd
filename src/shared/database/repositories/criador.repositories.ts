@@ -18,6 +18,10 @@ export class CriadorRepository {
     return this.prismaService.criador.findUnique({ ...findUniqueCriador });
   }
 
+  findFirst(findFirstCriador: Prisma.CriadorFindFirstArgs) {
+    return this.prismaService.criador.findFirst({ ...findFirstCriador });
+  }
+
   update(updateCriador: Prisma.CriadorUpdateArgs) {
     return this.prismaService.criador.update({ ...updateCriador });
   }

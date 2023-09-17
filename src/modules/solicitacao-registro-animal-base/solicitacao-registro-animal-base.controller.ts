@@ -6,7 +6,7 @@ import { UserService } from '../user/user.service';
 import { CriadorService } from '../criador/criador.service';
 import { TecnicoService } from '../tecnico/tecnico.service';
 
-@Controller('solicitacao-registro-animal-base')
+@Controller('animal-base')
 export class SolicitacaoRegistroAnimalBaseController {
   constructor(
     private readonly solicitacaoRegistroAnimalBaseService: SolicitacaoRegistroAnimalBaseService,

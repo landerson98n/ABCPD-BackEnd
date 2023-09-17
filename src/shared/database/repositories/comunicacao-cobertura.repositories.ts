@@ -10,12 +10,16 @@ export class ComunicacaoCoberturaRepository {
     return this.prismaService.comunicacaoCobertura.create(createDto);
   }
 
-  findMany() {
-    return this.prismaService.comunicacaoCobertura.findMany();
+  findMany(findManyCobertura: Prisma.ComunicacaoCoberturaFindManyArgs) {
+    return this.prismaService.comunicacaoCobertura.findMany(findManyCobertura);
   }
 
   findUnique(findUniqueCobertura: Prisma.ComunicacaoCoberturaFindUniqueArgs) {
     return this.prismaService.comunicacaoCobertura.findUnique({ ...findUniqueCobertura });
+  }
+
+  findFirst(findFirstCobertura: Prisma.ComunicacaoCoberturaFindFirstArgs) {
+    return this.prismaService.comunicacaoCobertura.findFirst({ ...findFirstCobertura });
   }
 
   update(UpdateCobertura: Prisma.ComunicacaoCoberturaUpdateArgs) {

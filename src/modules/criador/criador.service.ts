@@ -64,6 +64,32 @@ export class CriadorService {
     return criador;
   }
 
+  async getCriadorByUserId(id: string) {
+    const criador = await this.criadorRepository.findFirst({
+      where: {
+        userId: id,
+      },
+      include: {
+        user: {
+          select: {
+            dateJoined: true,
+            nomePrimeiro: true,
+            nomeUltimo: true,
+            email: true,
+            cpf: true,
+            username: true,
+            telefone: true,
+            ativo: true,
+            pessoa: true,
+            ultimaConexao: true,
+          },
+        },
+      },
+    });
+
+    return criador;
+  }
+
   async updateCriador(dto: UpdateCriadorDTO, id: string) {
     const updateCriador = await this.criadorRepository.update({
       where: {

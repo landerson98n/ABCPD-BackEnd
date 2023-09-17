@@ -26,7 +26,8 @@ export class AnimalService {
     const animais = await this.animalRepository.findMany({
       where:{
         criadorAnimal: criador
-      }
+      },
+      
     });
 
     return animais;
