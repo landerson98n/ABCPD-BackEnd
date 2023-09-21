@@ -114,7 +114,7 @@ model Fazenda {
   fazendaTransmitenteId      TransferirAnimal[]           @relation("fazendaTransmitenteId")
   solicitacaoCadastroFazenda SolicitacaoCadastroFazenda[]
   ComunicacaoNascimento      ComunicacaoNascimento[]
-
+  solicitacaoRegistroAnimalBase SolicitacaoRegistroAnimalBase[]
   @@map("fazendas")
 }
 
@@ -271,11 +271,15 @@ model TransferirAnimal {
 model SolicitacaoRegistroAnimalBase {
   id                String @id @default(uuid()) @db.Uuid
   criadorId         String @map("criador_id") @db.Uuid
+  rebanhoId         String @map("rebanho_id") @db.Uuid
+  fazendaId         String @map("fazenda_id") @db.Uuid
   tecnicoId         String @map("tecnico_id") @db.Uuid
   estadoSolicitacao String @map("estado_solicitacao")
   quantidadeAnimais Int    @map("quantidade_animais")
 
   criador Criador @relation(fields: [criadorId], references: [id], onDelete: SetDefault)
+  rebanho Rebanho @relation(fields: [rebanhoId], references: [id], onDelete: SetDefault)
+  fazenda Fazenda @relation(fields: [fazendaId], references: [id], onDelete: SetDefault)
 
   tecnico Tecnico @relation(fields: [tecnicoId], references: [id], onDelete: Cascade)
 
@@ -290,7 +294,7 @@ model Rebanho {
 
   fazendaRebanho Fazenda  @relation(fields: [fazendaId], references: [id])
   animais        Animal[]
-
+  solicitacaoRegistroAnimalBase SolicitacaoRegistroAnimalBase[]
   @@map("rebanhos")
 }
 

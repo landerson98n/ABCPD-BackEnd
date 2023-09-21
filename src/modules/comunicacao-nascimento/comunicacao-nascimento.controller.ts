@@ -139,6 +139,23 @@ export class ComunicacaoNascimentoController {
     return comunicacoes;
   }
 
+  @Get('get-comunicacoes-nascimentos-criador/:id')
+  async getAnimalByIdCridador(
+    @Param('id', ParseUUIDPipe)
+    id: string,
+    @ActiveUserId() userId: string,
+  ) {
+    // const user = await this.userService.getUserBydId(userId);
+
+    // if (!(user.pessoa === 'Superintendente')) {
+    //   throw new UnauthorizedException();
+    // }
+
+    const comunicacoes = await this.comunicacaoNascimentoService.getComunicacaoNascimentoByIdCriador(id);
+
+    return comunicacoes;
+  }
+
   @Put('update-comunicacoes-nascimentos/:id')
   async updateAnimal(
     @Body()

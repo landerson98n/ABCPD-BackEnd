@@ -17,7 +17,7 @@ export class RebanhoService {
   }
 
   async getRebanhos() {
-    const Rebanhos = await this.rebanhoRepository.findMany();
+    const Rebanhos = await this.rebanhoRepository.findMany({});
 
     return Rebanhos;
   }
@@ -41,9 +41,10 @@ export class RebanhoService {
 
     return Rebanho;
   }
+  
 
   async getRebanhoByFazendaId(id: string) {
-    const Rebanho = await this.rebanhoRepository.findFirst({
+    const Rebanho = await this.rebanhoRepository.findMany({
       where: {
         fazendaId: id,
       },

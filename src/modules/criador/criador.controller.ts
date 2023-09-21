@@ -151,7 +151,7 @@ export class CriadorController {
   async getCriadores(@ActiveUserId() userId: string) {
     const user = await this.userService.getUserBydId(userId);
 
-    if (!(user.pessoa === 'Tecnico')) {
+    if ((user.pessoa === 'Criadores')) {
       throw new UnauthorizedException();
     }
 
@@ -197,6 +197,8 @@ export class CriadorController {
       throw new NotFoundException('Criador não existe!');
     }
 
+
+    
     return userCriadorService;
   }
 

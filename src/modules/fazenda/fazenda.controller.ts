@@ -98,7 +98,7 @@ export class FazendaController {
   async getFazendaes(@ActiveUserId() userId: string) {
     const user = await this.userService.getUserBydId(userId);
 
-    if (!(user.pessoa === 'Tecnico')) {
+    if ((user.pessoa === 'Criador')) {
       throw new UnauthorizedException();
     }
 
@@ -113,6 +113,9 @@ export class FazendaController {
   ) {
     const user = await this.userService.getUserBydId(userId);
 
+    if(!user){
+      throw new NotFoundException('Usuario nao cadastrado!');
+    }
     if (!(user.pessoa === 'Tecnico')) {
       throw new UnauthorizedException();
     }

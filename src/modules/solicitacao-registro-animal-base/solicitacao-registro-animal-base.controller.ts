@@ -5,6 +5,8 @@ import { ActiveUserId } from 'src/shared/decorators/ActiverUserId';
 import { UserService } from '../user/user.service';
 import { CriadorService } from '../criador/criador.service';
 import { TecnicoService } from '../tecnico/tecnico.service';
+import { FazendaService } from '../fazenda/fazenda.service';
+import { RebanhoService } from '../rebanho/rebanho.service';
 
 @Controller('animal-base')
 export class SolicitacaoRegistroAnimalBaseController {
@@ -12,16 +14,18 @@ export class SolicitacaoRegistroAnimalBaseController {
     private readonly solicitacaoRegistroAnimalBaseService: SolicitacaoRegistroAnimalBaseService,
     private readonly userService: UserService,
     private readonly criadorService: CriadorService,
-    private readonly tecnicoService: TecnicoService
+    private readonly tecnicoService: TecnicoService,
+    private readonly fazendaService: FazendaService,
+    private readonly rebanhoService: RebanhoService
     ) {}
 
   @Post('solicitacao-registro-animal-base')
   async cadastrarSolicitacaoRegistroAnimalBase(
   @Body() dto: SolicitacaoRegistroAnimalBaseDTO,
   @ActiveUserId() userId: string) {
-    const {criadorId, quantidadeAnimais, tecnicoId} = dto
+    const {criadorId, quantidadeAnimais, tecnicoId, fazendaId, rebanhoId} = dto
 
-    if(!criadorId || !quantidadeAnimais|| !tecnicoId){
+    if(!criadorId || !quantidadeAnimais|| !tecnicoId || !fazendaId || !rebanhoId){
       throw new UnauthorizedException('Existe um campo vazio.');
     }
 
@@ -33,9 +37,19 @@ export class SolicitacaoRegistroAnimalBaseController {
 
     const criador = await this.criadorService.getCriadorBydId(criadorId);
     const tecnico = await this.tecnicoService.getTecnicoBydId(tecnicoId);
+    const fazenda = await this.fazendaService.getFazendaBydId(fazendaId);
+    const rebanho = await this.rebanhoService.getRebanhoBydId(rebanhoId);
 
     if (!criador) {
       throw new NotFoundException('Criador(a) não encontrado(a)!');
+    }
+
+    if (!fazenda) {
+      throw new NotFoundException('Fazenda não encontrado!');
+    }
+
+    if (!rebanho) {
+      throw new NotFoundException('Rebanho não encontrado!');
     }
 
     if (!tecnico) {

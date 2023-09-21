@@ -164,7 +164,7 @@ export class AnimalController {
   async getAnimais(@ActiveUserId() userId: string) {
     const user = await this.userService.getUserBydId(userId);
 
-    if (!(user.pessoa === 'Tecnico')) {
+    if ((user.pessoa === 'Criador' )) {
       throw new UnauthorizedException();
     }
 
@@ -254,34 +254,21 @@ export class AnimalController {
       sexoAnimal,
       flag,
     } = updateAnimalDTO;
-
+   console.log(updateAnimalDTO);
+   
     if (
       !dataAvalicacao ||
-      !composicaoGenetica ||
-      !dataRGDAnimalSuper ||
-      !dataRGDAnimalTecnico ||
-      !dataRGNAnimalSuper ||
       !dataRGNAnimalTecnico ||
       !dataNascimentoAnimal ||
-      !decisaoAnimalSuperRGD ||
-      !decisaoAnimalSuperRGN ||
-      !decisaoAnimalTecnicoRGD ||
       !decisaoAnimalTecnicoRGN ||
       !image01 ||
       !image02 ||
       !image03 ||
       !image04 ||
       !nomeAnimal ||
-      !observacaoSuper ||
-      !observacaoTecnico ||
       !pelagemAnimal ||
-      !racaAnimalMatriz ||
-      !registradoRGDSuper ||
-      !registradoRGDTecnico ||
-      !registradoRGNSuper ||
       !registradoRGNTecnico ||
       !registro ||
-      !registroGeral ||
       !sexoAnimal
     ) {
       throw new UnauthorizedException('Existe um campo vazio.');
@@ -290,7 +277,7 @@ export class AnimalController {
     const user = await this.userService.getUserBydId(userId);
 
     if (!(user.pessoa === 'Tecnico')) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException("Token inválido");
     }
 
     return this.animalService.updateAnimal(

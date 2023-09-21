@@ -17,7 +17,7 @@ export class ComunicacaoNascimentoService {
   }
 
   async getComunicacaoNascimento() {
-    const ComunicacaoNascimento = await this.comunicacaoNascimentoRepository.findMany();
+    const ComunicacaoNascimento = await this.comunicacaoNascimentoRepository.findMany({});
 
     return ComunicacaoNascimento;
   }
@@ -29,6 +29,15 @@ export class ComunicacaoNascimentoService {
       },
     });
 
+    return ComunicacaoNascimentoById;
+  }
+
+  async getComunicacaoNascimentoByIdCriador(id: string) {
+    const ComunicacaoNascimentoById = await this.comunicacaoNascimentoRepository.findMany({
+      where: {
+        criadorNascimentoId : id
+      },
+    });
     return ComunicacaoNascimentoById;
   }
 

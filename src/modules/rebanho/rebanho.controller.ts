@@ -63,25 +63,25 @@ export class RebanhoController {
     // if (!(user.pessoa === 'Criador')) {
     //   throw new UnauthorizedException();
     // }
-    return this.rebanhoService.getRebanhos();
+    const rebanho  = this.rebanhoService.getRebanhos();
+    
+    return rebanho
+
   }
 
-
-  @SetMetadata('IS_PUBLIC', true)
   @Get('get-rebanho/:serie')
   getRebanhoById(
-    @Param('serie', ParseUUIDPipe)
+    @Param('serie')
     serie: string,
   ) {
-    // const user = await this.userService.getUserBydId(userId);
-
-    // ??????
-    // if (!(user.pessoa === 'Criador')) {
-    //   throw new UnauthorizedException();
-    // }
-
-    return this.rebanhoService.getRebanhoBydSerie(serie);
+    const rebanho  = this.rebanhoService.getRebanhoBydSerie(serie);
+    if (!rebanho) {
+      throw new NotFoundException('Rebanho não encontrado!');
+    }
+    return rebanho
   }
+
+  
 
   @SetMetadata('IS_PUBLIC', true)
   @Get('rebanho-fazenda-id/:id')
@@ -89,14 +89,12 @@ export class RebanhoController {
     @Param('id', ParseUUIDPipe)
     id: string,
   ) {
-    // const user = await this.userService.getUserBydId(userId);
+    const rebanho  = this.rebanhoService.getRebanhoByFazendaId(id);
+    if (!rebanho) {
+      throw new NotFoundException('Rebanho não encontrado!');
+    }
+    return rebanho
 
-    // ??????
-    // if (!(user.pessoa === 'Criador')) {
-    //   throw new UnauthorizedException();
-    // }
-
-    return this.rebanhoService.getRebanhoByFazendaId(id);
   }
 
   @Post('update-rebanho/:id')

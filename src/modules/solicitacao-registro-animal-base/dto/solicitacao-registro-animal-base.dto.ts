@@ -9,6 +9,14 @@ export class SolicitacaoRegistroAnimalBaseDTO {
   @IsNotEmpty()
   tecnicoId: string;
 
+  @IsUUID()
+  @IsNotEmpty()
+  fazendaId: string;
+
+  @IsUUID()
+  @IsNotEmpty()
+  rebanhoId: string;
+
   @IsString()
   estadoSolicitacao: string;
 

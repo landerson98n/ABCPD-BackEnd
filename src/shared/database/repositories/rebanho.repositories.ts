@@ -10,8 +10,8 @@ export class RebanhoRepository {
     return this.prismaService.rebanho.create(createDto);
   }
 
-  findMany() {
-    return this.prismaService.rebanho.findMany();
+  findMany(findManyRebanho: Prisma.RebanhoFindManyArgs) {
+    return this.prismaService.rebanho.findMany(findManyRebanho);
   }
 
   findUnique(findUniqueRebanho: Prisma.RebanhoFindUniqueArgs) {

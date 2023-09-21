@@ -4,10 +4,12 @@ import { SolicitacaoRegistroAnimalBaseController } from './solicitacao-registro-
 import { UserService } from '../user/user.service';
 import { CriadorService } from '../criador/criador.service';
 import { TecnicoService } from '../tecnico/tecnico.service';
+import { FazendaService } from '../fazenda/fazenda.service';
+import { RebanhoService } from '../rebanho/rebanho.service';
 
 @Module({
   controllers: [SolicitacaoRegistroAnimalBaseController],
-  providers: [SolicitacaoRegistroAnimalBaseService, UserService, CriadorService, TecnicoService],
+  providers: [SolicitacaoRegistroAnimalBaseService, UserService, CriadorService, TecnicoService, FazendaService, RebanhoService],
   imports:[]
 })
 export class SolicitacaoRegistroAnimalBaseModule {}

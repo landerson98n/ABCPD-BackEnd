@@ -10,8 +10,8 @@ export class ComunicacaoNascimentoRepository {
     return this.prismaService.comunicacaoNascimento.create(createDto);
   }
 
-  findMany() {
-    return this.prismaService.comunicacaoNascimento.findMany();
+  findMany(findManyComunicacaoNascimento: Prisma.ComunicacaoNascimentoFindManyArgs) {
+    return this.prismaService.comunicacaoNascimento.findMany(findManyComunicacaoNascimento);
   }
 
   findUnique(findUniqueComunicacaoNascimento: Prisma.ComunicacaoNascimentoFindUniqueArgs) {
