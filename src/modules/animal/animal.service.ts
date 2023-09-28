@@ -38,6 +38,54 @@ export class AnimalService {
       where: {
         id,
       },
+      include:{
+        criador: {
+          select: {
+            nomeCompleto: true
+          }
+        },
+
+        fazendaAnimal: {
+          select:{
+            nomeFazenda: true
+          }
+        },
+
+        maeAnimal:{
+
+          include:{
+            
+            paiAnimal:{
+              select:{
+                nomeAnimal: true
+              }
+            },
+            maeAnimal:{
+              select:{
+                nomeAnimal: true
+              }
+            },
+            
+          },
+          
+        },
+
+        paiAnimal:{
+          include:{
+            paiAnimal:{
+              select:{
+                nomeAnimal: true
+              }
+            },
+            maeAnimal:{
+              select:{
+                nomeAnimal: true
+              }
+            }
+          },
+
+        }
+      }
     });
 
     return animal;

@@ -65,6 +65,24 @@ export class TecnicoService {
     return Tecnico;
   }
 
+  async getEmailTecnico(id: string) {
+    const tecnico = await this.tecnicoRepository.findUnique({
+      where: {
+         id,
+      },
+      include: {
+        user: {
+          select: {
+            email: true,
+          },
+        },
+      },
+      select:{}
+    });
+
+    return tecnico;
+  }
+
   async updateTecnico(dto: UpdateTecnicoDTO, id: string) {
     const updateTecnico = await this.tecnicoRepository.update({
       where: {

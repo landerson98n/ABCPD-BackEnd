@@ -179,11 +179,11 @@ export class ComunicacaoNascimentoController {
       statusNascimento,
     } = updateComunicacaoNascimentoDto;
 
-    // const user = await this.userService.getUserBydId(userId);
+    const user = await this.userService.getUserBydId(userId);
 
-    // if (!(user.pessoa === 'Superintendente')) {
-    //   throw new UnauthorizedException();
-    // }
+    if (!(user.pessoa === 'Superintendente')) {
+      throw new UnauthorizedException();
+    }
 
     const exisCobertura = await this.coberturaService.getCoberturaById(coberturaRegistradaId);
 

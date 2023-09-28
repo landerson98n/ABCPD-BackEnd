@@ -9,6 +9,7 @@ import {
   NotFoundException,
   ParseUUIDPipe,
   Put,
+  SetMetadata,
 } from '@nestjs/common';
 import { AnimalService } from './animal.service';
 import { AnimalDTO, UpdateAnimalDTO } from './dto/animal.dto';
@@ -195,22 +196,17 @@ export class AnimalController {
     return this.animalService.getAnimaisCriador(id);
   }
 
+  @SetMetadata('IS_PUBLIC', true)
   @Get('get-animal/:id')
   async getAnimalById(
     @Param('id', ParseUUIDPipe)
     id: string,
-    @ActiveUserId() userId: string,
   ) {
-    const user = await this.userService.getUserBydId(userId);
-
-    if (!(user.pessoa === 'Tecnico')) {
-      throw new UnauthorizedException();
-    }
-
+  
     const animalEx = await this.animalService.getAnimalBydId(id);
 
     if (!animalEx) {
-      throw new NotFoundException('Fazenda não encontrada!');
+      throw new NotFoundException('Animal não encontrado!');
     }
 
     return animalEx;
@@ -276,7 +272,7 @@ export class AnimalController {
 
     const user = await this.userService.getUserBydId(userId);
 
-    if (!(user.pessoa === 'Tecnico')) {
+    if ((user.pessoa === 'Criador')) {
       throw new UnauthorizedException("Token inválido");
     }
 

@@ -166,7 +166,7 @@ export class CriadorController {
   ) {
     const user = await this.userService.getUserBydId(userId);
 
-    if (!(user.pessoa === 'Tecnico')) {
+    if ((user.pessoa === 'Criador')) {
       throw new UnauthorizedException();
     }
 

@@ -132,6 +132,22 @@ export class TecnicoController {
     return userSuperintendenteService;
   }
 
+  @Get('get-tecnico-email/:id')
+  async getEmailTecnico(
+    @Param('id', ParseUUIDPipe)
+    id: string,
+    @ActiveUserId() userId: string,
+  ) {
+    const user = await this.userService.getUserBydId(userId);
+
+    if (!(user)) {
+      throw new UnauthorizedException();
+    }
+    const tecnico = await this.tecnicoService.getEmailTecnico(id);
+  
+    return tecnico;
+  }
+
   @Put('update-tecnico/:id')
   async updateTecnico(
     @Body() updateTecnicoDTO: UpdateTecnicoDTO,

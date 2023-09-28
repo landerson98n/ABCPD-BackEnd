@@ -24,7 +24,7 @@ export class ComunicacaoCoberturaService {
   }
 
   async getCoberturas() {
-    const coberturas = await this.comunicacaoCoberturaRepository.findMany({});
+    const coberturas = await this.comunicacaoCoberturaRepository.findMany({include:{animais:true}});
 
     return coberturas;
   }
@@ -53,14 +53,20 @@ export class ComunicacaoCoberturaService {
   }
 
   async updateCobertura(dto, animais, id: string) {
+    const animaisId = animais.map((animal) => ({
+      id: animal.id ,
+   }));
     const updateCobertura = await this.comunicacaoCoberturaRepository.update({
       where: {
         id,
       },
       data: {
         ...dto,
-        animais
+        animais:{
+          connect: animaisId
+        }
       },
+      
     });
 
     return updateCobertura;

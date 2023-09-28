@@ -150,10 +150,8 @@ export class ComunicacaoCoberturaController {
     if (
       !criadorCobertura ||
       !fazendaCobertura ||
-      pago ||
       finalizadoCobertura ||
       !nomeCobertura ||
-      !observacoes ||
       !statusCobertura ||
       !tipoCobertura ||
       !animais

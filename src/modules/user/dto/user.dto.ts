@@ -86,3 +86,13 @@ export class UpdateUserDTO {
 
 
 }
+
+export class EmailDTO {
+  @IsString()
+  @IsNotEmpty()
+  to: string;
+
+  @IsString()
+  @IsNotEmpty()
+  subject: string;
+}

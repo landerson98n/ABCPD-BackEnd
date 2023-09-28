@@ -116,7 +116,7 @@ export class FazendaController {
     if(!user){
       throw new NotFoundException('Usuario nao cadastrado!');
     }
-    if (!(user.pessoa === 'Tecnico')) {
+    if ((user.pessoa === 'Criador')) {
       throw new UnauthorizedException();
     }
 
