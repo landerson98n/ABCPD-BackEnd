@@ -5,6 +5,10 @@ export class RebanhoDTO {
   @IsUUID()
   fazendaId: string;
 
+  @IsNotEmpty()
+  @IsUUID()
+  criadorId: string;
+
   @IsString()
   @IsNotEmpty()
   serie: string;

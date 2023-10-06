@@ -202,6 +202,27 @@ export class CriadorController {
     return userCriadorService;
   }
 
+  @Get('get-criador-transferencia')
+  async getCriadorTransferencia(
+    @ActiveUserId() userId: string,
+  ) {
+    const user = await this.userService.getUserBydId(userId);
+
+    if (!(user.pessoa === 'Criador')) {
+      throw new UnauthorizedException();
+    }
+
+    const userCriadorService = await this.criadorService.getCriadorTransferencia();
+
+    if (!userCriadorService) {
+      throw new NotFoundException('Criador não existe!');
+    }
+
+
+    
+    return userCriadorService;
+  }
+
 
   @SetMetadata('IS_PUBLIC', true)
   @Post('payment/:id')

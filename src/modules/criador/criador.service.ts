@@ -84,6 +84,28 @@ export class CriadorService {
             ultimaConexao: true,
           },
         },
+        rebanhos: {
+          select: {
+            serie: true
+          }
+        }
+      },
+    });
+
+    return criador;
+  }
+
+  async getCriadorTransferencia() {
+    const criador = await this.criadorRepository.findMany({
+      select:{
+        nomeCompleto: true,
+        id: true,
+        fazenda:{
+          select:{
+            nomeFazenda: true,
+            id: true
+          }
+         }
       },
     });
 

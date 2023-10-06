@@ -70,7 +70,8 @@ export class AnimalController {
       sexoAnimal,
       flag,
     } = animalDTO;
-
+  console.log(animalDTO);
+  
     if (
       !criadorAnimal ||
       !fazenda ||

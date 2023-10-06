@@ -30,9 +30,9 @@ export class RebanhoController {
     @Body()
     rebanhoDTO: RebanhoDTO,
   ) {
-    const { fazendaId, serie } = rebanhoDTO;
+    const { fazendaId, serie, criadorId } = rebanhoDTO;
 
-    if (!fazendaId || !serie) {
+    if (!fazendaId || !serie || !criadorId) {
       throw new UnauthorizedException('Existe um campo vazio.');
     }
 
@@ -52,29 +52,31 @@ export class RebanhoController {
     return this.rebanhoService.cadastrarRebanho({
       fazendaId,
       serie,
+      criadorId
     });
   }
 
   @Get('get-rebanhos')
-  getRebanhos(@ActiveUserId() userId: string) {
+  async getRebanhos(@ActiveUserId() userId: string) {
     // const user = await this.userService.getUserBydId(userId);
 
     // ??????
     // if (!(user.pessoa === 'Criador')) {
     //   throw new UnauthorizedException();
     // }
-    const rebanho  = this.rebanhoService.getRebanhos();
+    const rebanho  = await this.rebanhoService.getRebanhos();
     
     return rebanho
 
   }
 
   @Get('get-rebanho/:serie')
-  getRebanhoById(
+  async getRebanhoById(
     @Param('serie')
     serie: string,
   ) {
-    const rebanho  = this.rebanhoService.getRebanhoBydSerie(serie);
+    const rebanho  = await this.rebanhoService.getRebanhoBydSerie(serie); 
+    
     if (!rebanho) {
       throw new NotFoundException('Rebanho não encontrado!');
     }
@@ -83,13 +85,12 @@ export class RebanhoController {
 
   
 
-  @SetMetadata('IS_PUBLIC', true)
   @Get('rebanho-fazenda-id/:id')
-  getRebanhoByFazendaId(
+  async getRebanhoByFazendaId(
     @Param('id', ParseUUIDPipe)
     id: string,
   ) {
-    const rebanho  = this.rebanhoService.getRebanhoByFazendaId(id);
+    const rebanho  = await this.rebanhoService.getRebanhoByFazendaId(id);
     if (!rebanho) {
       throw new NotFoundException('Rebanho não encontrado!');
     }
@@ -118,11 +119,11 @@ export class RebanhoController {
     //   throw new UnauthorizedException();
     // }
 
-    return this.rebanhoService.updateRebanho({ serie }, id);
+    return await this.rebanhoService.updateRebanho({ serie }, id);
   }
 
   @Delete('delete-rebanho/:id')
-  deleteRebanho(
+  async deleteRebanho(
     @Param('id', ParseUUIDPipe)
     id: string,
     @ActiveUserId() userId: string,
@@ -133,6 +134,6 @@ export class RebanhoController {
     // if (!(user.pessoa === 'Criador')) {
     //   throw new UnauthorizedException();
     // }
-    return this.rebanhoService.deleteRebanho(id);
+    return await this.rebanhoService.deleteRebanho(id);
   }
 }

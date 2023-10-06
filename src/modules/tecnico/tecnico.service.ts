@@ -70,14 +70,13 @@ export class TecnicoService {
       where: {
          id,
       },
-      include: {
+      select:{
         user: {
           select: {
             email: true,
           },
         },
-      },
-      select:{}
+      }
     });
 
     return tecnico;

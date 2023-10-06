@@ -33,10 +33,11 @@ export class FazendaService {
   }
 
   async getFazendaBydIdCriador(id: string) {
+    
     const Fazenda = await this.fazendaRepository.findMany({
       where: {
         criadorFazenda: id,
-      },
+      }
     });
 
     return Fazenda;

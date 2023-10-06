@@ -85,7 +85,7 @@ model Animal {
 
 model Fazenda {
   id                String  @id @unique @default(uuid()) @db.Uuid
-  criadorFazenda    String  @unique @map("criador_fazenda") @db.Uuid
+  criadorFazenda    String  @map("criador_fazenda") @db.Uuid
   areaFazenda       String  @map("area_fazenda")
   atualizacoes      String
   comoChegar        String  @map("como_chegar")
@@ -189,7 +189,7 @@ model Criador {
   criadorTransmitente           TransferirAnimal[]              @relation("criadorTransmitente")
   solicitacaoCadastro           SolicitacaoCadastroCriador[]
   solicitacaoRegistroAnimalBase SolicitacaoRegistroAnimalBase[]
-
+  rebanhos                      Rebanho[]
   @@map("criadores")
 }
 
@@ -290,9 +290,11 @@ model SolicitacaoRegistroAnimalBase {
 model Rebanho {
   id        String @id @default(uuid()) @db.Uuid
   fazendaId String @map("fazenda_id") @db.Uuid
+  criadorId String @map("criador_id") @db.Uuid 
   serie     String @unique 
 
   fazendaRebanho Fazenda  @relation(fields: [fazendaId], references: [id])
+  criadorRebanho Criador  @relation(fields: [criadorId], references: [id])
   animais        Animal[]
   solicitacaoRegistroAnimalBase SolicitacaoRegistroAnimalBase[]
   @@map("rebanhos")

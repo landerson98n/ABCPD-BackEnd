@@ -11,7 +11,7 @@ export class FazendaRepository {
   }
 
   findMany(findManyFazenda: Prisma.FazendaFindManyArgs) {
-    return this.prismaService.fazenda.findMany();
+    return this.prismaService.fazenda.findMany({...findManyFazenda});
   }
   
 
