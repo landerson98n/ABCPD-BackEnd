@@ -97,9 +97,7 @@ export class SolicitacaoRegistroAnimalBaseController {
       throw new NotFoundException('Usuario não encontrado(a)!');
     }
 
-    if (!(user.pessoa === 'Criador')) {
-      throw new UnauthorizedException();
-    }
+
     return this.solicitacaoRegistroAnimalBaseService.updateSolicitacaoRegistroAnimalBase(dto, id);
   }
 
