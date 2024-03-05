@@ -8,9 +8,11 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: 'http://localhost:3000',
+    origin: 'https://abcpd-front-end.vercel.app', // Update this with your front-end URL
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
   });
-
+  
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
